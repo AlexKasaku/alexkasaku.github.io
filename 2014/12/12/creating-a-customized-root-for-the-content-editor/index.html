@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Kasaku">
+    <title>Creating a customized root for the Content Editor - Kasaku</title>
+    <meta name="author" content="Alex Washtell">
+    <meta name="description" content="Kasaku">
+    <link rel="icon" href="/assets/images/favicon.png">
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
+    <!--STYLES END-->
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header">
+    <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="http://kasaku.local">Kasaku</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar">
+    
+    
+    <div class="sidebar-logo">
+        <h1><span class="rotate">Kasaku</span></h1>
+        <h2>Web Development</h2>
+    </div>
+    
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-home"></i>
+                    <span class="sidebar-button-desc hide-md">Home</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-tags">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-tags"></i>
+                    <span class="sidebar-button-desc hide-md">Tags</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-archives">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-archive"></i>
+                    <span class="sidebar-button-desc hide-md">Archives</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://community.sitecore.net/members/alexwashtell_5f00_911378316" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-sitecore"></i>
+                    <span class="sidebar-button-desc hide-md">Sitecore</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://github.com/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-github"></i>
+                    <span class="sidebar-button-desc hide-md">GitHub</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://twitter.com/kasaku_dev" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-twitter"></i>
+                    <span class="sidebar-button-desc hide-md">Twitter</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://stackoverflow.com/users/173983/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-stack-overflow"></i>
+                    <span class="sidebar-button-desc hide-md">Stack Overflow</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="mailto://mail@kasaku.co.uk" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-envelope-o"></i>
+                    <span class="sidebar-button-desc hide-md">Mail</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/atom.xml">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-rss"></i>
+                    <span class="sidebar-button-desc hide-md">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+            <div id="main">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+        <div class="post-header main-content-wrap">
+    
+        <h1 class="post-title" itemprop="headline">Creating a customized root for the Content Editor</h1>
+    
+    <div class="post-meta">
+    <time  itemprop="datePublished" content="Fri Dec 12 2014 11:08:34 GMT+0000">
+        Dec 12, 2014
+    </time>
+    
+</div>
+</div>
+    
+    <div class="post-content markdown main-content-wrap" itemprop="articleBody">
+        <p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some. As Sitecore 8 has all the editors ported to SPEAK, it is unlikely that this method will work from that version onwards.</em></p>
+<p>Have you noticed how the <strong>Marketing Center</strong> icon in the Sitecore Start Menu is just used to load a new Content Editor window, but with a particular root item? In that particular case it goes straight to <code>/sitecore/system/Marketing Center</code>.</p>
+<p>It’s quite a simple addition but can speed up work for your editors if they’re able to use an icon to launch straight into an area they regularly work with, especially if it’s tucked away in your content tree. Additionally, if you’ve removed access for them to one of the ancestor items, they won’t see it in the standard Content Editor tree at all, even if they have access to that particular descendant.</p>
+<p>This short tutorial shows you how to create a new shortcut to launch a Content Editor with a customized root item of your choice.</p>
+<h3 id="Creating_the_layout">Creating the layout</h3><p>First of all, you’ll need to create a page that will get shown when the window opens. I have based the code for this Layout on the very same code used by the Marketing Center, no point in reinventing the wheel. All the code really does is launch the real Content Editor ASPX page, complete with some URL parameters to have it open the right item.</p>
+<p>Create an ASPX page and fill it with the following, though replace the ID passed to <code>Client.ContentDatabase.GetItem</code> with the ID of the root item you want to be displayed when the window opens. You can also customize the <code>he</code> and <code>ic</code> parameters to give the new window a custom URL + icon.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Page</span> <span class="attribute">Language</span>=<span class="value">"C#"</span> %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Data.Items"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Diagnostics"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Text"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">language</span>=<span class="value">"c#"</span> <span class="attribute">runat</span>=<span class="value">"server"</span>&gt;</span><span class="openscad"></span><br><span class="line">  override protected void OnInit<span class="params">([NotNull] EventArgs e)</span> &#123;</span><br><span class="line">    Assert.ArgumentNotNull<span class="params">(e, <span class="string">"e"</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    var url = new UrlString<span class="params">(<span class="string">"/sitecore/shell/Applications/Content Manager/default.aspx"</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Get the root item to display in the Content Manager window.</span></span><br><span class="line">    Item rootItem = Client.ContentDatabase.GetItem<span class="params">(<span class="string">"&#123;D6538613-BA3E-4C82-ACEC-94DC010BA2CD&#125;"</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="params">(rootItem == null)</span></span><br><span class="line">      return;</span><br><span class="line">      </span><br><span class="line">    url.Add<span class="params">(<span class="string">"he"</span>, <span class="string">"Blog Editor"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"pa"</span>, <span class="string">"0"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"ic"</span>, <span class="string">"people/16x16/user1_message.png"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"ro"</span>, rootItem.ID.ToString<span class="params">()</span>)</span>;</span><br><span class="line">    url[<span class="string">"mo"</span>] = <span class="string">"templateworkspace"</span>;</span><br><span class="line">    </span><br><span class="line">    Response.Redirect<span class="params">(url.ToString<span class="params">()</span>)</span>;   </span><br><span class="line">  &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Save this ASPX file where you like, you may prefer to go somewhere within the <code>/sitecore</code> folder, or perhaps the <code>/sitecore modules</code> folder instead to keep it separate.</p>
+<p>Next, create a new Layout item in the Core database. I would recommend following Sitecore’s pattern and keeping it under the Applications folder located at <code>/sitecore/layout/Layouts/Applications</code>, or perhaps use a subfolder with your project name. The <code>Path</code> field of this layout should be a relative path to your new ASPX page.</p>
+<h3 id="Creating_the_application">Creating the application</h3><p>Now you need to create an <strong>Application</strong> that uses this layout. Create a new Application item under <code>/sitecore/content/Applications</code>, if you right-click on the Applications item you should find that an Insert Option has already been defined for adding an Application.</p>
+<p>In this new item, set the <code>Chrome</code> field to <code>BorderlessChrome</code>, otherwise the window won’t display correctly. The <code>Icon</code> field will control how the Application will appear in the Start Menu later, use a 32x32 icon. You can also set the <code>Display Name</code> and <code>Tool Tip</code> fields.</p>
+<p>Next, edit the <strong>Presentation Details</strong> of the item and set the layout to your newly created layout from the previous setup.</p>
+<h3 id="Creating_the_shortcut">Creating the shortcut</h3><p>Finally, you need to create the shortcut. Under <code>/sitecore/content/Documents and settings/All users/Start menu</code> are several items that represent the different areas of the Start Menu. Choose the one where you would like your icon to appear and create a new item of type <code>/sitecore/templates/Sitecore Client/Applications/Application shortcut</code> (you should find it as an Insert Option).</p>
+<p>In the shortcut item, set the <code>Application</code> link field to point to your Application item. If you want a particular shortcut to override the default settings for an Application, you can also set the <code>Icon</code>, <code>Display Name</code> and <code>Tool tip</code> fields.</p>
+<h3 id="Tada!">Tada!</h3><p>That’s all there is to it, your new shortcut should be appearing in the Start Menu, and when you click it you’ll get your new customized Content Editor.</p>
+<p><img src="/2014/12/12/creating-a-customized-root-for-the-content-editor/blog-shortcut.png" alt="New blog shortcut" title="New blog shortcut"></p>
+        
+            
+        
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/"  data-tooltip="Referencing folders with Placeholder Settings">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/08/creating-a-custom-gutter-validator/" data-tooltip="Creating a custom gutter validator">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2015 Alex Washtell. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div class="post-bottom-bar">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/"  data-tooltip="Referencing folders with Placeholder Settings">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/08/creating-a-custom-gutter-validator/" data-tooltip="Creating a custom gutter validator">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="icon-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Alex Washtell</h4>
+        
+        
+        
+    </div>
+</div>
+        <div id="cover" style="background-image:url('/assets/images/undefined');"></div>
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js" type="text/javascript"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'kasaku';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+</html>

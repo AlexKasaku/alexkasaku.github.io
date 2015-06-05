@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Kasaku">
+    <title>Referencing folders with Placeholder Settings - Kasaku</title>
+    <meta name="author" content="Alex Washtell">
+    <meta name="description" content="Kasaku">
+    <link rel="icon" href="/assets/images/favicon.png">
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
+    <!--STYLES END-->
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header">
+    <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="http://kasaku.local">Kasaku</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar">
+    
+    
+    <div class="sidebar-logo">
+        <h1><span class="rotate">Kasaku</span></h1>
+        <h2>Web Development</h2>
+    </div>
+    
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-home"></i>
+                    <span class="sidebar-button-desc hide-md">Home</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-tags">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-tags"></i>
+                    <span class="sidebar-button-desc hide-md">Tags</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-archives">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-archive"></i>
+                    <span class="sidebar-button-desc hide-md">Archives</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://community.sitecore.net/members/alexwashtell_5f00_911378316" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-sitecore"></i>
+                    <span class="sidebar-button-desc hide-md">Sitecore</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://github.com/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-github"></i>
+                    <span class="sidebar-button-desc hide-md">GitHub</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://twitter.com/kasaku_dev" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-twitter"></i>
+                    <span class="sidebar-button-desc hide-md">Twitter</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://stackoverflow.com/users/173983/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-stack-overflow"></i>
+                    <span class="sidebar-button-desc hide-md">Stack Overflow</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="mailto://mail@kasaku.co.uk" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-envelope-o"></i>
+                    <span class="sidebar-button-desc hide-md">Mail</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/atom.xml">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-rss"></i>
+                    <span class="sidebar-button-desc hide-md">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+            <div id="main">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+        <div class="post-header main-content-wrap">
+    
+        <h1 class="post-title" itemprop="headline">Referencing folders with Placeholder Settings</h1>
+    
+    <div class="post-meta">
+    <time  itemprop="datePublished" content="Tue Dec 23 2014 14:01:42 GMT+0000">
+        Dec 23, 2014
+    </time>
+    
+</div>
+</div>
+    
+    <div class="post-content markdown main-content-wrap" itemprop="articleBody">
+        <p><a href="http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx" target="_blank" rel="external">Placeholder Settings</a> allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.</p>
+<p>Each time you create a new Rendering, you need to update the placeholder settings too so that the editors can use the rendering. If you keep your renderings nicely organised within a folder structure, then there’s a simple method for making this a bit more flexible and having Sitecore automatically pick up the renderings by referencing a <em>folder of renderings</em> rather than the rendering itself.</p>
+<p>Within the Content Editor for the settings, Sitecore allows you to add a rendering folder, rather than a rendering itself:</p>
+<p><img src="/2014/12/23/referencing-folders-with-placeholder-settings/placeholder_settings.png" alt="Placeholder settings" title="Placeholder settings"></p>
+
+<p>Typically, selecting the folder would have no effect. However, with the following pipeline, we can alter the functionality of Sitecore so that if a folder has been added, it pulls in <strong>all</strong> of the child renderings that sit underneath it.</p>
+<p>This can be very useful if you keep your renderings organised by functionality, so for example you want a “Forms” placeholders setting that will contain all of the Form renderings you have created. If you keep them together in the same folder, you can have them added automatically, without having to update the settings.</p>
+<h3 id="Creating_the_pipeline_class">Creating the pipeline class</h3><p>The following is all the code we need for the pipeline step:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GetRenderingsFromFolders</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Process</span>(<span class="params">GetPlaceholderRenderingsArgs args</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Assert.IsNotNull((<span class="keyword">object</span>)args, <span class="string">"args"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (args.PlaceholderRenderings == <span class="keyword">null</span> || args.PlaceholderRenderings.Count == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> newRenderings = args.PlaceholderRenderings</span><br><span class="line">            .Where(ItemIsAFolder)</span><br><span class="line">            .SelectMany(GetChildRenderings)</span><br><span class="line">            .Distinct(<span class="keyword">new</span> ItemIdComparer())</span><br><span class="line">            .ToList();</span><br><span class="line"></span><br><span class="line">        args.PlaceholderRenderings.AddRange(newRenderings);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">ItemIsAFolder</span>(<span class="params">Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> item.DerivesFromTemplate(ID.Parse(TemplateIds.Folder)) ||</span><br><span class="line">               item.DerivesFromTemplate(ID.Parse(TemplateIds.RenderingsFolder));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IEnumerable&lt;Item&gt; <span class="title">GetChildRenderings</span>(<span class="params">Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// Can just return all children - the pipeline already handles only keeping hold of items</span></span><br><span class="line">        <span class="comment">// that are rendering items.</span></span><br><span class="line">        <span class="keyword">return</span> item.Children;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The code for this is relatively straight-forward. It makes use of a standard <code>DerivesFromTemplate</code> extension method that you’ll need to implement. There is also a static class used for ID references, but you could just drop the IDs straight in.</p>
+<p>The GetChildRenderings method is actually extremely simple and could be removed, but it’s left in to illustrate that you could replace this with other logic, such as all descendants of an item, or perhaps using a parameter to determine what renderings to pick up.</p>
+<h3 id="Adding_the_config">Adding the config</h3><p>With this code in our solution, we need to add the command to config so that it can be referenced. This can done with a simple config file in the Include folder, with the appropriate assembly + class reference:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">configuration</span> <span class="attribute">xmlns:patch</span>=<span class="value">"http://www.sitecore.net/xmlconfig/"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">sitecore</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">pipelines</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">getPlaceholderRenderings</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">processor</span> <span class="attribute">type</span>=<span class="value">"YourWebsite.Sc.Pipelines.GetPlaceholderRenderings.GetRenderingsFromFolders, YourWebsite.Sc"</span></span><br><span class="line">                   <span class="attribute">patch:after</span>=<span class="value">"*[@type='Sitecore.Pipelines.GetPlaceholderRenderings.GetAllowedRenderings, Sitecore.Kernel']"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="title">getPlaceholderRenderings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">pipelines</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">sitecore</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>And that’s it! You can now just reference folders in your Placeholder Settings and all of the child renderings underneath will be pulled in.</p>
+
+        
+            
+        
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/04/an-update-for-sitecore8/"  data-tooltip="An update for Sitecore 8">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/" data-tooltip="Creating a customized root for the Content Editor">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2015 Alex Washtell. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div class="post-bottom-bar">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/04/an-update-for-sitecore8/"  data-tooltip="An update for Sitecore 8">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/" data-tooltip="Creating a customized root for the Content Editor">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="icon-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Alex Washtell</h4>
+        
+        
+        
+    </div>
+</div>
+        <div id="cover" style="background-image:url('/assets/images/undefined');"></div>
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js" type="text/javascript"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'kasaku';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+</html>

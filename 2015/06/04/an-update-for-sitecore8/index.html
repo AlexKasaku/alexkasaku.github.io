@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Kasaku">
+    <title>An update for Sitecore 8 - Kasaku</title>
+    <meta name="author" content="Alex Washtell">
+    <meta name="description" content="Kasaku">
+    <link rel="icon" href="/assets/images/favicon.png">
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
+    <!--STYLES END-->
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header">
+    <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="http://kasaku.local">Kasaku</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar">
+    
+    
+    <div class="sidebar-logo">
+        <h1><span class="rotate">Kasaku</span></h1>
+        <h2>Web Development</h2>
+    </div>
+    
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-home"></i>
+                    <span class="sidebar-button-desc hide-md">Home</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-tags">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-tags"></i>
+                    <span class="sidebar-button-desc hide-md">Tags</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-archives">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-archive"></i>
+                    <span class="sidebar-button-desc hide-md">Archives</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://community.sitecore.net/members/alexwashtell_5f00_911378316" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-sitecore"></i>
+                    <span class="sidebar-button-desc hide-md">Sitecore</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://github.com/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-github"></i>
+                    <span class="sidebar-button-desc hide-md">GitHub</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://twitter.com/kasaku_dev" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-twitter"></i>
+                    <span class="sidebar-button-desc hide-md">Twitter</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://stackoverflow.com/users/173983/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-stack-overflow"></i>
+                    <span class="sidebar-button-desc hide-md">Stack Overflow</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="mailto://mail@kasaku.co.uk" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-envelope-o"></i>
+                    <span class="sidebar-button-desc hide-md">Mail</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/atom.xml">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-rss"></i>
+                    <span class="sidebar-button-desc hide-md">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+            <div id="main">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+        <div class="post-header main-content-wrap">
+    
+        <h1 class="post-title" itemprop="headline">An update for Sitecore 8</h1>
+    
+    <div class="post-meta">
+    <time  itemprop="datePublished" content="Thu Jun 04 2015 17:00:00 GMT+0100">
+        Jun 04, 2015
+    </time>
+    
+</div>
+</div>
+    
+    <div class="post-content markdown main-content-wrap" itemprop="articleBody">
+        <p>Now that Sitecore 8 is out in the wild, developers will be eagerly checking their projects and modules to ensure compatibility with the latest version.</p>
+<p>With that in mind, here’s an update on Sitecore 8 compatibility for recent blog posts on this site. This post collates all of the updates in one place, but each post has been updated as well:</p>
+<h3 id="<!-￼0->"><a href="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/" title="A RequiresDataSource filter for Sitecore Controller Renderings">A RequiresDataSource filter for Sitecore Controller Renderings</a></h3><p>The filter works absolutely fine in Sitecore 8 Update-2.</p>
+<h3 id="<!-￼1->"></h3><p>The RemoveLink command still works in Sitecore 8, however you will need to target a different assembly to build it. Instead of the <strong>Sitecore.Client.dll</strong>, you must override <code>WebEditCommand</code> in <strong>Sitecore.ExperienceEditor.dll</strong>.</p>
+<h3 id="<!-￼2->"><a href="/2014/12/08/creating-a-custom-gutter-validator/" title="Creating a custom gutter validator">Creating a custom gutter validator</a></h3><p>No changes are required, this technique works absolutely fine in Sitecore 8 Update-2.</p>
+<h3 id="<!-￼3->"><a href="/2014/12/12/creating-a-customized-root-for-the-content-editor/" title="Creating a customized root for the Content Editor">Creating a customized root for the Content Editor</a></h3><p>This approach still works for Sitecore 8. However, a better approach is to now create a link in the Launchpad, rather than the “Start” menu.</p>
+<h3 id="<!-￼4->"><a href="/2014/12/23/referencing-folders-with-placeholder-settings/" title="Referencing folders with Placeholder Settings">Referencing folders with Placeholder Settings</a></h3>
+        
+            
+        
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-8/">sitecore-8</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/" data-tooltip="Referencing folders with Placeholder Settings">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2015 Alex Washtell. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div class="post-bottom-bar">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/" data-tooltip="Referencing folders with Placeholder Settings">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2015/06/04/an-update-for-sitecore8/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="icon-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Alex Washtell</h4>
+        
+        
+        
+    </div>
+</div>
+        <div id="cover" style="background-image:url('/assets/images/undefined');"></div>
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js" type="text/javascript"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'kasaku';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+</html>
