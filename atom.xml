@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://kasaku.local/"/>
-  <updated>2015-06-04T16:25:46.836Z</updated>
+  <updated>2015-06-05T15:14:19.103Z</updated>
   <id>http://kasaku.local/</id>
   
   <author>
@@ -15,25 +15,221 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[An update for Sitecore 8]]></title>
-    <link href="http://kasaku.local/2015/06/04/an-update-for-sitecore8/"/>
-    <id>http://kasaku.local/2015/06/04/an-update-for-sitecore8/</id>
-    <published>2015-06-04T16:00:00.000Z</published>
-    <updated>2015-06-04T16:25:46.836Z</updated>
-    <content type="html"><![CDATA[<p>Now that Sitecore 8 is out in the wild, developers will be eagerly checking their projects and modules to ensure compatibility with the latest version.</p>
-<p>With that in mind, here’s an update on Sitecore 8 compatibility for recent blog posts on this site. This post collates all of the updates in one place, but each post has been updated as well:</p>
-<h3 id="<!-￼0->"><a href="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/" title="A RequiresDataSource filter for Sitecore Controller Renderings">A RequiresDataSource filter for Sitecore Controller Renderings</a></h3><p>The filter works absolutely fine in Sitecore 8 Update-2.</p>
-<h3 id="<!-￼1->"></h3><p>The RemoveLink command still works in Sitecore 8, however you will need to target a different assembly to build it. Instead of the <strong>Sitecore.Client.dll</strong>, you must override <code>WebEditCommand</code> in <strong>Sitecore.ExperienceEditor.dll</strong>.</p>
-<h3 id="<!-￼2->"><a href="/2014/12/08/creating-a-custom-gutter-validator/" title="Creating a custom gutter validator">Creating a custom gutter validator</a></h3><p>No changes are required, this technique works absolutely fine in Sitecore 8 Update-2.</p>
-<h3 id="<!-￼3->"><a href="/2014/12/12/creating-a-customized-root-for-the-content-editor/" title="Creating a customized root for the Content Editor">Creating a customized root for the Content Editor</a></h3><p>This approach still works for Sitecore 8. However, a better approach is to now create a link in the Launchpad, rather than the “Start” menu.</p>
-<h3 id="<!-￼4->"><a href="/2014/12/23/referencing-folders-with-placeholder-settings/" title="Referencing folders with Placeholder Settings">Referencing folders with Placeholder Settings</a></h3>]]></content>
+    <title><![CDATA[From Wordpress to Hexo]]></title>
+    <link href="http://kasaku.local/2015/06/05/from-wordpress-to-hexo/"/>
+    <id>http://kasaku.local/2015/06/05/from-wordpress-to-hexo/</id>
+    <published>2015-06-05T12:00:00.000Z</published>
+    <updated>2015-06-05T15:14:19.103Z</updated>
+    <content type="html"><![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk" target="_blank" rel="external">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around. After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="external">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a>, so I had most of what was required already.</p>
+<p>The site is pretty basic at the moment, and just hosted through Github for now. But the redesign has brought about a couple of changes:</p>
+<ul>
+<li>Social media links, including one for the new Sitecore Community!</li>
+<li>Disqus for comments</li>
+<li>More readable sytax highlighting</li>
+<li>RSS feed, if you like that sort of thing.</li>
+</ul>
+<p>The syntax highlighting is based on <a href="https://highlightjs.org/" target="_blank" rel="external">HighlightJS</a>, which does appear to have a couple of bugs when it comes to rendering C# source. Hopefully I can get those ironed out.</p>
+<p>I also might look to expand the template and build on more areas in the site, but for now it’s just remaining a blog!</p>
+]]></content>
     <summary type="html">
-    <![CDATA[<p>Now that Sitecore 8 is out in the wild, developers will be eagerly checking their projects and modules to ensure compatibility with the l]]>
+    <![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk" target="_blank" rel="external">kasaku.co.uk</a> was run]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[A Sitecore custom provider gotcha]]></title>
+    <link href="http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/"/>
+    <id>http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/</id>
+    <published>2015-02-16T12:28:40.000Z</published>
+    <updated>2015-06-05T14:23:24.898Z</updated>
+    <content type="html"><![CDATA[<p>Sitecore uses the <a href="ASP.NET Membership Provider">https://msdn.microsoft.com/en-us/library/ms731049(v=vs.110).aspx</a> framework for managing its users, and also provides this as a means for you to manage your own users of your website in the <em>extranet</em> domain (or other domains that you have implemented).</p>
+<p>In certain cases, you may want to implement your own custom backing store for users, rather than the default SQL Server provider. Fortunately, Sitecore includes a mechanism so that it can support multiple providers under one website, this is through the <code>SwitchingProviders</code> within the <code>Sitecore.Security</code> namespace.</p>
+<p>There are already a number of useful links covering implementing your own custom membership provider using the Switcher:</p>
+<ul>
+<li><a href="http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf" target="_blank" rel="external">http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf</a></li>
+<li><a href="http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/" target="_blank" rel="external">http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/</a></li>
+<li><a href="http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/" target="_blank" rel="external">http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+</ul>
+<p>This is just a short blog post to highlight a couple of a small gotcha that you may encounter, due to some inconsistencies in Sitecore’s implementation of the Switching providers.</p>
+<h3 id="The_issue">The issue</h3><p>The first link in the above list is the official Sitecore documentation for implementing new providers. In <em>3.1.1 Configuring Switching Providers</em>, the following attributes for defining providers via a SwitchingProvider are defined:</p>
+<ul>
+<li>ProviderName</li>
+<li>StoreFullNames</li>
+<li>Wildcard</li>
+<li>Domains</li>
+</ul>
+<p>Whilst these are the properties for the <code>SwitchingMembershipProvider</code>, the remaining providers have a couple of additional undocumented options, that have a large affect on how they operate:</p>
+<h4 id="SwitchingRoleProvider">SwitchingRoleProvider</h4><p>The Role Provider adds an additional 2 undocumented properties:</p>
+<p><strong>ignoredUserDomains</strong> - If this is specified, then the provider <strong>won’t apply</strong> to the domains listed. Multiple domains should be comma-separated.<br><strong>allowedUserDomains</strong> - If this is specified, then the provider <strong>will only apply</strong> to the domains listed. Multiple domains should be comma-separated.</p>
+<p>As you can see, the way these two operate are at odds with each other (one is a blacklist, the other a whitelist). The provider only expects there to be one provided,; if you provide both, it will throw an exception.</p>
+<p>Note that for this provider, the <code>domain</code> property <strong>is completely ignored</strong>. This can cause some real confusion if you have implemented a new provider and you are wondering why it is getting called for other domains, even though you’ve specified a domain there.</p>
+<h4 id="SwitchingProfileProvider">SwitchingProfileProvider</h4><p>The Profile Provider adds just the one additional property:</p>
+<p><strong>ignoredDomains</strong> - This works exactly the same as <strong>ignoredUserDomains</strong> for the Role Provider.</p>
+<p>And that’s it. No option for a whitelist only, and again, the domain property is ignored.</p>
+<p>It’s not clear why the Role + Profile providers don’t just provide the same properties as each other, nor why these aren’t available to the Membership Provider. This might just be a small gotcha, but it’s worth taking note of this little eccentricity of the code.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Sitecore uses the <a href="ASP.NET Membership Provider">https://msdn.microsoft.com/en-us/library/ms731049(v=vs.110).aspx</a> framework fo]]>
     </summary>
     
       <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
     
-      <category term="sitecore-8" scheme="http://kasaku.local/tags/sitecore-8/"/>
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Event tracking in Google Analytics]]></title>
+    <link href="http://kasaku.local/2015/01/26/event-tracking-in-google-analytics/"/>
+    <id>http://kasaku.local/2015/01/26/event-tracking-in-google-analytics/</id>
+    <published>2015-01-26T14:22:24.000Z</published>
+    <updated>2015-06-05T14:49:15.993Z</updated>
+    <content type="html"><![CDATA[<p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.</p>
+<p>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">an overview on Event Tracking</a>.</p>
+<p>The rest of this post assumes that you are familiar enough with GA to know about the ga() function and how it can be used to send events.</p>
+<p><em>Note: Google Analytics doesn’t <strong>require</strong> jQuery, but the examples in this blog do use jQuery for setting up events. It is also assumed you are using the new version of Google Analytics, analytics.js.</em></p>
+<h2 id="Getting_started">Getting started</h2><p>You’ll need the Google Analytics script defined in your page. If you haven’t done this yet, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google have got you covered</a>.</p>
+<p>If using ASP.NET MVC, it’s a good idea to have this in its own view that you can cache the output of. You can also use a configuration setting to determine whether to output the script at all, to avoid enabling Google Analytics on development / test servers, or perhaps to use a different ID in those environments.</p>
+<p>Simply adding this script will get page views tracking in Google Analytics.</p>
+<h2 id="Creating_a_custom_tracking_script">Creating a custom tracking script</h2><p>Once you have the default script, you can then add your own javascript to implement additional GA functionality throughout your site.</p>
+<p>The following is a skeleton script that you can then expand on:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mysite = mysite || &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> mysite.analytics = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// _Private function</span></span><br><span class="line">  <span class="keyword">var</span> _setTrackingEvents = <span class="function"><span class="keyword">function</span>(<span class="params">ga</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Custom tracking code to go here...</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Public function  </span></span><br><span class="line">  <span class="keyword">var</span> init = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> ga === <span class="string">'undefined'</span>) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> ga_debug !== <span class="string">'undefined'</span> &amp;&amp; ga_debug) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Setting up analytics in debug mode.'</span>);</span><br><span class="line"></span><br><span class="line">        ga = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="built_in">arguments</span>); &#125;;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Google Analytics disabled.'</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    _setTrackingEvents(ga);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    init: init</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>Typically, once this script has been loaded, then, at a suitable point in your site’s code (e.g. after page load), you can call <code>mysite.analytics.init();</code> to execute the code and setup your events.</p>
+<p>If the Google Analytics script hasn’t been added to the page, this script checks to see if there is a <code>ga_debug</code> variable defined. If there is and its value is <a href="http://www.sitepoint.com/javascript-truthy-falsy/" target="_blank" rel="external">truthy</a>, the script creates a dummy ga() function that simply logs to the console. This is useful for testing your analytics events without needing a real GA account in place. If the debug value isn’t in place, this script simply doesn’t go any further.</p>
+<h2 id="Event_Tracking">Event Tracking</h2><p>Right, on to <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">event tracking</a>! As events are simply tracked by calling a function in javascript, they can be associated with almost <em>any</em> user behaviour on a website - this includes clicking on anything on the page, timings between actions, the scrolling of a page, and much more. If you can imagine it, you can likely write it.</p>
+<p>Let’s look at some of the events you could create.</p>
+<p>First of all, a good piece of advice is to <strong>keep your event definitions generic</strong> where you can.</p>
+<p>Rather than tracking every interaction individually on your site, try to logically group the different types of interaction together and then come up with a method of selecting these elements. This is especially important where you are building a CMS-driven site and the HTML will be generated on the server.</p>
+<p>As an example of a poor way of implementing tracking links, look at the following HTML and Javascript:</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"products-link"</span> <span class="attribute">href</span>=<span class="value">"/products"</span>&gt;</span>Products<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"contact-link"</span> <span class="attribute">href</span>=<span class="value">"/contact"</span>&gt;</span>Contact<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#products-link'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Link'</span>, <span class="string">'Clicked'</span>, <span class="string">'Products'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">'#contact-link'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Link'</span>, <span class="string">'Clicked'</span>, <span class="string">'Contact'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Whilst this will track both of the links, it is time consuming to implement, and you’re going to need to expand your analytics script every time you add a new link to the site.</p>
+<p>How about this instead?</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-ga-link</span> <span class="attribute">href</span>=<span class="value">"/products"</span>&gt;</span>Products<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-ga-link</span> <span class="attribute">href</span>=<span class="value">"/contact"</span>&gt;</span>Contact<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'[data-ga-link]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Link'</span>, <span class="string">'Clicked'</span>, $(<span class="keyword">this</span>).text() );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>If you prefer, you can use a <code>class selector</code> instead, though using data-<em> attributes helps to keep the classes of your elements simply for styling. You can even drop this method and go for </em>any* click on a link using the <code>a</code> selector, though this is rather indiscriminate. It’s up to you ultimately on what you’re interested in tracking.</p>
+<p>The message here though is to try to group the interactions where you can, so your tracking code can be simpler. There are, of course, times where you will want to track specific events that only occur in single places on your site, and that’s ok.</p>
+<h2 id="Tracking_Examples">Tracking Examples</h2><p>Now let’s look at some examples of events you can track.</p>
+<h3 id="Email_Links">Email Links</h3><p>Use this to track when a user clicks on an email link.</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"mailto:mail@server.com"</span>&gt;</span>Email the team!<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'a[href^="mailto:"]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> email = $(<span class="keyword">this</span>).attr(<span class="string">'href'</span>).replace(<span class="string">"mailto:"</span>,<span class="string">""</span>);</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Email'</span>, <span class="string">'Link Clicked'</span>, email);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>Tracked result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Action</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email</td>
+<td>Link Clicked</td>
+<td>mail@server.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Social_Links">Social Links</h3><p>If you have social media “Share” links that you executing as part of JS, you could also track them through GA events.</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">class</span>=<span class="value">"list-social-nav"</span> <span class="attribute">data-social-nav</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">data-social</span>=<span class="value">"twitter"</span> <span class="attribute">class</span>=<span class="value">"twitter"</span>&gt;</span><span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"icon icon-twitter"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">data-social</span>=<span class="value">"facebook"</span> <span class="attribute">class</span>=<span class="value">"facebook"</span>&gt;</span><span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"icon icon-facebook"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'[data-social]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> shareType = $(<span class="keyword">this</span>).data(<span class="string">'social'</span>);</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Share'</span>, <span class="string">'Link Clicked'</span>, shareType);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>Tracked result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Action</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Share</td>
+<td>Link Clicked</td>
+<td>Facebook</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Generic_Link">Generic Link</h3><p>Similar to the example above, a generic link tracking. This however also includes the text of the link, which could prove useful in determining which buttons on your site are resulting in the most clicks.</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-ga-link</span> <span class="attribute">href</span>=<span class="value">"/products"</span>&gt;</span>View products<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'[data-ga-link]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> linkText = $(<span class="keyword">this</span>).text();</span><br><span class="line">  <span class="keyword">var</span> linkDestination = $(<span class="keyword">this</span>).attr(<span class="string">'href'</span>);</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Button'</span>, <span class="string">'Clicked'</span>, linkText + <span class="string">' -&gt; '</span> + linkDestination);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>Tracked result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Action</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Button</td>
+<td>Clicked</td>
+<td>View products -&gt; /products</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Header_Navigation">Header Navigation</h3><p>This is useful if you have some top-level header navigation that contains links, and you want to track the level of user interaction with these specific links.</p>
+<p>If you have a footer, you can apply the same principle but using a separate data element, for example <code>ga-footer-links</code>.</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ul</span> <span class="attribute">data-ga-header-links</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"/products"</span>&gt;</span>Products<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'[data-ga-header-links] a'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> linkText = $(<span class="keyword">this</span>).text();</span><br><span class="line">  <span class="keyword">var</span> linkDestination = $(<span class="keyword">this</span>).attr(<span class="string">'href'</span>);</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Header'</span>, <span class="string">'Link Clicked'</span>, linkText + <span class="string">' -&gt; '</span> + linkDestination);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>Tracked result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Action</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td>Link Clicked</td>
+<td>Products -&gt; /products</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Client-side_interactions">Client-side interactions</h3><p>You don’t need to restrict your interaction tracking to just page links on the site. You may already have events setup on your site for particular types of functionality, for example a “Show More” button that reveals some hidden content on the page:</p>
+<p><strong>HTML</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">data-reveal</span>=<span class="value">"#my-hidden-content"</span>&gt;</span>Show More<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"my-hidden-content"</span> <span class="attribute">class</span>=<span class="value">"hidden"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Additional content here... --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'a[data-reveal]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $( $(<span class="keyword">this</span>).data(<span class="string">'reveal'</span>) ).removeClass(<span class="string">'hidden'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>You may be interested in tracking how many users are actually revealing that content. If you want to do this, don’t edit the previously defined event code that implements the reveal; it’s perfectly fine to have multiple events trigger when a button is clicked, and it is much neater to keep your analytics tracking code together in one place. Instead, you can just add another event:</p>
+<p><strong>Javascript</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'a[data-reveal]'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> target = $(<span class="keyword">this</span>).data(<span class="string">'reveal'</span>);</span><br><span class="line">  ga(<span class="string">'send'</span>, <span class="string">'event'</span>, <span class="string">'Show More'</span>, <span class="string">'Clicked'</span>, target);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>The tiny inefficiency here of multiple events is worth it to keep this code much more maintainable.</p>
+<p><strong>Tracked result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Action</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show More</td>
+<td>Clicked</td>
+<td>#my-hidden-content</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Scroll_Events">Scroll Events</h3><p>A simple page-load isn’t really enough to determine how much of your website a user is actually seeing when they visit. For example, are they just viewing the page and immediately leaving, or are they actually scrolling down to see more content? How many of your users do this?</p>
+<p>To help capture this sort of information, you can track when and how far a user scrolls on a page. Whilst you can write this code yourself, there is already a small JS library that wraps up the functionality for you - <a href="http://scrolldepth.parsnip.io/" target="_blank" rel="external">Scroll Depth</a>.</p>
+<p>By default, Scroll Depth tracks events for the <strong>percentage</strong> a user scrolls down the page - firing events at 25%, 50%, 75% and 100%. However, as well as customizing these percentages, you can also specify the IDs of elements on your page and it will fire tracking events when a user scrolls far enough down for that element to become visible. That’s great, as it tells you how many users are actually seeing a specific part of the page you have designed.</p>
+<p>Once the script has been included, a typical way to invoke this library would be:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.scrollDepth(&#123;</span><br><span class="line">  elements: [<span class="string">'#products'</span>, <span class="string">'#buy-now'</span>, <span class="string">'#search-results'</span>]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Using the above skeleton script as an example, the ideal place to execute this would be straight after <code>_setTrackingEvents</code> is called.</p>
+<h2 id="Summary">Summary</h2><p>This has been just a few simple examples of event tracking that you can implement on your site. With the flexibility of Javascript, you can create <em>way</em> more sophisticated events than those mentioned here. Hopefully the above provides a useful primer for you if you are just getting started with Google Analytics.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <stro]]>
+    </summary>
+    
+      <category term="analytics" scheme="http://kasaku.local/tags/analytics/"/>
+    
+      <category term="javascript" scheme="http://kasaku.local/tags/javascript/"/>
     
   </entry>
   

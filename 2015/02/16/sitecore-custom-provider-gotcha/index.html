@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Kasaku">
+    <title>A Sitecore custom provider gotcha - Kasaku</title>
+    <meta name="author" content="Alex Washtell">
+    <meta name="description" content="Kasaku">
+    <link rel="icon" href="/assets/images/favicon.png">
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
+    <!--STYLES END-->
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header">
+    <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="http://kasaku.local">Kasaku</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar">
+    
+    
+    <div class="sidebar-logo">
+        <h1><span class="rotate">Kasaku</span></h1>
+        <h2>Web Development</h2>
+    </div>
+    
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-home"></i>
+                    <span class="sidebar-button-desc hide-md">Home</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-tags">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-tags"></i>
+                    <span class="sidebar-button-desc hide-md">Tags</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/all-archives">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-archive"></i>
+                    <span class="sidebar-button-desc hide-md">Archives</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://community.sitecore.net/members/alexwashtell_5f00_911378316" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-sitecore"></i>
+                    <span class="sidebar-button-desc hide-md">Sitecore</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://github.com/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-github"></i>
+                    <span class="sidebar-button-desc hide-md">GitHub</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://twitter.com/kasaku_dev" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-twitter"></i>
+                    <span class="sidebar-button-desc hide-md">Twitter</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://stackoverflow.com/users/173983/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-stack-overflow"></i>
+                    <span class="sidebar-button-desc hide-md">Stack Overflow</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="mailto://mail@kasaku.co.uk" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-envelope-o"></i>
+                    <span class="sidebar-button-desc hide-md">Mail</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="http://kasaku.local/atom.xml">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-rss"></i>
+                    <span class="sidebar-button-desc hide-md">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+            <div id="main">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+        <div class="post-header main-content-wrap">
+    
+        <h1 class="post-title" itemprop="headline">A Sitecore custom provider gotcha</h1>
+    
+    <div class="post-meta">
+    <time  itemprop="datePublished" content="Mon Feb 16 2015 12:28:40 GMT+0000">
+        Feb 16, 2015
+    </time>
+    
+</div>
+</div>
+    
+    <div class="post-content markdown main-content-wrap" itemprop="articleBody">
+        <p>Sitecore uses the <a href="ASP.NET Membership Provider">https://msdn.microsoft.com/en-us/library/ms731049(v=vs.110).aspx</a> framework for managing its users, and also provides this as a means for you to manage your own users of your website in the <em>extranet</em> domain (or other domains that you have implemented).</p>
+<p>In certain cases, you may want to implement your own custom backing store for users, rather than the default SQL Server provider. Fortunately, Sitecore includes a mechanism so that it can support multiple providers under one website, this is through the <code>SwitchingProviders</code> within the <code>Sitecore.Security</code> namespace.</p>
+<p>There are already a number of useful links covering implementing your own custom membership provider using the Switcher:</p>
+<ul>
+<li><a href="http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf" target="_blank" rel="external">http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf</a></li>
+<li><a href="http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/" target="_blank" rel="external">http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/</a></li>
+<li><a href="http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/" target="_blank" rel="external">http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+</ul>
+<p>This is just a short blog post to highlight a couple of a small gotcha that you may encounter, due to some inconsistencies in Sitecore’s implementation of the Switching providers.</p>
+<h3 id="The_issue">The issue</h3><p>The first link in the above list is the official Sitecore documentation for implementing new providers. In <em>3.1.1 Configuring Switching Providers</em>, the following attributes for defining providers via a SwitchingProvider are defined:</p>
+<ul>
+<li>ProviderName</li>
+<li>StoreFullNames</li>
+<li>Wildcard</li>
+<li>Domains</li>
+</ul>
+<p>Whilst these are the properties for the <code>SwitchingMembershipProvider</code>, the remaining providers have a couple of additional undocumented options, that have a large affect on how they operate:</p>
+<h4 id="SwitchingRoleProvider">SwitchingRoleProvider</h4><p>The Role Provider adds an additional 2 undocumented properties:</p>
+<p><strong>ignoredUserDomains</strong> - If this is specified, then the provider <strong>won’t apply</strong> to the domains listed. Multiple domains should be comma-separated.<br><strong>allowedUserDomains</strong> - If this is specified, then the provider <strong>will only apply</strong> to the domains listed. Multiple domains should be comma-separated.</p>
+<p>As you can see, the way these two operate are at odds with each other (one is a blacklist, the other a whitelist). The provider only expects there to be one provided,; if you provide both, it will throw an exception.</p>
+<p>Note that for this provider, the <code>domain</code> property <strong>is completely ignored</strong>. This can cause some real confusion if you have implemented a new provider and you are wondering why it is getting called for other domains, even though you’ve specified a domain there.</p>
+<h4 id="SwitchingProfileProvider">SwitchingProfileProvider</h4><p>The Profile Provider adds just the one additional property:</p>
+<p><strong>ignoredDomains</strong> - This works exactly the same as <strong>ignoredUserDomains</strong> for the Role Provider.</p>
+<p>And that’s it. No option for a whitelist only, and again, the domain property is ignored.</p>
+<p>It’s not clear why the Role + Profile providers don’t just provide the same properties as each other, nor why these aren’t available to the Membership Provider. This might just be a small gotcha, but it’s worth taking note of this little eccentricity of the code.</p>
+
+        
+            
+        
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/"  data-tooltip="From Wordpress to Hexo">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/01/26/event-tracking-in-google-analytics/" data-tooltip="Event tracking in Google Analytics">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2015 Alex Washtell. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div class="post-bottom-bar">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/"  data-tooltip="From Wordpress to Hexo">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/01/26/event-tracking-in-google-analytics/" data-tooltip="Event tracking in Google Analytics">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="icon-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Alex Washtell</h4>
+        
+        
+        
+    </div>
+</div>
+        <div id="cover" style="background-image:url('/assets/images/undefined');"></div>
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js" type="text/javascript"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'kasaku';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+</html>
