@@ -162,8 +162,7 @@ ga('send', 'pageview');
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
         <p><a href="http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx" target="_blank" rel="external">Placeholder Settings</a> allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.</p>
-<p>Each time you create a new Rendering, you need to update the placeholder settings too so that the editors can use the rendering. If you keep your renderings nicely organised within a folder structure, then there’s a simple method for making this a bit more flexible and having Sitecore automatically pick up the renderings by referencing a <em>folder of renderings</em> rather than the rendering itself.</p>
-<p>Within the Content Editor for the settings, Sitecore allows you to add a rendering folder, rather than a rendering itself:</p>
+<p>Each time you create a new Rendering, you need to update the placeholder settings too so that the editors can use the rendering. If you keep your renderings nicely organised within a folder structure, then there’s a simple method for making this a bit more flexible and having Sitecore automatically pick up the renderings by referencing a <em>folder of renderings</em> rather than the rendering itself.<br><a id="more"></a><br>Within the Content Editor for the settings, Sitecore allows you to add a rendering folder, rather than a rendering itself:</p>
 <p><img src="/2014/12/23/referencing-folders-with-placeholder-settings/placeholder_settings.png" alt="Placeholder settings" title="Placeholder settings"></p>
 
 <p>Typically, selecting the folder would have no effect. However, with the following pipeline, we can alter the functionality of Sitecore so that if a folder has been added, it pulls in <strong>all</strong> of the child renderings that sit underneath it.</p>
