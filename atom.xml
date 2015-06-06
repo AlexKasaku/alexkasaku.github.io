@@ -3,9 +3,9 @@
   <title><![CDATA[Kasaku]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://kasaku.local/"/>
+  <link href="http://www.kasaku.co.uk/"/>
   <updated>2015-06-05T15:40:31.250Z</updated>
-  <id>http://kasaku.local/</id>
+  <id>http://www.kasaku.co.uk/</id>
   
   <author>
     <name><![CDATA[Alex Washtell]]></name>
@@ -16,11 +16,11 @@
   
   <entry>
     <title><![CDATA[From Wordpress to Hexo]]></title>
-    <link href="http://kasaku.local/2015/06/05/from-wordpress-to-hexo/"/>
-    <id>http://kasaku.local/2015/06/05/from-wordpress-to-hexo/</id>
+    <link href="http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/"/>
+    <id>http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/</id>
     <published>2015-06-05T12:00:00.000Z</published>
     <updated>2015-06-05T15:40:31.250Z</updated>
-    <content type="html"><![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk" target="_blank" rel="external">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around.<br><a id="more"></a><br>After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="external">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a>, so I had most of what was required already.</p>
+    <content type="html"><![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around.<br><a id="more"></a><br>After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="external">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a>, so I had most of what was required already.</p>
 <p>The site is pretty basic at the moment, and just hosted through Github for now. But the redesign has brought about a couple of changes:</p>
 <ul>
 <li>Social media links, including one for the new Sitecore Community!</li>
@@ -40,8 +40,8 @@
   
   <entry>
     <title><![CDATA[A Sitecore custom provider gotcha]]></title>
-    <link href="http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/"/>
-    <id>http://kasaku.local/2015/02/16/sitecore-custom-provider-gotcha/</id>
+    <link href="http://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/"/>
+    <id>http://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/</id>
     <published>2015-02-16T12:28:40.000Z</published>
     <updated>2015-06-05T15:40:43.432Z</updated>
     <content type="html"><![CDATA[<p>Sitecore uses the <a href="ASP.NET Membership Provider">https://msdn.microsoft.com/en-us/library/ms731049(v=vs.110).aspx</a> framework for managing its users, and also provides this as a means for you to manage your own users of your website in the <em>extranet</em> domain (or other domains that you have implemented).</p>
@@ -77,14 +77,14 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Event tracking in Google Analytics]]></title>
-    <link href="http://kasaku.local/2015/01/26/event-tracking-in-google-analytics/"/>
-    <id>http://kasaku.local/2015/01/26/event-tracking-in-google-analytics/</id>
+    <link href="http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/"/>
+    <id>http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/</id>
     <published>2015-01-26T14:22:24.000Z</published>
     <updated>2015-06-05T15:40:55.254Z</updated>
     <content type="html"><![CDATA[<p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.<br><a id="more"></a><br>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">an overview on Event Tracking</a>.</p>
@@ -229,16 +229,16 @@
     
     </summary>
     
-      <category term="analytics" scheme="http://kasaku.local/tags/analytics/"/>
+      <category term="analytics" scheme="http://www.kasaku.co.uk/tags/analytics/"/>
     
-      <category term="javascript" scheme="http://kasaku.local/tags/javascript/"/>
+      <category term="javascript" scheme="http://www.kasaku.co.uk/tags/javascript/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Referencing folders with Placeholder Settings]]></title>
-    <link href="http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/"/>
-    <id>http://kasaku.local/2014/12/23/referencing-folders-with-placeholder-settings/</id>
+    <link href="http://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/"/>
+    <id>http://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/</id>
     <published>2014-12-23T14:01:42.000Z</published>
     <updated>2015-06-05T15:41:10.210Z</updated>
     <content type="html"><![CDATA[<p><a href="http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx" target="_blank" rel="external">Placeholder Settings</a> allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.</p>
@@ -261,14 +261,14 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Creating a customized root for the Content Editor]]></title>
-    <link href="http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/"/>
-    <id>http://kasaku.local/2014/12/12/creating-a-customized-root-for-the-content-editor/</id>
+    <link href="http://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/"/>
+    <id>http://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/</id>
     <published>2014-12-12T11:08:34.000Z</published>
     <updated>2015-06-05T15:41:24.094Z</updated>
     <content type="html"><![CDATA[<p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some. As Sitecore 8 has all the editors ported to SPEAK, it is unlikely that this method will work from that version onwards.</em></p>
@@ -292,14 +292,14 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Creating a custom gutter validator]]></title>
-    <link href="http://kasaku.local/2014/12/08/creating-a-custom-gutter-validator/"/>
-    <id>http://kasaku.local/2014/12/08/creating-a-custom-gutter-validator/</id>
+    <link href="http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/"/>
+    <id>http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/</id>
     <published>2014-12-08T14:07:59.000Z</published>
     <updated>2015-06-05T15:41:28.648Z</updated>
     <content type="html"><![CDATA[<p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some.</em></p>
@@ -326,14 +326,14 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[A RemoveLink command for PageEditor]]></title>
-    <link href="http://kasaku.local/2014/12/04/a-removelink-command-for-pageditor/"/>
-    <id>http://kasaku.local/2014/12/04/a-removelink-command-for-pageditor/</id>
+    <link href="http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/"/>
+    <id>http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/</id>
     <published>2014-12-04T14:22:43.000Z</published>
     <updated>2015-06-04T15:53:18.998Z</updated>
     <content type="html"><![CDATA[<p>Something that has bugged me for quite some time in the Sitecore Page Editor, is the inability to <strong>remove</strong> a Link field once one has been set (<em>at least you cannot at the time of writing in Sitecore 7.5, perhaps 8 will alter this</em>).<br><a id="more"></a><br>As of 7.5 and before, you can only edit the link via the Page Editor, and in that dialog there is no way to remove the existing link:</p>
@@ -362,14 +362,14 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[A RequiresDataSource filter for Sitecore Controller Renderings]]></title>
-    <link href="http://kasaku.local/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/"/>
-    <id>http://kasaku.local/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/</id>
+    <link href="http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/"/>
+    <id>http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/</id>
     <published>2014-11-13T22:59:55.000Z</published>
     <updated>2015-06-04T15:55:44.270Z</updated>
     <content type="html"><![CDATA[<p>A common requirement when creating components in Sitecore is for the component to rely on data being supplied via the DataSource. Whilst you can try your best to ensure that a DataSource is associated with a component, there will inevitably be occasions when that DataSource gets deleted or moved and ultimately isn’t provided to the component at the time of rendering.<br><a id="more"></a><br>What can work well in these occasions is to provide the content editor with some feedback that the component won’t function correctly, so that they know they shouldn’t publish the page in its current state.</p>
@@ -400,9 +400,9 @@
     
     </summary>
     
-      <category term="sitecore" scheme="http://kasaku.local/tags/sitecore/"/>
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-mvc" scheme="http://kasaku.local/tags/sitecore-mvc/"/>
+      <category term="sitecore-mvc" scheme="http://www.kasaku.co.uk/tags/sitecore-mvc/"/>
     
   </entry>
   
