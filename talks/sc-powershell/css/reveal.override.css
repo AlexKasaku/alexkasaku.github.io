@@ -1,0 +1,56 @@
+#header {
+   position: absolute;
+   padding: 15px;
+   
+   vertical-align: middle;
+   color: white;
+   
+   font-family: verdana;
+   font-size: 24px;
+}
+
+.reveal section img.reset {   
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    background: none;
+}
+
+pre.narrow {
+    width: 70%;
+}
+
+div.spacer {
+    height:20px;
+}
+
+div.large-spacer {
+    height:50px;
+}
+
+span.faded {   
+    color: #444444;
+}
+
+section.title-slide h2,
+section.title-slide h3 {
+    color: #111111;
+}
+
+div.column3 { 
+    float: left;
+    width: 33.3333333%;
+    text-align: left; 
+}
+
+/*
+.reveal section .title {
+    margin-top: -10.5em;
+}
+
+.reveal section .title h2, 
+.reveal section .title h3 {
+    color: white;
+    -webkit-text-stroke: 2px black;
+}
+*/

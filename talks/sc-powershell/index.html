@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Scripting ALL the things! with Sitecore Powershell Extensions</title>
+
+    <meta name="description" content="A presentation on Designing For Failure">
+    <meta name="author" content="Alex Washtell">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.override.css" />
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+
+    <div id="header">
+        <img src="img/logo.png" />
+    </div>
+
+    <div class="reveal">
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+
+            <section class="title-slide" data-background="#EEEEEE">
+                <img class="reset" style="height:300px" src="img/all-the-things.png" />
+                <div class="large-spacer"></div>
+                <div>               
+                    <h2>Scripting ALL the things!</h2>
+                    <h3>with Sitecore Powershell Extensions</h3>
+                </div>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Very briefly about me</h2>
+                </section>
+                <section>
+                    <h3>Alex Washtell</h3>
+                </section>                
+                <section>
+                    <img class="reset" src="img/bar.png" />
+                </section>
+                <section>
+                    <h3><span class="faded">srs bsns:</span><br />@kasaku_dev</h3>
+                    <div class="spacer"></div>
+                    <h3><span class="faded">lol jk:</span><br />@awashtell</h3>                                         
+                </section>
+            </section>          
+            
+            <section>
+                <section>
+                    <h2>Sitecore<br />Powershell Extensions</h2>
+                </section>
+                <section>
+                <h3>Brings the flexibility and productivity of Powershell into Sitecore</h3>
+                </section>
+                <section>
+                    <p>Available as a marketplace module</p>
+                    <p class="fragment">In development since 2012, now on version 3.3</p>
+                    <p class="fragment">Open source. Contributions welcome.</p>
+                    <p class="fragment">REALLY good. I mean, like, for reals.</p>
+                </section>
+                <section>
+                    <h3>Key development<br />contributors</h3>
+                    <div class="spacer"></div>
+                    <p>Adam Najmanowicz
+                        <br />@adamnaj</p>
+                    <p>Michael West
+                        <br />@michaelwest101</p>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>Why use SPE?</h2>
+                </section>
+                <section>
+                    <p>Have you ever needed to execute a task in Sitecore such as:</p>
+                    <ul>
+                        <li class="fragment">Making a "small" change across a large number of items</li>
+                        <li class="fragment">Bulk renaming or moving items</li>
+                        <li class="fragment">Removing items that are no longer referenced</li>
+                        <li class="fragment">Producing a report of the oldest pages in the site</li>
+                        <li class="fragment">... in Excel format?</li>
+                    </ul>      
+                </section>
+                <section>
+                    <p>How are you executing these tasks<br />in your Sitecore environments?</p>
+                    <div class="spacer"></div>
+                    <p class="fragment">Is it via ASPX pages, tucked away in an admin folder?</p>
+                </section>
+                <section data-background="img/upset-slow.gif"> 
+                </section>
+                <section>
+                    <p>Don't worry, we've all done it.</p>
+                    <aside class="notes">
+                        Require deployments, if doing properly. Open to mistakes (have you deployed that ASPX to a public environment? Is it secure?)
+                    </aside>
+                </section>
+                <section>
+                    <p>Perhaps via C# code,<br />but integrated into the Sitecore shell?</p>
+                    <div class="spacer"></div>
+                    <p class="fragment">Better, but still requires boilerplate code<br />and a deployment</p>                
+                </section>
+                <section>
+                    <h3>With SPE:</h3>
+                    <p class="fragment">Create and manage tasks as Powershell<br />scripts, held in Sitecore items</p>
+                    <p class="fragment">Alongside an environment for executing them</p>
+                    <p class="fragment">With full Sitecore API and shell integration support</p>
+                    <aside class="notes">
+                        If you're maintaining your Sitecore items using TDS or Unicorn, your scripts can be maintained that way too.
+                    </aside>
+                </section>
+                <section>
+                    <h3>Accelerated delivery.</h3>
+                    <h3>Reduced deployments.</h3>
+                    <h3>Happy developer.</h3>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>Powershell 101</h2>
+                </section>
+                <section>
+                    <h3>Command-line shell and scripting language built on the .NET Framework</h3>
+                </section>
+                <section>
+                    <h3>First released in 2009</h3>
+                    <p>Now pre-installed in all versions of Windows
+                        <br /> and a core part of the OS.</p>
+                </section>
+                <section>
+                    <h3>Cmdlets</h3>
+                    <pre class="narrow"><code class="ps" data-trim data-noescape>
+Set-Location C:\My\Folder
+                            </code></pre>
+                    <pre class="narrow"><code class="ps" data-trim data-noescape>
+Get-ChildItem                                
+                            </code></pre>
+                    <pre class="narrow"><code class="ps" data-trim data-noescape>                      
+Copy-Item MyFile.Txt -Destination c:\My\OtherFolder
+                            </code></pre>
+                </section>
+                <section>
+                    <h3>Pipelines</h3>
+                    <pre class="narrow"><code class="ps" data-trim data-noescape>
+Get-ChildItem C:\My\Folder | Copy-Item -Destination c:\My\OtherFolder
+                            </code></pre>
+                    <pre class=""><code class="ps" data-trim data-noescape>
+Get-ChildItem | 
+    Where-Object { $_.LastWriteTime -lt (Get-Date).AddMonths(-1) } | 
+    Sort-Object LastWriteTime
+                            </code></pre>
+                    <aside class="notes">
+                        Like unix
+                    </aside>
+                </section>
+                <section>
+                    <h3>Aliases</h3>
+                    <pre class="narrow"><code class="ps" data-trim data-noescape>
+Get-ChildItem | 
+    Where-Object { $_.LastWriteTime -lt (Get-Date).AddMonths(-1) } | 
+    Sort-Object LastWriteTime
+                            </code></pre>
+                    <pre class=""><code class="ps" data-trim data-noescape>
+gci | ? { $_.LastWriteTime -lt (Get-Date).AddMonths(-1) } | sort LastWriteTime
+                            </code></pre>
+                </section>
+                <section>
+                    <h3>Lots of other lovely stuff</h3>
+                    <ul>
+                        <li>Functions</li>
+                        <li>Remoting</li>
+                        <li>Background jobs</li>
+                        <li>Modules</li>
+                        <li>Supplied with ISE</li>
+                        <li>Debugging</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Hosting</h3>
+                    <p>The Powershell runtime can be hosted
+                        <br />by any managed application.</p>
+                    <p>Allows the Sitecore integration magic</p>
+                </section>
+            </section>
+            
+            <section>
+                <h3>Demos already, jeez.</h3>
+            </section>
+            
+            <section>
+                <h3>Integration Points</h3>
+                <div class="spacer"></div>
+                <div class="column3">
+                    <h4>Content Editor</h4>
+                    <p>- Context Menu</p>
+                    <p>- Gutter</p>
+                    <p>- Insert Item</p>
+                    <p>- Ribbon</p>
+                    <p>- Warning</p>
+                </div>
+                <div class="column3">
+                    <h4>&nbsp;</h4>
+                    <p>Control Panel</p>
+                    <p>Event Handlers</p>
+                    <p>List View Actions</p>
+                    <p>Page Editor Notifications</p>
+                </div>
+                <div class="column3">
+                    <h4>&nbsp;</h4>
+                    <p>Logged In Pipeline</p>
+                    <p>Logout Pipeline</p>
+                    <p>Start Menu Reports</p>
+                    <p>Toolbox</p>
+                    <p>Web API</p>
+                </div>                
+            </section>
+            
+            <section>
+                <section>
+                    <h3>This is AMAZING!</h3>
+                    <div class="spacer"><div>
+                    <h3>Now where do I get it?</h3>
+                </section>
+                <section>
+                    <h3>Module</h3>
+                    <div class="spacer"></div>
+                    <h4>http://bit.ly/scpowershell</h4>
+                    <h4><span class="faded">Search:</span> sitecore powershell</h4>
+                </section>
+                <section>
+                    <h3>Manual</h3>
+                    <div class="spacer"></div>
+                    <h4>http://bit.ly/scpshelp</h4>
+                    <h4><span class="faded">Search:</span> sitecore powershell gitbook</h4>
+                </section>                
+            </section>
+                       
+            <section>
+                <h3>Sitecore Slack Group</h3>
+                <p>http://sitecorechat.slack.com</p>
+                <div class="spacer"></div>
+                <h4><span class="faded">Channel:</span> #module-SPE</h4>
+            </section>
+            
+           
+            <section>
+                <section>
+                    <h2>Contributing</h2>
+                </section>
+                <section>
+                    <h3>Absolutely welcome!</h3>
+                    <div class="spacer"></div>
+                    <p>Gitbook includes full guide on how to<br />get the dev environment running</p>
+                    <div class="spacer"></div>
+                    <p>Join the Slack channel to collaborate</p>
+                </section>
+            </section>
+            
+            <section>
+                <h1>Thanks!</h1>
+                <div class="spacer"></div>
+                <h3>@awashtell</h3>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'default',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+    </script>
+
+</body>
+
+</html>
