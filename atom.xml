@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.kasaku.co.uk/"/>
-  <updated>2015-08-16T10:50:08.277Z</updated>
+  <updated>2016-03-21T20:40:12.060Z</updated>
   <id>http://www.kasaku.co.uk/</id>
   
   <author>
@@ -15,17 +15,64 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Multi-Line field bugs in Sitecore 8.1]]></title>
+    <link href="http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/"/>
+    <id>http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/</id>
+    <published>2016-03-21T14:00:00.000Z</published>
+    <updated>2016-03-21T20:40:12.060Z</updated>
+    <content type="html"><![CDATA[<p>If you’re using Multi-Line fields in Sitecore, as of Sitecore 8.1 Update 1 you will encounter problems with using them when editing content in the Experience Editor.</p>
+<p>These two bugs are:</p>
+<ol>
+<li>When you create a new line in the field, the Experience Editor will actually add two new line breaks instead of one.</li>
+<li>When you save, all lines except for the first are not saved.<a id="more"></a>
+</li>
+</ol>
+<p>Here is a demo illustrating both issues:</p>
+<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" alt="Bug demo" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
+<h2 id="Additional-lines_bug">Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
+<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
+<p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
+<p>I have also <a href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/FieldChromeType.js" title="hosted the file here">hosted the file here</a> on this site for your convenience. By using this file you accept responsibility for doing so, and I <strong>strongly recommend</strong> you compare this file to the one you are replacing in your solution to confirm what you are changing, as well as still reporting to Sitecore Support that you encountered the bug.</p>
+<p>To apply the fix, just place the updated file in <code>\sitecore\shell\Applications\Page Modes\ChromeTypes</code>, replacing the existing file.</p>
+<p>Note that this fix is for 8.1 Update 1 and Update 2 <strong>only</strong>.</p>
+<h2 id="Save_bug">Save bug</h2><p>In Sitecore 8.1 Update 1, the <code>Sitecore.ExperienceEditor.WebUtilty</code> class was updated to amend the regex that is used to process fields before they are saved. Unfortunately, the new regex in place is too hungry and matches across all <code>&lt;br&gt;</code> tags, removing them along with all the content inbetween. The result is that only the first line remains.</p>
+<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you are looking for information on this bug, the public reference number is <strong>101295</strong>. This problem also affects the recently released Update 2.</p>
+<p>Unfortuntely, the <code>WebUtility</code> class is static and as such it’s not trivial to implement a replacement for this class. There are no references to it in configuration allowing it to be swapped out with an alternative.</p>
+<p>The workaround suggestion by Support at the moment is to use a Rich-Text field.</p>
+<p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
+<h2 id="Related_bugs">Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
+<p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
+<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="external">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>If you’re using Multi-Line fields in Sitecore, as of Sitecore 8.1 Update 1 you will encounter problems with using them when editing content in the Experience Editor.</p>
+<p>These two bugs are:</p>
+<ol>
+<li>When you create a new line in the field, the Experience Editor will actually add two new line breaks instead of one.</li>
+<li>When you save, all lines except for the first are not saved.]]>
+    
+    </summary>
+    
+      <category term="bugs" scheme="http://www.kasaku.co.uk/tags/bugs/"/>
+    
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+    
+      <category term="sitecore-8" scheme="http://www.kasaku.co.uk/tags/sitecore-8/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Implementing a Virtual Field in Sitecore]]></title>
     <link href="http://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/"/>
     <id>http://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/</id>
     <published>2015-08-16T09:40:20.000Z</published>
-    <updated>2015-08-16T10:50:08.277Z</updated>
+    <updated>2016-03-21T20:35:24.533Z</updated>
     <content type="html"><![CDATA[<p>My recent work with Sitecore has involved getting to spend some time customizing the search results for editors. One task I wanted to accomplish was to improve the standard DateRange facet that is supplied with Sitecore. I had two issues I wanted to solve; I wanted a facet that was:</p>
 <ul>
 <li>More granular. The existing facet has values such as This Week, This Month, This Year. I wanted editors to have more options here, for example a facet to show items “3-6 months old”.</li>
-<li>A better display. The standard facet displays its values in a rather user-unfriendly manner, e.g. “thisweek”. I would prefer “This week”.</li>
+<li>A better display. The standard facet displays its values in a rather user-unfriendly manner, e.g. “thisweek”. I would prefer “This week”.<a id="more"></a>
+The facets used in Search Results are tied to items underneath <code>/System/Settings/Buckets/Facets</code>. I created a new item here, called “Friendly Date Range”, that I would use in place of “Date Range”. I associated this with a field I would create, to be called <code>friendlydaterange</code>.</li>
 </ul>
-<p>The facets used in Search Results are tied to items underneath <code>/System/Settings/Buckets/Facets</code>. I created a new item here, called “Friendly Date Range”, that I would use in place of “Date Range”. I associated this with a field I would create, to be called <code>friendlydaterange</code>.</p>
 <p>Now, the interesting thing about the existing <code>daterange</code> field is that it is not tied to an existing field in the index, it uses a <strong>Virtual Field</strong>. You can see how <code>daterange</code> is defined in the default index configuration here:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">virtualFieldProcessors</span> <span class="attribute">hint</span>=<span class="value">"raw:AddVirtualFieldProcessor"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">virtualFieldProcessor</span> <span class="attribute">fieldName</span>=<span class="value">"daterange"</span> <span class="attribute">type</span>=<span class="value">"Sitecore.ContentSearch.VirtualFields.DateRangeFieldProcessor, Sitecore.ContentSearch"</span> /&gt;</span></span><br><span class="line">	... other fields ...</span><br><span class="line"><span class="tag">&lt;/<span class="title">virtualFieldProcessors</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>I had a good look around this class to determine how these fields are created, and thought I would summarise the interfaces that you will need to implement if you want to implement your own virtual field.</p>
@@ -53,7 +100,11 @@
 <h1 id="Summary">Summary</h1><p>That’s all you need to do to implement a virtual field. Please leave a comment if there is something I’ve missed or if you have any questions.</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>My recent work with Sitecore has involved getting to spend some time customizing the search results for editors. One task I wanted to acc]]>
+    <![CDATA[<p>My recent work with Sitecore has involved getting to spend some time customizing the search results for editors. One task I wanted to accomplish was to improve the standard DateRange facet that is supplied with Sitecore. I had two issues I wanted to solve; I wanted a facet that was:</p>
+<ul>
+<li>More granular. The existing facet has values such as This Week, This Month, This Year. I wanted editors to have more options here, for example a facet to show items “3-6 months old”.</li>
+<li>A better display. The standard facet displays its values in a rather user-unfriendly manner, e.g. “thisweek”. I would prefer “This week”.]]>
+    
     </summary>
     
       <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>

@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Creating a custom gutter validator - Kasaku</title>
+    <title>Multi-Line field bugs in Sitecore 8.1 - Kasaku</title>
     <meta name="author" content="Alex Washtell">
     <meta name="description" content="Kasaku">
     
@@ -172,35 +172,41 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Creating a custom gutter validator</h1>
+        <h1 class="post-title" itemprop="headline">Multi-Line field bugs in Sitecore 8.1</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Mon Dec 08 2014 14:07:59 GMT+0000">
-        Dec 08, 2014
+    <time  itemprop="datePublished" content="Mon Mar 21 2016 14:00:00 GMT+0000">
+        Mar 21, 2016
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some.</em></p>
-<p>Whilst a lot of content editors using Sitecore prefer to use the Page Editor, the Content Editor still sees a lot of use. One of the features of the content editor is the gutter validators, used to quickly provide a visual check of the validation state of items in the tree:<br><a id="more"></a></p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/gutter-validator.png" alt="Gutter Validator example" title="Gutter Validator example"></p>
+        <p>If you’re using Multi-Line fields in Sitecore, as of Sitecore 8.1 Update 1 you will encounter problems with using them when editing content in the Experience Editor.</p>
+<p>These two bugs are:</p>
+<ol>
+<li>When you create a new line in the field, the Experience Editor will actually add two new line breaks instead of one.</li>
+<li>When you save, all lines except for the first are not saved.<a id="more"></a>
+</li>
+</ol>
+<p>Here is a demo illustrating both issues:</p>
+<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" alt="Bug demo" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
+<h2 id="Additional-lines_bug">Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
+<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
+<p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
+<p>I have also <a href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/FieldChromeType.js" title="hosted the file here">hosted the file here</a> on this site for your convenience. By using this file you accept responsibility for doing so, and I <strong>strongly recommend</strong> you compare this file to the one you are replacing in your solution to confirm what you are changing, as well as still reporting to Sitecore Support that you encountered the bug.</p>
+<p>To apply the fix, just place the updated file in <code>\sitecore\shell\Applications\Page Modes\ChromeTypes</code>, replacing the existing file.</p>
+<p>Note that this fix is for 8.1 Update 1 and Update 2 <strong>only</strong>.</p>
+<h2 id="Save_bug">Save bug</h2><p>In Sitecore 8.1 Update 1, the <code>Sitecore.ExperienceEditor.WebUtilty</code> class was updated to amend the regex that is used to process fields before they are saved. Unfortunately, the new regex in place is too hungry and matches across all <code>&lt;br&gt;</code> tags, removing them along with all the content inbetween. The result is that only the first line remains.</p>
+<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you are looking for information on this bug, the public reference number is <strong>101295</strong>. This problem also affects the recently released Update 2.</p>
+<p>Unfortuntely, the <code>WebUtility</code> class is static and as such it’s not trivial to implement a replacement for this class. There are no references to it in configuration allowing it to be swapped out with an alternative.</p>
+<p>The workaround suggestion by Support at the moment is to use a Rich-Text field.</p>
+<p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
+<h2 id="Related_bugs">Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
+<p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
+<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="external">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
 
-<p>It’s very easy to add your own custom validation here.</p>
-<h3 id="Creating_the_code">Creating the code</h3><p>First of all, create the code for your gutter validator. Create a new class and have it inherit from <code>Sitecore.Shell.Applications.ContentEditor.Gutters.GutterRenderer</code>. In this class you should override the <code>GetIconDescriptor(Item item)</code> method, which returns a <code>GutterIconDescriptor</code>.</p>
-<p>This overriden method should return an instance of <code>GutterIconDescriptor</code> if the validation has failed, or null if the validation passes.</p>
-<p>For the sake of example, here we have a validator that checks to see if an item has over 100 child items and if so will fail validation:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TooManyChildrenValidator</span> : <span class="title">GutterRenderer</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> GutterIconDescriptor <span class="title">GetIconDescriptor</span>(<span class="params">Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       Assert.ArgumentNotNull(item, <span class="string">"item"</span>);</span><br><span class="line">   </span><br><span class="line">       <span class="comment">// If the item isn't valid, return the validation error description,</span></span><br><span class="line">       <span class="comment">// otherwise return null.</span></span><br><span class="line">       <span class="keyword">return</span> !ItemIsValid(item) ? GetGutterDescriptor() : <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">ItemIsValid</span>(<span class="params">Sitecore.Data.Items.Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Item passes validation if it has 100 children or less</span></span><br><span class="line">       <span class="keyword">return</span> item.Children.Count() &amp;lt;= <span class="number">100</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> GutterIconDescriptor <span class="title">GetGutterDescriptor</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Return a new descriptor showing a warning icon and message</span></span><br><span class="line">       GutterIconDescriptor descriptor = <span class="keyword">new</span> GutterIconDescriptor();</span><br><span class="line">       descriptor.Icon = <span class="string">"Applications/16x16/information2.png"</span>;</span><br><span class="line">       descriptor.Tooltip = <span class="string">"This item has quite a lot of items underneath it and may affect Sitecore performance."</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> descriptor;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>You can use the above code as a template, all you need to do is customize the <code>ItemIsValid</code> method with your own validation logic, and alter the <code>GetGutterDescriptor</code> method to choose an icon and tooltip that’s suitable for you.</p>
-<p>That’s all there is too it for the code. Compile the assembly and make sure it is deployed to your Sitecore bin directory.</p>
-<h3 id="Creating_the_Validation_Item">Creating the Validation Item</h3><p>Now you need to create an item for the gutter validator in Sitecore, so that it can be selected. This should be located in the Core database underneath the item <code>/sitecore/content/Applications/Content Editor/Gutters</code>.</p>
-<p>You should create your item using the <code>/sitecore/templates/Sitecore Client/Content editor/Gutter Renderer</code> template.</p>
-<p>The <code>Header</code> field represents how your validator will appear in the context-menu, and the <code>Type</code> field is the fully-qualified name of your new type:</p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-editor.png" alt="Gutter Validator fields" title="Gutter Validator fields"></p>
-
-<h3 id="Trying_it_out">Trying it out</h3><p>Once that’s saved you can jump back into the master database and enable it. Right-click in the gutter to enable your validator, and then you should see your validation icon wherever an item fails your validation:</p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-effect.png" alt="The effect of the new validator" title="The effect of the new validator"></p>
         
             
         
@@ -210,7 +216,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/bugs/">bugs</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-8/">sitecore-8</a>
 
             </div>
         
@@ -219,7 +225,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/"  data-tooltip="Creating a customized root for the Content Editor">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -227,7 +233,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/" data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/" data-tooltip="Implementing a Virtual Field in Sitecore">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -237,17 +243,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -279,7 +285,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/"  data-tooltip="Creating a customized root for the Content Editor">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -287,7 +293,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/" data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/" data-tooltip="Implementing a Virtual Field in Sitecore">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -297,17 +303,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
