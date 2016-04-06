@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Multi-Line field bugs in Sitecore 8.1 - Kasaku</title>
+    <title>Sitecore Powershell Extensions talk at London Sitecore User Group March 2016 - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
@@ -171,40 +171,40 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Multi-Line field bugs in Sitecore 8.1</h1>
+        <h1 class="post-title" itemprop="headline">Sitecore Powershell Extensions talk at London Sitecore User Group March 2016</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Mon Mar 21 2016 14:00:00 GMT+0000">
-        Mar 21, 2016
+    <time  itemprop="datePublished" content="Wed Apr 06 2016 13:00:00 GMT+0100">
+        Apr 06, 2016
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>If you’re using Multi-Line fields in Sitecore, as of Sitecore 8.1 Update 1 you will encounter problems with using them when editing content in the Experience Editor.</p>
-<p>These two bugs are:</p>
-<ol>
-<li>When you create a new line in the field, the Experience Editor will actually add two new line breaks instead of one.</li>
-<li>When you save, all lines except for the first are not saved.<a id="more"></a>
+        <p>Recently I got the opportunity to give a talk on Sitecore Powershell Extensions at the London Sitecore Tech User group.</p>
+<p>I had a great time, and along with seeing 3 other great presentations, I was super pleased by the positive feedback I received on my talk. Thank you to everyone who attended!</p>
+<h3 id="Video">Video</h3><p>There was a video taken on the night, so if you couldn’t make the talk and want to watch it, it’s just below. Unfortunately there was an issue with the recording and some audio was lost, but I’ve supplied a voiceover for that part to cover what was missed:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IQQaHAZa8AI" frameborder="0" allowfullscreen></iframe>
+
+<h3 id="Slide_deck_+_demo_scripts">Slide deck + demo scripts</h3><p>If you’re interested, I have uploaded some of the materials from the talk:</p>
+<ul>
+<li><a href="/talks/sc-powershell">The slide deck of the talk</a></li>
+<li><a href="/2016/04/06/sitecore-powershell-london-march-2016/SPEDemo-Scripts-1.0.zip" title="A Sitecore package of the demo scripts">A Sitecore package of the demo scripts</a></li>
+<li><a href="/2016/04/06/sitecore-powershell-london-march-2016/SPEDemo-Items-1.0.zip" title="A Sitecore package of supporting items + templates for the scripts">A Sitecore package of supporting items + templates for the scripts</a>
 </li>
-</ol>
-<p>Here is a demo illustrating both issues:</p>
-<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" alt="Bug demo" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
-<h2 id="Additional-lines_bug">Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
-<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
-<p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
-<p>I have also <a href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/FieldChromeType.js" title="hosted the file here">hosted the file here</a> on this site for your convenience. By using this file you accept responsibility for doing so, and I <strong>strongly recommend</strong> you compare this file to the one you are replacing in your solution to confirm what you are changing, as well as still reporting to Sitecore Support that you encountered the bug.</p>
-<p>To apply the fix, just place the updated file in <code>\sitecore\shell\Applications\Page Modes\ChromeTypes</code>, replacing the existing file.</p>
-<p>Note that this fix is for 8.1 Update 1 and Update 2 <strong>only</strong>.</p>
-<h2 id="Save_bug">Save bug</h2><p>In Sitecore 8.1 Update 1, the <code>Sitecore.ExperienceEditor.WebUtilty</code> class was updated to amend the regex that is used to process fields before they are saved. Unfortunately, the new regex in place is too hungry and matches across all <code>&lt;br&gt;</code> tags, removing them along with all the content inbetween. The result is that only the first line remains.</p>
-<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you are looking for information on this bug, the public reference number is <strong>101295</strong>. This problem also affects the recently released Update 2.</p>
-<p>Unfortuntely, the <code>WebUtility</code> class is static and as such it’s not trivial to implement a replacement for this class. There are no references to it in configuration allowing it to be swapped out with an alternative.</p>
-<p>The workaround suggestion by Support at the moment is to use a Rich-Text field.</p>
-<p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
-<h2 id="Related_bugs">Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
-<p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
-<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="external">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
+</ul>
+<p>Bear in mind that if you use the packages, you’ll need to have SPE installed first. See just below for links!</p>
+<h3 id="Enough_talk,_I_just_want_SPE!">Enough talk, I just want SPE!</h3><p>Here are the links to the good stuff:</p>
+<ul>
+<li><a href="https://marketplace.sitecore.net/en/Modules/Sitecore_PowerShell_console.aspx" target="_blank" rel="external">Sitecore Powershell Extensions in the Sitecore Marketplace</a></li>
+<li><a href="https://www.gitbook.com/book/sitecorepowershell/sitecore-powershell-extensions/details" target="_blank" rel="external">The Sitecore Powershell Extensions GitBook manual</a></li>
+</ul>
+<h3 id="Debugging_support_in_SPE_4-0">Debugging support in SPE 4.0</h3><p>One of the questions I was asked a couple of times after the talk was whether you are able to debug scripts in Sitecore Powershell Extensions. I was using version 3.3 in the demo, which did not have this feature, but the <em>very newly released</em> version 4.0 comes with full debugging support!</p>
+<p>Here’s a video from <a href="http://blog.najmanowicz.com/" target="_blank" rel="external">Adam Najmanowicz</a> demonstrating the new debugging functionality:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6rhPWVKcreI" frameborder="0" allowfullscreen></iframe>
+
+<p>Pretty great, huh?</p>
 
         
             
@@ -215,7 +215,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">bugs</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore-8</a>
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">powershell</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore-powershell-extensions</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">talks</a>
 
             </div>
         
@@ -224,7 +224,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../04/06/index.html"  data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -232,7 +232,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2015/08/16/index.html" data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../03/21/index.html" data-tooltip="Multi-Line field bugs in Sitecore 8.1">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -242,17 +242,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -285,7 +285,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../04/06/index.html"  data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -293,7 +293,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2015/08/16/index.html" data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../03/21/index.html" data-tooltip="Multi-Line field bugs in Sitecore 8.1">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -303,17 +303,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

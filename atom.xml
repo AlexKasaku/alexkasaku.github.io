@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.kasaku.co.uk/"/>
-  <updated>2016-03-21T20:40:12.060Z</updated>
+  <updated>2016-04-06T22:10:27.545Z</updated>
   <id>http://www.kasaku.co.uk/</id>
   
   <author>
@@ -13,6 +13,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Sitecore Powershell Extensions talk at London Sitecore User Group March 2016]]></title>
+    <link href="http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/"/>
+    <id>http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/</id>
+    <published>2016-04-06T12:00:00.000Z</published>
+    <updated>2016-04-06T22:10:27.545Z</updated>
+    <content type="html"><![CDATA[<p>Recently I got the opportunity to give a talk on Sitecore Powershell Extensions at the London Sitecore Tech User group.</p>
+<p>I had a great time, and along with seeing 3 other great presentations, I was super pleased by the positive feedback I received on my talk. Thank you to everyone who attended!</p>
+<h3 id="Video">Video</h3><p>There was a video taken on the night, so if you couldn’t make the talk and want to watch it, it’s just below. Unfortunately there was an issue with the recording and some audio was lost, but I’ve supplied a voiceover for that part to cover what was missed:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IQQaHAZa8AI" frameborder="0" allowfullscreen></iframe>
+
+<h3 id="Slide_deck_+_demo_scripts">Slide deck + demo scripts</h3><p>If you’re interested, I have uploaded some of the materials from the talk:</p>
+<ul>
+<li><a href="/talks/sc-powershell">The slide deck of the talk</a></li>
+<li><a href="/2016/04/06/sitecore-powershell-london-march-2016/SPEDemo-Scripts-1.0.zip" title="A Sitecore package of the demo scripts">A Sitecore package of the demo scripts</a></li>
+<li><a href="/2016/04/06/sitecore-powershell-london-march-2016/SPEDemo-Items-1.0.zip" title="A Sitecore package of supporting items + templates for the scripts">A Sitecore package of supporting items + templates for the scripts</a>
+</li>
+</ul>
+<p>Bear in mind that if you use the packages, you’ll need to have SPE installed first. See just below for links!</p>
+<h3 id="Enough_talk,_I_just_want_SPE!">Enough talk, I just want SPE!</h3><p>Here are the links to the good stuff:</p>
+<ul>
+<li><a href="https://marketplace.sitecore.net/en/Modules/Sitecore_PowerShell_console.aspx" target="_blank" rel="external">Sitecore Powershell Extensions in the Sitecore Marketplace</a></li>
+<li><a href="https://www.gitbook.com/book/sitecorepowershell/sitecore-powershell-extensions/details" target="_blank" rel="external">The Sitecore Powershell Extensions GitBook manual</a></li>
+</ul>
+<h3 id="Debugging_support_in_SPE_4-0">Debugging support in SPE 4.0</h3><p>One of the questions I was asked a couple of times after the talk was whether you are able to debug scripts in Sitecore Powershell Extensions. I was using version 3.3 in the demo, which did not have this feature, but the <em>very newly released</em> version 4.0 comes with full debugging support!</p>
+<p>Here’s a video from <a href="http://blog.najmanowicz.com/" target="_blank" rel="external">Adam Najmanowicz</a> demonstrating the new debugging functionality:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6rhPWVKcreI" frameborder="0" allowfullscreen></iframe>
+
+<p>Pretty great, huh?</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Recently I got the opportunity to give a talk on Sitecore Powershell Extensions at the London Sitecore Tech User group.</p>
+<p>I had a gr]]>
+    </summary>
+    
+      <category term="powershell" scheme="http://www.kasaku.co.uk/tags/powershell/"/>
+    
+      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+    
+      <category term="sitecore-powershell-extensions" scheme="http://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
+    
+      <category term="talks" scheme="http://www.kasaku.co.uk/tags/talks/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Multi-Line field bugs in Sitecore 8.1]]></title>
