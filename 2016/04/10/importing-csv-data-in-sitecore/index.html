@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>From Wordpress to Hexo - Kasaku</title>
+    <title>Using Sitecore Powershell Extensions to import CSV data - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
@@ -171,40 +171,47 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">From Wordpress to Hexo</h1>
+        <h1 class="post-title" itemprop="headline">Using Sitecore Powershell Extensions to import CSV data</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Fri Jun 05 2015 13:00:00 GMT+0100">
-        Jun 05, 2015
+    <time  itemprop="datePublished" content="Sun Apr 10 2016 17:45:52 GMT+0100">
+        Apr 10, 2016
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around.<br><a id="more"></a><br>After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="external">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a>, so I had most of what was required already.</p>
-<p>The site is pretty basic at the moment, and just hosted through Github for now. But the redesign has brought about a couple of changes:</p>
-<ul>
-<li>Social media links, including one for the new Sitecore Community!</li>
-<li>Disqus for comments</li>
-<li>More readable sytax highlighting</li>
-<li>RSS feed, if you like that sort of thing.</li>
-</ul>
-<p>The syntax highlighting is based on <a href="https://highlightjs.org/" target="_blank" rel="external">HighlightJS</a>, which does appear to have a couple of bugs when it comes to rendering C# source. Hopefully I can get those ironed out.</p>
-<p>I also might look to expand the template and build on more areas in the site, but for now it’s just remaining a blog!</p>
-
+        <p>Have you ever needed to import data into Sitecore from an Excel or CSV file? It’s a common request and it’s actually also a really simple task thanks to Sitecore Powershell Extensions.<br><a id="more"></a><br>First of all, let’s assume you have a spreadsheet with the relevant information in - in this dataset, each row represents a set of changes to make to an item; the first column contains the item reference and the remaining columns are values for different fields within the item.</p>
+<p>Below is an example of such a dataset, where we have a bulk set of changes to be made to the MetaTitle + MetaDescription fields. In this example, the item reference is an item path, but this could just as easily be an item ID.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ItemPath,MetaTitle,MetaDescription</span><br><span class="line">/sitecore/content/home,Home,Some blurb about how lovely our website is</span><br><span class="line">/sitecore/content/home/products,Products,Buy our products! All of them!</span><br><span class="line">/sitecore/content/home/contact-us,Contact Us,Contact our lovely website</span><br></pre></td></tr></table></figure>
+<p>To prepare this data for the import, we want it in CSV format. If the data is within Excel, Excel allows you to <code>Save As</code> the spreadsheet to convert it to a CSV. Make sure it to include a header row in the file, as seen in the example above.</p>
+<p>Then, within Sitecore Powershell we can use a very simple script to import the data:</p>
+<figure class="highlight ps"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$importData</span> = <span class="built_in">Import-CSV</span> <span class="string">"C:\Path\To\ImportData.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ( <span class="variable">$row</span> <span class="keyword">in</span> <span class="variable">$importData</span> ) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$item</span> = <span class="built_in">Get-Item</span> -Path master:$(<span class="variable">$row</span>.ItemPath) -ErrorAction SilentlyContinue</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$item</span>) &#123;</span><br><span class="line">        <span class="variable">$item</span>.Editing.BeginEdit()</span><br><span class="line">        <span class="variable">$item</span>[<span class="string">"MetaTitle"</span>] = <span class="variable">$row</span>.MetaTitle</span><br><span class="line">        <span class="variable">$item</span>[<span class="string">"MetaDescription"</span>] = <span class="variable">$row</span>.MetaDescription</span><br><span class="line">        <span class="variable">$item</span>.Editing.EndEdit() | <span class="built_in">Out-Null</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">Write-Host</span> <span class="string">"Couldn't find: $(<span class="variable">$row</span>.ItemPath)"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And that’s all there is to it! The magic is in the <code>Import-CSV</code> command, which is part of regular Powershell, and imports all of the data into the <code>$importData</code> variable. The script can then iterate over this data and read each row to find the item and then make the updates. As long as the CSV file hash headers, each <code>$row</code> variable will have properties exposed that correspond to each of the columns, e.g. <code>$row.ItemPath</code>. </p>
+<p>The <code>-ErrorAction SilentlyContinue</code> is there to swallow the exception that is raised if <code>Get-Item</code> can’t find the specified item. To handle this in a more user-friendly manner, we then perform a null-check on <code>$item</code> and if that fails we log out the ItemPath that could not be found. </p>
+<p>Pretty simple, huh? </p>
+<p>For an additional performance boost when importing your data, you can optionally wrap the import in an instantiation of the <code>Sitecore.Data.BulkUpdateContext</code> class, which prevents indexing + events from firing after each individual update:</p>
+<figure class="highlight ps"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Import-Function -Name New-UsingBlock</span><br><span class="line"></span><br><span class="line">New-UsingBlock (<span class="built_in">New-Object</span> Sitecore.Data.BulkUpdateContext) &#123;</span><br><span class="line">    <span class="keyword">foreach</span> ( ... ) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
             
         
     </div>
     <div class="post-footer main-content-wrap">
         
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/powershell/">powershell</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-powershell-extensions/">sitecore-powershell-extensions</a>
+
+            </div>
+        
         <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/"  data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -212,7 +219,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/02/16/sitecore-custom-provider-gotcha/" data-tooltip="A Sitecore custom provider gotcha">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/04/06/sitecore-powershell-london-march-2016/" data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -222,17 +229,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -265,7 +272,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/"  data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -273,7 +280,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/02/16/sitecore-custom-provider-gotcha/" data-tooltip="A Sitecore custom provider gotcha">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/04/06/sitecore-powershell-london-march-2016/" data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -283,17 +290,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

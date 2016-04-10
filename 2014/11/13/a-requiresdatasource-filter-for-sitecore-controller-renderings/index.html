@@ -9,32 +9,32 @@
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/images/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/images/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/images/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/images/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/images/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/images/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/images/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/images/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-96x96.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="../../../../assets/images/android-chrome-192x192.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="../../../../assets/images/manifest.json">
-	<link rel="shortcut icon" href="../../../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
 	<meta name="msapplication-TileColor" content="#333a42">
-	<meta name="msapplication-TileImage" content="../../../../assets/images/mstile-144x144.png">
-	<meta name="msapplication-config" content="../../../../assets/images/browserconfig.xml">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
 	<meta name="theme-color" content="#333a42">    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
     
     <!--STYLES-->
-    <link rel="stylesheet" href="../../../../assets/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
     <!--STYLES END-->
     
 <!-- Google Analytics -->
@@ -192,14 +192,14 @@ ga('send', 'pageview');
 <p>If you don’t specify a view, the default will be used. However, if you need to specify a particular view for a given rendering, you can:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[RequiresDataSource(NoDataSourceView=<span class="string">"_NoDataSourceCustom"</span>)]</span><br></pre></td></tr></table></figure>
 <p>What do you put in the view? That is completly up to what is necessary in your solution - however a good strategy is to provide a simple error message to a user using the PageEditor, but actually render nothing if the component still makes it to the published page without a DataSource:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@if (PageMode.IsPageEditor)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"error"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Heads up!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">p</span>&gt;</span>This component requires a DataSource but one has not been specified.</span><br><span class="line">    If this page is published in its current state, this component will be empty.<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@if (PageMode.IsPageEditor)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"error"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Heads up!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This component requires a DataSource but one has not been specified.</span><br><span class="line">    If this page is published in its current state, this component will be empty.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Now, if the component is viewed within the Page Editor, and no DataSource has been set, the user will see an informative message:</p>
 <p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Required.png" alt="No DataSource example" title="No DataSource example"></p>
 
 <p>As well as provided the user with some feedback, it has removed the need for the null-checking that would have otherwise been required in the action to prevent exceptions, we’re now guaranteed that the code will only be executed if a DataSource has been set.</p>
-<h3 id="Extending_the_attribute">Extending the attribute</h3><p>To provide the user with some more specific feedback, and also to ensure that our code only executes if the <strong>correct</strong> type of DataSource has been applied, we can extend the attribute to create another.</p>
+<h3 id="Extending-the-attribute"><a href="#Extending-the-attribute" class="headerlink" title="Extending the attribute"></a>Extending the attribute</h3><p>To provide the user with some more specific feedback, and also to ensure that our code only executes if the <strong>correct</strong> type of DataSource has been applied, we can extend the attribute to create another.</p>
 <p>The <code>RequiresDataSourceOfTemplate</code> attribute shown below adds an additional check that occurs <em>if</em> the DataSource has been set, whereupon it additionally confirms that the DataSource is of the right template:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiresDataSourceOfTemplate</span> : <span class="title">RequiresDataSource</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> DefaultInvalidDataSourceView = <span class="string">"_InvalidDataSource"</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">readonly</span> Guid _templateId;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">RequiresDataSourceOfTemplate</span>(<span class="params">Guid templateId</span>)</span><br><span class="line">  </span>&#123;</span><br><span class="line">    _templateId = templateId;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnActionExecuting</span>(<span class="params">ActionExecutingContext filterContext</span>)</span><br><span class="line">  </span>&#123;</span><br><span class="line">    <span class="keyword">base</span>.OnActionExecuting(filterContext);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Only continue if we have a datasource, i.e. the base action didn't result in anything.</span></span><br><span class="line">    <span class="keyword">if</span> (DataSourceItem != <span class="keyword">null</span> &amp;&amp; !DataSourceItem.DerivesFromTemplate(_templateId))</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">var</span> correctTemplateItem = Sitecore.Context.Database.GetItem(_templateId.ToID());</span><br><span class="line">      </span><br><span class="line">      filterContext.Result = <span class="keyword">new</span> PartialViewResult</span><br><span class="line">      &#123;</span><br><span class="line">        ViewData = &#123; </span><br><span class="line">          &#123;<span class="string">"RequiredTemplateName"</span>, correctTemplateItem.Name &#125;, </span><br><span class="line">          &#123;<span class="string">"FoundTemplateName"</span>, DataSourceItem.TemplateName&#125; </span><br><span class="line">        &#125;,</span><br><span class="line">        ViewName = InvalidDataSourceView ?? DefaultInvalidDataSourceView</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">string</span> InvalidDataSourceView &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiresDataSourceOfTemplate</span> : <span class="title">RequiresDataSource</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> DefaultInvalidDataSourceView = <span class="string">"_InvalidDataSource"</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">readonly</span> Guid _templateId;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">RequiresDataSourceOfTemplate</span>(<span class="params">Guid templateId</span>)</span><br><span class="line">  </span>&#123;</span><br><span class="line">    _templateId = templateId;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnActionExecuting</span>(<span class="params">ActionExecutingContext filterContext</span>)</span><br><span class="line">  </span>&#123;</span><br><span class="line">    <span class="keyword">base</span>.OnActionExecuting(filterContext);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Only continue if we have a datasource, i.e. the base action didn't result in anything.</span></span><br><span class="line">    <span class="keyword">if</span> (DataSourceItem != <span class="literal">null</span> &amp;&amp; !DataSourceItem.DerivesFromTemplate(_templateId))</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">var</span> correctTemplateItem = Sitecore.Context.Database.GetItem(_templateId.ToID());</span><br><span class="line">      </span><br><span class="line">      filterContext.Result = <span class="keyword">new</span> PartialViewResult</span><br><span class="line">      &#123;</span><br><span class="line">        ViewData = &#123; </span><br><span class="line">          &#123;<span class="string">"RequiredTemplateName"</span>, correctTemplateItem.Name &#125;, </span><br><span class="line">          &#123;<span class="string">"FoundTemplateName"</span>, DataSourceItem.TemplateName&#125; </span><br><span class="line">        &#125;,</span><br><span class="line">        ViewName = InvalidDataSourceView ?? DefaultInvalidDataSourceView</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">string</span> InvalidDataSourceView &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>This time, as well as returning an alternate view, some additional metadata is pushed into the ViewData. That allows us to provde create a view that provides the user with a bit of information about what went wrong:</p>
 <p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Invalid.png" alt="Invalid DataSource example" title="Invalid DataSource example"></p>
 
@@ -214,7 +214,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore-mvc</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-mvc/">sitecore-mvc</a>
 
             </div>
         
@@ -223,7 +223,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../12/04/index.html"  data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/"  data-tooltip="A RemoveLink command for PageEditor">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -271,7 +271,7 @@ ga('send', 'pageview');
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        <img style="vertical-align:middle" src="../../../../assets/images/favicon-32x32.png"/>
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
         Copyright &copy; 2016 Kasaku Ltd. All Rights Reserved.
     </span>
 </footer>
@@ -284,7 +284,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../12/04/index.html"  data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/"  data-tooltip="A RemoveLink command for PageEditor">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -338,7 +338,7 @@ ga('send', 'pageview');
         	
     </body>
     <!--SCRIPTS-->
-<script src="../../../../assets/js/script.min.js" type="text/javascript"></script>
+<script src="/assets/js/script.min.js"></script>
 <!--SCRIPTS END-->
 
     <script type="text/javascript">

@@ -9,32 +9,32 @@
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/images/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/images/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/images/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/images/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/images/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/images/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/images/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/images/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-96x96.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="../../../../assets/images/android-chrome-192x192.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="../../../../assets/images/manifest.json">
-	<link rel="shortcut icon" href="../../../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
 	<meta name="msapplication-TileColor" content="#333a42">
-	<meta name="msapplication-TileImage" content="../../../../assets/images/mstile-144x144.png">
-	<meta name="msapplication-config" content="../../../../assets/images/browserconfig.xml">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
 	<meta name="theme-color" content="#333a42">    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
     
     <!--STYLES-->
-    <link rel="stylesheet" href="../../../../assets/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
     <!--STYLES END-->
     
 <!-- Google Analytics -->
@@ -185,17 +185,17 @@ ga('send', 'pageview');
         <p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some. As Sitecore 8 has all the editors ported to SPEAK, it is unlikely that this method will work from that version onwards.</em></p>
 <p>Have you noticed how the <strong>Marketing Center</strong> icon in the Sitecore Start Menu is just used to load a new Content Editor window, but with a particular root item? In that particular case it goes straight to <code>/sitecore/system/Marketing Center</code>.<br><a id="more"></a><br>It’s quite a simple addition but can speed up work for your editors if they’re able to use an icon to launch straight into an area they regularly work with, especially if it’s tucked away in your content tree. Additionally, if you’ve removed access for them to one of the ancestor items, they won’t see it in the standard Content Editor tree at all, even if they have access to that particular descendant.</p>
 <p>This short tutorial shows you how to create a new shortcut to launch a Content Editor with a customized root item of your choice.</p>
-<h3 id="Creating_the_layout">Creating the layout</h3><p>First of all, you’ll need to create a page that will get shown when the window opens. I have based the code for this Layout on the very same code used by the Marketing Center, no point in reinventing the wheel. All the code really does is launch the real Content Editor ASPX page, complete with some URL parameters to have it open the right item.</p>
+<h3 id="Creating-the-layout"><a href="#Creating-the-layout" class="headerlink" title="Creating the layout"></a>Creating the layout</h3><p>First of all, you’ll need to create a page that will get shown when the window opens. I have based the code for this Layout on the very same code used by the Marketing Center, no point in reinventing the wheel. All the code really does is launch the real Content Editor ASPX page, complete with some URL parameters to have it open the right item.</p>
 <p>Create an ASPX page and fill it with the following, though replace the ID passed to <code>Client.ContentDatabase.GetItem</code> with the ID of the root item you want to be displayed when the window opens. You can also customize the <code>he</code> and <code>ic</code> parameters to give the new window a custom URL + icon.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Page</span> <span class="attribute">Language</span>=<span class="value">"C#"</span> %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Data.Items"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Diagnostics"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore.Text"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%@</span> <span class="attribute">Import</span> <span class="attribute">Namespace</span>=<span class="value">"Sitecore"</span><span class="value">%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">language</span>=<span class="value">"c#"</span> <span class="attribute">runat</span>=<span class="value">"server"</span>&gt;</span><span class="openscad"></span><br><span class="line">  override protected void OnInit<span class="params">([NotNull] EventArgs e)</span> &#123;</span><br><span class="line">    Assert.ArgumentNotNull<span class="params">(e, <span class="string">"e"</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    var url = new UrlString<span class="params">(<span class="string">"/sitecore/shell/Applications/Content Manager/default.aspx"</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Get the root item to display in the Content Manager window.</span></span><br><span class="line">    Item rootItem = Client.ContentDatabase.GetItem<span class="params">(<span class="string">"&#123;D6538613-BA3E-4C82-ACEC-94DC010BA2CD&#125;"</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="params">(rootItem == null)</span></span><br><span class="line">      return;</span><br><span class="line">      </span><br><span class="line">    url.Add<span class="params">(<span class="string">"he"</span>, <span class="string">"Blog Editor"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"pa"</span>, <span class="string">"0"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"ic"</span>, <span class="string">"people/16x16/user1_message.png"</span>)</span>;</span><br><span class="line">    url.Add<span class="params">(<span class="string">"ro"</span>, rootItem.ID.ToString<span class="params">()</span>)</span>;</span><br><span class="line">    url[<span class="string">"mo"</span>] = <span class="string">"templateworkspace"</span>;</span><br><span class="line">    </span><br><span class="line">    Response.Redirect<span class="params">(url.ToString<span class="params">()</span>)</span>;   </span><br><span class="line">  &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">Page</span> <span class="attr">Language</span>=<span class="string">"C#"</span> %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">Import</span> <span class="attr">Namespace</span>=<span class="string">"Sitecore.Data.Items"</span>%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">Import</span> <span class="attr">Namespace</span>=<span class="string">"Sitecore.Diagnostics"</span>%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">Import</span> <span class="attr">Namespace</span>=<span class="string">"Sitecore.Text"</span>%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">Import</span> <span class="attr">Namespace</span>=<span class="string">"Sitecore"</span>%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">"c#"</span> <span class="attr">runat</span>=<span class="string">"server"</span>&gt;</span><span class="undefined"></span><br><span class="line">  override protected void OnInit([NotNull] EventArgs e) &#123;</span><br><span class="line">    Assert.ArgumentNotNull(e, "e");</span><br><span class="line">    </span><br><span class="line">    var url = new UrlString("/sitecore/shell/Applications/Content Manager/default.aspx");</span><br><span class="line">    </span><br><span class="line">    // Get the root item to display in the Content Manager window.</span><br><span class="line">    Item rootItem = Client.ContentDatabase.GetItem("&#123;D6538613-BA3E-4C82-ACEC-94DC010BA2CD&#125;");</span><br><span class="line"></span><br><span class="line">    if (rootItem == null)</span><br><span class="line">      return;</span><br><span class="line">      </span><br><span class="line">    url.Add("he", "Blog Editor");</span><br><span class="line">    url.Add("pa", "0");</span><br><span class="line">    url.Add("ic", "people/16x16/user1_message.png");</span><br><span class="line">    url.Add("ro", rootItem.ID.ToString());</span><br><span class="line">    url["mo"] = "templateworkspace";</span><br><span class="line">    </span><br><span class="line">    Response.Redirect(url.ToString());   </span><br><span class="line">  &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Save this ASPX file where you like, you may prefer to go somewhere within the <code>/sitecore</code> folder, or perhaps the <code>/sitecore modules</code> folder instead to keep it separate.</p>
 <p>Next, create a new Layout item in the Core database. I would recommend following Sitecore’s pattern and keeping it under the Applications folder located at <code>/sitecore/layout/Layouts/Applications</code>, or perhaps use a subfolder with your project name. The <code>Path</code> field of this layout should be a relative path to your new ASPX page.</p>
-<h3 id="Creating_the_application">Creating the application</h3><p>Now you need to create an <strong>Application</strong> that uses this layout. Create a new Application item under <code>/sitecore/content/Applications</code>, if you right-click on the Applications item you should find that an Insert Option has already been defined for adding an Application.</p>
+<h3 id="Creating-the-application"><a href="#Creating-the-application" class="headerlink" title="Creating the application"></a>Creating the application</h3><p>Now you need to create an <strong>Application</strong> that uses this layout. Create a new Application item under <code>/sitecore/content/Applications</code>, if you right-click on the Applications item you should find that an Insert Option has already been defined for adding an Application.</p>
 <p>In this new item, set the <code>Chrome</code> field to <code>BorderlessChrome</code>, otherwise the window won’t display correctly. The <code>Icon</code> field will control how the Application will appear in the Start Menu later, use a 32x32 icon. You can also set the <code>Display Name</code> and <code>Tool Tip</code> fields.</p>
 <p>Next, edit the <strong>Presentation Details</strong> of the item and set the layout to your newly created layout from the previous setup.</p>
-<h3 id="Creating_the_shortcut">Creating the shortcut</h3><p>Finally, you need to create the shortcut. Under <code>/sitecore/content/Documents and settings/All users/Start menu</code> are several items that represent the different areas of the Start Menu. Choose the one where you would like your icon to appear and create a new item of type <code>/sitecore/templates/Sitecore Client/Applications/Application shortcut</code> (you should find it as an Insert Option).</p>
+<h3 id="Creating-the-shortcut"><a href="#Creating-the-shortcut" class="headerlink" title="Creating the shortcut"></a>Creating the shortcut</h3><p>Finally, you need to create the shortcut. Under <code>/sitecore/content/Documents and settings/All users/Start menu</code> are several items that represent the different areas of the Start Menu. Choose the one where you would like your icon to appear and create a new item of type <code>/sitecore/templates/Sitecore Client/Applications/Application shortcut</code> (you should find it as an Insert Option).</p>
 <p>In the shortcut item, set the <code>Application</code> link field to point to your Application item. If you want a particular shortcut to override the default settings for an Application, you can also set the <code>Icon</code>, <code>Display Name</code> and <code>Tool tip</code> fields.</p>
-<h3 id="Tada!">Tada!</h3><p>That’s all there is to it, your new shortcut should be appearing in the Start Menu, and when you click it you’ll get your new customized Content Editor.</p>
+<h3 id="Tada"><a href="#Tada" class="headerlink" title="Tada!"></a>Tada!</h3><p>That’s all there is to it, your new shortcut should be appearing in the Start Menu, and when you click it you’ll get your new customized Content Editor.</p>
 <p><img src="/2014/12/12/creating-a-customized-root-for-the-content-editor/blog-shortcut.png" alt="New blog shortcut" title="New blog shortcut"></p>
         
             
@@ -206,7 +206,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -215,7 +215,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../23/index.html"  data-tooltip="Referencing folders with Placeholder Settings">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/"  data-tooltip="Referencing folders with Placeholder Settings">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -223,7 +223,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../08/index.html" data-tooltip="Creating a custom gutter validator">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/08/creating-a-custom-gutter-validator/" data-tooltip="Creating a custom gutter validator">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -263,7 +263,7 @@ ga('send', 'pageview');
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        <img style="vertical-align:middle" src="../../../../assets/images/favicon-32x32.png"/>
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
         Copyright &copy; 2016 Kasaku Ltd. All Rights Reserved.
     </span>
 </footer>
@@ -276,7 +276,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../23/index.html"  data-tooltip="Referencing folders with Placeholder Settings">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/23/referencing-folders-with-placeholder-settings/"  data-tooltip="Referencing folders with Placeholder Settings">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -284,7 +284,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../08/index.html" data-tooltip="Creating a custom gutter validator">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/08/creating-a-custom-gutter-validator/" data-tooltip="Creating a custom gutter validator">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -330,7 +330,7 @@ ga('send', 'pageview');
         	
     </body>
     <!--SCRIPTS-->
-<script src="../../../../assets/js/script.min.js" type="text/javascript"></script>
+<script src="/assets/js/script.min.js"></script>
 <!--SCRIPTS END-->
 
     <script type="text/javascript">

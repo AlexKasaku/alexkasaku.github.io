@@ -9,32 +9,32 @@
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/images/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/images/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/images/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/images/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/images/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/images/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/images/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/images/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-96x96.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="../../../../assets/images/android-chrome-192x192.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="../../../../assets/images/manifest.json">
-	<link rel="shortcut icon" href="../../../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
 	<meta name="msapplication-TileColor" content="#333a42">
-	<meta name="msapplication-TileImage" content="../../../../assets/images/mstile-144x144.png">
-	<meta name="msapplication-config" content="../../../../assets/images/browserconfig.xml">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
 	<meta name="theme-color" content="#333a42">    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
     
     <!--STYLES-->
-    <link rel="stylesheet" href="../../../../assets/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
     <!--STYLES END-->
     
 <!-- Google Analytics -->
@@ -187,18 +187,18 @@ ga('send', 'pageview');
 <p><img src="/2014/12/08/creating-a-custom-gutter-validator/gutter-validator.png" alt="Gutter Validator example" title="Gutter Validator example"></p>
 
 <p>It’s very easy to add your own custom validation here.</p>
-<h3 id="Creating_the_code">Creating the code</h3><p>First of all, create the code for your gutter validator. Create a new class and have it inherit from <code>Sitecore.Shell.Applications.ContentEditor.Gutters.GutterRenderer</code>. In this class you should override the <code>GetIconDescriptor(Item item)</code> method, which returns a <code>GutterIconDescriptor</code>.</p>
+<h3 id="Creating-the-code"><a href="#Creating-the-code" class="headerlink" title="Creating the code"></a>Creating the code</h3><p>First of all, create the code for your gutter validator. Create a new class and have it inherit from <code>Sitecore.Shell.Applications.ContentEditor.Gutters.GutterRenderer</code>. In this class you should override the <code>GetIconDescriptor(Item item)</code> method, which returns a <code>GutterIconDescriptor</code>.</p>
 <p>This overriden method should return an instance of <code>GutterIconDescriptor</code> if the validation has failed, or null if the validation passes.</p>
 <p>For the sake of example, here we have a validator that checks to see if an item has over 100 child items and if so will fail validation:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TooManyChildrenValidator</span> : <span class="title">GutterRenderer</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> GutterIconDescriptor <span class="title">GetIconDescriptor</span>(<span class="params">Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       Assert.ArgumentNotNull(item, <span class="string">"item"</span>);</span><br><span class="line">   </span><br><span class="line">       <span class="comment">// If the item isn't valid, return the validation error description,</span></span><br><span class="line">       <span class="comment">// otherwise return null.</span></span><br><span class="line">       <span class="keyword">return</span> !ItemIsValid(item) ? GetGutterDescriptor() : <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">ItemIsValid</span>(<span class="params">Sitecore.Data.Items.Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Item passes validation if it has 100 children or less</span></span><br><span class="line">       <span class="keyword">return</span> item.Children.Count() &amp;lt;= <span class="number">100</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> GutterIconDescriptor <span class="title">GetGutterDescriptor</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Return a new descriptor showing a warning icon and message</span></span><br><span class="line">       GutterIconDescriptor descriptor = <span class="keyword">new</span> GutterIconDescriptor();</span><br><span class="line">       descriptor.Icon = <span class="string">"Applications/16x16/information2.png"</span>;</span><br><span class="line">       descriptor.Tooltip = <span class="string">"This item has quite a lot of items underneath it and may affect Sitecore performance."</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> descriptor;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TooManyChildrenValidator</span> : <span class="title">GutterRenderer</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> GutterIconDescriptor <span class="title">GetIconDescriptor</span>(<span class="params">Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       Assert.ArgumentNotNull(item, <span class="string">"item"</span>);</span><br><span class="line">   </span><br><span class="line">       <span class="comment">// If the item isn't valid, return the validation error description,</span></span><br><span class="line">       <span class="comment">// otherwise return null.</span></span><br><span class="line">       <span class="keyword">return</span> !ItemIsValid(item) ? GetGutterDescriptor() : <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">ItemIsValid</span>(<span class="params">Sitecore.Data.Items.Item item</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Item passes validation if it has 100 children or less</span></span><br><span class="line">       <span class="keyword">return</span> item.Children.Count() &amp;lt;= <span class="number">100</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> GutterIconDescriptor <span class="title">GetGutterDescriptor</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">       <span class="comment">// Return a new descriptor showing a warning icon and message</span></span><br><span class="line">       GutterIconDescriptor descriptor = <span class="keyword">new</span> GutterIconDescriptor();</span><br><span class="line">       descriptor.Icon = <span class="string">"Applications/16x16/information2.png"</span>;</span><br><span class="line">       descriptor.Tooltip = <span class="string">"This item has quite a lot of items underneath it and may affect Sitecore performance."</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> descriptor;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>You can use the above code as a template, all you need to do is customize the <code>ItemIsValid</code> method with your own validation logic, and alter the <code>GetGutterDescriptor</code> method to choose an icon and tooltip that’s suitable for you.</p>
 <p>That’s all there is too it for the code. Compile the assembly and make sure it is deployed to your Sitecore bin directory.</p>
-<h3 id="Creating_the_Validation_Item">Creating the Validation Item</h3><p>Now you need to create an item for the gutter validator in Sitecore, so that it can be selected. This should be located in the Core database underneath the item <code>/sitecore/content/Applications/Content Editor/Gutters</code>.</p>
+<h3 id="Creating-the-Validation-Item"><a href="#Creating-the-Validation-Item" class="headerlink" title="Creating the Validation Item"></a>Creating the Validation Item</h3><p>Now you need to create an item for the gutter validator in Sitecore, so that it can be selected. This should be located in the Core database underneath the item <code>/sitecore/content/Applications/Content Editor/Gutters</code>.</p>
 <p>You should create your item using the <code>/sitecore/templates/Sitecore Client/Content editor/Gutter Renderer</code> template.</p>
 <p>The <code>Header</code> field represents how your validator will appear in the context-menu, and the <code>Type</code> field is the fully-qualified name of your new type:</p>
 <p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-editor.png" alt="Gutter Validator fields" title="Gutter Validator fields"></p>
 
-<h3 id="Trying_it_out">Trying it out</h3><p>Once that’s saved you can jump back into the master database and enable it. Right-click in the gutter to enable your validator, and then you should see your validation icon wherever an item fails your validation:</p>
+<h3 id="Trying-it-out"><a href="#Trying-it-out" class="headerlink" title="Trying it out"></a>Trying it out</h3><p>Once that’s saved you can jump back into the master database and enable it. Right-click in the gutter to enable your validator, and then you should see your validation icon wherever an item fails your validation:</p>
 <p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-effect.png" alt="The effect of the new validator" title="The effect of the new validator"></p>
         
             
@@ -209,7 +209,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -218,7 +218,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../12/index.html"  data-tooltip="Creating a customized root for the Content Editor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/"  data-tooltip="Creating a customized root for the Content Editor">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -226,7 +226,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../04/index.html" data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/" data-tooltip="A RemoveLink command for PageEditor">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -266,7 +266,7 @@ ga('send', 'pageview');
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        <img style="vertical-align:middle" src="../../../../assets/images/favicon-32x32.png"/>
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
         Copyright &copy; 2016 Kasaku Ltd. All Rights Reserved.
     </span>
 </footer>
@@ -279,7 +279,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../12/index.html"  data-tooltip="Creating a customized root for the Content Editor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/12/creating-a-customized-root-for-the-content-editor/"  data-tooltip="Creating a customized root for the Content Editor">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -287,7 +287,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../04/index.html" data-tooltip="A RemoveLink command for PageEditor">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/12/04/a-removelink-command-for-pageditor/" data-tooltip="A RemoveLink command for PageEditor">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -333,7 +333,7 @@ ga('send', 'pageview');
         	
     </body>
     <!--SCRIPTS-->
-<script src="../../../../assets/js/script.min.js" type="text/javascript"></script>
+<script src="/assets/js/script.min.js"></script>
 <!--SCRIPTS END-->
 
     <script type="text/javascript">

@@ -9,32 +9,32 @@
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/images/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/images/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/images/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/images/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/images/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/images/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/images/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/images/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-96x96.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="../../../../assets/images/android-chrome-192x192.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="../../../../assets/images/manifest.json">
-	<link rel="shortcut icon" href="../../../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
 	<meta name="msapplication-TileColor" content="#333a42">
-	<meta name="msapplication-TileImage" content="../../../../assets/images/mstile-144x144.png">
-	<meta name="msapplication-config" content="../../../../assets/images/browserconfig.xml">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
 	<meta name="theme-color" content="#333a42">    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
     
     <!--STYLES-->
-    <link rel="stylesheet" href="../../../../assets/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
     <!--STYLES END-->
     
 <!-- Google Analytics -->
@@ -192,7 +192,7 @@ ga('send', 'pageview');
 <li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
 </ul>
 <p>This is just a short blog post to highlight a couple of a small gotcha that you may encounter, due to some inconsistencies in Sitecore’s implementation of the Switching providers.</p>
-<h3 id="The_issue">The issue</h3><p>The first link in the above list is the official Sitecore documentation for implementing new providers. In <em>3.1.1 Configuring Switching Providers</em>, the following attributes for defining providers via a SwitchingProvider are defined:</p>
+<h3 id="The-issue"><a href="#The-issue" class="headerlink" title="The issue"></a>The issue</h3><p>The first link in the above list is the official Sitecore documentation for implementing new providers. In <em>3.1.1 Configuring Switching Providers</em>, the following attributes for defining providers via a SwitchingProvider are defined:</p>
 <ul>
 <li>ProviderName</li>
 <li>StoreFullNames</li>
@@ -200,11 +200,11 @@ ga('send', 'pageview');
 <li>Domains</li>
 </ul>
 <p>Whilst these are the properties for the <code>SwitchingMembershipProvider</code>, the remaining providers have a couple of additional undocumented options, that have a large affect on how they operate:</p>
-<h4 id="SwitchingRoleProvider">SwitchingRoleProvider</h4><p>The Role Provider adds an additional 2 undocumented properties:</p>
+<h4 id="SwitchingRoleProvider"><a href="#SwitchingRoleProvider" class="headerlink" title="SwitchingRoleProvider"></a>SwitchingRoleProvider</h4><p>The Role Provider adds an additional 2 undocumented properties:</p>
 <p><strong>ignoredUserDomains</strong> - If this is specified, then the provider <strong>won’t apply</strong> to the domains listed. Multiple domains should be comma-separated.<br><strong>allowedUserDomains</strong> - If this is specified, then the provider <strong>will only apply</strong> to the domains listed. Multiple domains should be comma-separated.</p>
 <p>As you can see, the way these two operate are at odds with each other (one is a blacklist, the other a whitelist). The provider only expects there to be one provided,; if you provide both, it will throw an exception.</p>
 <p>Note that for this provider, the <code>domain</code> property <strong>is completely ignored</strong>. This can cause some real confusion if you have implemented a new provider and you are wondering why it is getting called for other domains, even though you’ve specified a domain there.</p>
-<h4 id="SwitchingProfileProvider">SwitchingProfileProvider</h4><p>The Profile Provider adds just the one additional property:</p>
+<h4 id="SwitchingProfileProvider"><a href="#SwitchingProfileProvider" class="headerlink" title="SwitchingProfileProvider"></a>SwitchingProfileProvider</h4><p>The Profile Provider adds just the one additional property:</p>
 <p><strong>ignoredDomains</strong> - This works exactly the same as <strong>ignoredUserDomains</strong> for the Role Provider.</p>
 <p>And that’s it. No option for a whitelist only, and again, the domain property is ignored.</p>
 <p>It’s not clear why the Role + Profile providers don’t just provide the same properties as each other, nor why these aren’t available to the Membership Provider. This might just be a small gotcha, but it’s worth taking note of this little eccentricity of the code.</p>
@@ -218,7 +218,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -227,7 +227,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../06/05/index.html"  data-tooltip="From Wordpress to Hexo">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/"  data-tooltip="From Wordpress to Hexo">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -235,7 +235,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../01/26/index.html" data-tooltip="Event tracking in Google Analytics">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/01/26/event-tracking-in-google-analytics/" data-tooltip="Event tracking in Google Analytics">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -275,7 +275,7 @@ ga('send', 'pageview');
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        <img style="vertical-align:middle" src="../../../../assets/images/favicon-32x32.png"/>
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
         Copyright &copy; 2016 Kasaku Ltd. All Rights Reserved.
     </span>
 </footer>
@@ -288,7 +288,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../06/05/index.html"  data-tooltip="From Wordpress to Hexo">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/"  data-tooltip="From Wordpress to Hexo">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -296,7 +296,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../01/26/index.html" data-tooltip="Event tracking in Google Analytics">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/01/26/event-tracking-in-google-analytics/" data-tooltip="Event tracking in Google Analytics">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -342,7 +342,7 @@ ga('send', 'pageview');
         	
     </body>
     <!--SCRIPTS-->
-<script src="../../../../assets/js/script.min.js" type="text/javascript"></script>
+<script src="/assets/js/script.min.js"></script>
 <!--SCRIPTS END-->
 
     <script type="text/javascript">

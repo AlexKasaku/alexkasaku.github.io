@@ -9,32 +9,32 @@
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/images/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/images/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/images/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/images/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/images/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/images/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/images/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/images/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-96x96.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="../../../../assets/images/android-chrome-192x192.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="../../../../assets/images/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="../../../../assets/images/manifest.json">
-	<link rel="shortcut icon" href="../../../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
 	<meta name="msapplication-TileColor" content="#333a42">
-	<meta name="msapplication-TileImage" content="../../../../assets/images/mstile-144x144.png">
-	<meta name="msapplication-config" content="../../../../assets/images/browserconfig.xml">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
 	<meta name="theme-color" content="#333a42">    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
     
     <!--STYLES-->
-    <link rel="stylesheet" href="../../../../assets/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
     <!--STYLES END-->
     
 <!-- Google Analytics -->
@@ -189,14 +189,14 @@ ga('send', 'pageview');
 The facets used in Search Results are tied to items underneath <code>/System/Settings/Buckets/Facets</code>. I created a new item here, called “Friendly Date Range”, that I would use in place of “Date Range”. I associated this with a field I would create, to be called <code>friendlydaterange</code>.</li>
 </ul>
 <p>Now, the interesting thing about the existing <code>daterange</code> field is that it is not tied to an existing field in the index, it uses a <strong>Virtual Field</strong>. You can see how <code>daterange</code> is defined in the default index configuration here:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">virtualFieldProcessors</span> <span class="attribute">hint</span>=<span class="value">"raw:AddVirtualFieldProcessor"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">virtualFieldProcessor</span> <span class="attribute">fieldName</span>=<span class="value">"daterange"</span> <span class="attribute">type</span>=<span class="value">"Sitecore.ContentSearch.VirtualFields.DateRangeFieldProcessor, Sitecore.ContentSearch"</span> /&gt;</span></span><br><span class="line">	... other fields ...</span><br><span class="line"><span class="tag">&lt;/<span class="title">virtualFieldProcessors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">virtualFieldProcessors</span> <span class="attr">hint</span>=<span class="string">"raw:AddVirtualFieldProcessor"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">virtualFieldProcessor</span> <span class="attr">fieldName</span>=<span class="string">"daterange"</span> <span class="attr">type</span>=<span class="string">"Sitecore.ContentSearch.VirtualFields.DateRangeFieldProcessor, Sitecore.ContentSearch"</span> /&gt;</span></span><br><span class="line">	... other fields ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">virtualFieldProcessors</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>I had a good look around this class to determine how these fields are created, and thought I would summarise the interfaces that you will need to implement if you want to implement your own virtual field.</p>
-<h1 id="Virtual_Fields">Virtual Fields</h1><p>A virtual field is a field in the search index that <em>doesn’t actually exist in the physical index</em>. Instead, it is computed at search run-time, and will typically use one or more backing fields that <strong>do</strong> exist within the index to create an entirely new field. Note that this is different to <code>ComputedIndexField</code>s which are computed <em>when creating the index</em> and are stored in the index.</p>
+<h1 id="Virtual-Fields"><a href="#Virtual-Fields" class="headerlink" title="Virtual Fields"></a>Virtual Fields</h1><p>A virtual field is a field in the search index that <em>doesn’t actually exist in the physical index</em>. Instead, it is computed at search run-time, and will typically use one or more backing fields that <strong>do</strong> exist within the index to create an entirely new field. Note that this is different to <code>ComputedIndexField</code>s which are computed <em>when creating the index</em> and are stored in the index.</p>
 <p>Why is a virtual field useful? Well it allows you to have a value of the field is dependent on <em>when the search is run</em>, rather than when the index was made; this is great for field values that are date and time dependent.</p>
 <p>In the case of <code>daterange</code> - the actual index stores the absolute creation date of an item under <code>__smallcreateddate</code>. This value is set and doesn’t change. However, the <code>daterange</code> virtual field is used to turn this absolute value of, say, <em>20150803</em> into a relative one of <em>thismonth</em>. This new value obviously cannot be stored directly in the index itself, as it will quickly become out of date!</p>
 <p>The virtual field works by implementing several methods that are called during the execution of the search. These are used to read and alter the fields of a document that come back with a search, as well as altering the outgoing query when a search needs to be made using the virtual field. There is also full support for faceting on virtual fields.</p>
 <p>Let’s look at how the interfaces are implemented. The <code>DateRangeFieldProcessor</code> shown above implements two interfaces, <code>IFieldQueryTranslator</code> and <code>IVirtualFieldProcessor</code>. Here is what each implementation of these is required to do for a virtual field to work. The following was applied to <strong>Sitecore 7.2</strong>, but should be good for versions following that too.</p>
-<h2 id="IFieldQueryTranslator">IFieldQueryTranslator</h2><p>The <code>IFieldQueryTranslator</code> has two methods and a property. Here’s what they do:</p>
+<h2 id="IFieldQueryTranslator"><a href="#IFieldQueryTranslator" class="headerlink" title="IFieldQueryTranslator"></a>IFieldQueryTranslator</h2><p>The <code>IFieldQueryTranslator</code> has two methods and a property. Here’s what they do:</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> FieldName &#123; <span class="keyword">get</span>; &#125;</span><br></pre></td></tr></table></figure>
 <p>Simply the field name your virtual field will use.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TranslatedFieldQuery <span class="title">TranslateFieldQuery</span>(<span class="params"><span class="keyword">string</span> fieldName, <span class="keyword">object</span> fieldValue, ComparisonType comparison, FieldNameTranslator fieldNameTranslator</span>)</span>;</span><br></pre></td></tr></table></figure>
@@ -205,14 +205,14 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IDictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt; TranslateFieldResult(IDictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt; fields, FieldNameTranslator fieldNameTranslator);</span><br></pre></td></tr></table></figure>
 <p>When the results of the query come back from the index, you will want to inject the value for your virtual field into the document. Typically you would inspect the real backing field(s), determine what the value of your virtual field would be, and add it to the fields dictionary to return.</p>
 <p>e.g. The document contains a value that falls within the current month in <code>__smallcreateddate</code>, so “thismonth” is added to <code>daterange</code> in the fields dictionary.</p>
-<h2 id="IVirtualFieldProcessor">IVirtualFieldProcessor</h2><p>The <code>IVirtualFieldProcessor</code> has two methods to add faceting support. Here’s what they do:</p>
+<h2 id="IVirtualFieldProcessor"><a href="#IVirtualFieldProcessor" class="headerlink" title="IVirtualFieldProcessor"></a>IVirtualFieldProcessor</h2><p>The <code>IVirtualFieldProcessor</code> has two methods to add faceting support. Here’s what they do:</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">GetFacetsArgs <span class="title">TranslateFacetQuery</span>(<span class="params">GetFacetsArgs args</span>)</span>;</span><br></pre></td></tr></table></figure>
 <p>When a faceted search is made, you can inject a <code>FacetQuery</code> into the search for the real backing field(s) your virtual field uses. This is so that when the results come back from the index, you’ll have that facet data to use to create the facet data for your virtual field.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IDictionary&lt;<span class="keyword">string</span>, ICollection&lt;KeyValuePair&lt;<span class="keyword">string</span>, <span class="keyword">int</span>&gt;&gt;&gt; TranslateFacetResult(ProcessFacetsArgs args);</span><br></pre></td></tr></table></figure>
 <p>When the results come back from the index, you’ll be given a collection of all of the facets and their values. At this point you can take the facet results for the backing field(s) you are using, and process them to create your own facet results.</p>
 <p>For example, if with <code>TranslateFacetQuery</code> you added a <code>FacetQuery</code> for <code>__smallcreateddate</code>, you can iterate through this facet result and sum up all of the values that fall within the current month to create your own facet result for “thismonth”.</p>
 <p>The virtual facet result is added to the collection, and the backing field results are removed as they are no longer needed.</p>
-<h1 id="Summary">Summary</h1><p>That’s all you need to do to implement a virtual field. Please leave a comment if there is something I’ve missed or if you have any questions.</p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>That’s all you need to do to implement a virtual field. Please leave a comment if there is something I’ve missed or if you have any questions.</p>
 
         
             
@@ -223,7 +223,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/index.html">sitecore-search</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-search/">sitecore-search</a>
 
             </div>
         
@@ -232,7 +232,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2016/03/21/index.html"  data-tooltip="Multi-Line field bugs in Sitecore 8.1">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/"  data-tooltip="Multi-Line field bugs in Sitecore 8.1">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -240,7 +240,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../06/05/index.html" data-tooltip="From Wordpress to Hexo">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/" data-tooltip="From Wordpress to Hexo">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -280,7 +280,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        <img style="vertical-align:middle" src="../../../../assets/images/favicon-32x32.png"/>
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
         Copyright &copy; 2016 Kasaku Ltd. All Rights Reserved.
     </span>
 </footer>
@@ -293,7 +293,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../../2016/03/21/index.html"  data-tooltip="Multi-Line field bugs in Sitecore 8.1">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/"  data-tooltip="Multi-Line field bugs in Sitecore 8.1">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -301,7 +301,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="../../../06/05/index.html" data-tooltip="From Wordpress to Hexo">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/06/05/from-wordpress-to-hexo/" data-tooltip="From Wordpress to Hexo">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -347,7 +347,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
         	
     </body>
     <!--SCRIPTS-->
-<script src="../../../../assets/js/script.min.js" type="text/javascript"></script>
+<script src="/assets/js/script.min.js"></script>
 <!--SCRIPTS END-->
 
     <script type="text/javascript">
