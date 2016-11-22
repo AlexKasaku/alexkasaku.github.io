@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Developer role error in Sitecore 8.1 - Kasaku</title>
+    <title>Introducing Sitecore.Sweep - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
@@ -171,36 +171,42 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Developer role error in Sitecore 8.1</h1>
+        <h1 class="post-title" itemprop="headline">Introducing Sitecore.Sweep</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Wed Oct 26 2016 23:00:00 GMT+0100">
-        Oct 26, 2016
+    <time  itemprop="datePublished" content="Mon Nov 21 2016 12:00:00 GMT+0000">
+        Nov 21, 2016
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>Recently I discovered an issue with the Developer user role in Sitecore 8.1.3. Though it has been fixed in Sitecore 8.2, it might catch you out if you haven’t upgraded yet.</p>
+        <p>I have <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">added to GitHub</a> a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.</p>
 <a id="more"></a>
-<p>Sitecore includes a Developer security role that can be assigned to users. This role includes both the Author and Designer roles, as well as adding further permissions. The full description supplied by Sitecore is:</p>
-<blockquote>
-<p>Gives the user access to content manipulation facilities in the Content Editor, plus all the design and authoring roles normally used by client authors and client designers. It also provides access to more functionality on the ribbon of the Content Editor to allow full development features for users assigned to this role.</p>
-</blockquote>
-<p>This role also has access to the Development Tools menu in the Sitecore menu, which gives the user access to further development tools, such as  the Package Designer.</p>
-<p>For a full description of the security roles within Sitecore, <a href="https://doc.sitecore.net/sitecore_experience_platform/setting_up__maintaining/security_and_administration/users_roles_and_domains/the_security_roles" target="_blank" rel="external">see this documentation page</a>.</p>
-<p>However, if you assign this role to a user then there is an issue that the user may encounter when trying to use some Developer functionality. If they attempt to insert an item in the Content Editor using the <code>Insert From Template</code> option, they will see the following exception:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[AccessDeniedException: Application access denied.]</span><br><span class="line">   Sitecore.Diagnostics.Assert.HasAccess(Boolean accessAllowed, String message) +81</span><br><span class="line">   Sitecore.Shell.Applications.Templates.AddFromTemplate.AddFromTemplateForm.OnLoad(EventArgs e) +73</span><br><span class="line"></span><br><span class="line">[TargetInvocationException: Exception has been thrown by the target of an invocation.]</span><br><span class="line">   System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor) +0</span><br><span class="line">   System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments) +128</span><br><span class="line">   System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture) +146</span><br><span class="line">   Sitecore.Reflection.ReflectionUtil.InvokeMethod(MethodInfo method, Object[] parameters, Object obj) +89</span><br><span class="line">   Sitecore.Web.UI.Sheer.ClientPage.OnLoad(EventArgs e) +594</span><br><span class="line">   System.Web.UI.Control.LoadRecursive() +68</span><br><span class="line">   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +1436</span><br></pre></td></tr></table></figure>
-<p>This error stems from the fact that the Author role has been explicitly denied access to the <code>Template Lister</code> application, but not to the <code>Insert From Template</code> button itself. They can see and click the button, but when the application is launched, it throws the error.</p>
-<p>This has been reported to Sitecore and confirmed as a bug, and is being tracked under the public reference <strong>113200</strong>.</p>
-<p>As a workaround to this issue, you can do the following:</p>
+<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>One of the great benefits of Sitecore is that it allows you 100% control over the HTML output of your site - it doesn’t inject unwanted scripts or styles, and it doesn’t force you to conform to a certain HTML structure. However, with great power, comes great responsibility.</p>
+<p>I am sure you have worked on a site that has been lovingly crafted by your UX team, beautifully imagined by designers, and expertly rendered by front-end developers, only for the site to then be gifted to content editors. At this point, using Sitecore’s standard rich-text editor, they add their own unique touch by way of tables for layouts, overriding fonts, and center-aligning text to their heart’s delight. The result is not quite the dream your team first had, or indeed, sold to the client.</p>
+<p>Often, this is not the fault of the editors; content gets copy + pasted from Word (or other applications) and customized HTML comes along for the ride. And all those lovely styling buttons are right there in the editor, why not use them?</p>
+<h2 id="Workarounds"><a href="#Workarounds" class="headerlink" title="Workarounds"></a>Workarounds</h2><p>Yes, there are means of tackling this in Sitecore. You can limit the functionality of the rich-text editor by removing most of the options, but Sitecore’s editor can still result in some undesirable HTML even with very few options available to the user. And yes, there are buttons there to assist in the copying of text from Word, <em>if</em> your editors remember to use them.</p>
+<p>You can even go down the road of validating the HTML created and show the user an error if their HTML isn’t up to scratch. But if you’re going to that trouble, why not present a solution rather than a problem and silently tidy up the content for the user immediately? That’s what this small module, Sweep, sets out to do.</p>
+<h2 id="Introducing-Sitecore-Sweep"><a href="#Introducing-Sitecore-Sweep" class="headerlink" title="Introducing Sitecore.Sweep"></a>Introducing Sitecore.Sweep</h2><p>Despite the dramatic introduction, Sweep is actually a very straight-forward and simple module. Upon the saving of an item through the UI - i.e. in Experience Editor or Content Editor - Sweep will pass the fields being saved through a pipeline that will a) determine if they need to be cleaned and b) clean them if required.</p>
+<p>Determining if they need to be cleaned is down to the configuration of the module. You can configure Sweep to clean <strong>all</strong> Rich-Text fields if you desire, which is not something I have used myself, or you can take a more granular approach and only apply it to certain templates and fields.</p>
+<p>The cleaning is performed by an extensible pipeline which can do as little or as much as you like. Included in the module are options for:</p>
 <ul>
-<li>Remove <code>sitecore\Author</code> from the <code>sitecore\Developer</code> role</li>
-<li>Add the various roles that <code>sitecore\Author</code> inherits directly to the <code>sitecore\Developer</code> role.</li>
+<li>Removing inline styling (e.g. <code>&lt;p style=&quot;margin-top:430px&quot;&gt;A lovely paragraph&lt;/p&gt;</code> –&gt; <code>&lt;p&gt;A lovely paragraph&lt;/p&gt;</code>)</li>
+<li>Removing unwanted classes (supports both whitelisting + blacklisting class names)</li>
+<li>Removing empty elements (e.g. <code>&lt;p&gt;&lt;/p&gt;</code>)</li>
+<li>Fixing shoddy headers (e.g. <code>&lt;p&gt;&lt;strong&gt;My title!&lt;/strong&gt;&lt;/p&gt;</code> –&gt; <code>&lt;h2&gt;My title!&lt;/h2</code>)</li>
+<li>Ensuring text is wrapped in a paragraph tag if no root element is found</li>
+<li>Fixing nested paragraphs (e.g. <code>&lt;p&gt;&lt;p&gt;My text&lt;/p&gt;&lt;/p&gt;</code> –&gt; <code>&lt;p&gt;My text&lt;/p&gt;</code>), yes this can happen!</li>
+<li>Removing non-breaking spaces, because they shouldn’t be used for spacing text.</li>
+<li>Removing inner-elements from headers (e.g. <code>&lt;h1&gt;&lt;strong&gt;My strong header!&lt;/strong&gt;&lt;/h1&gt;</code> –&gt; <code>&lt;h1&gt;My strong header!&lt;/h1&gt;</code>)</li>
 </ul>
-<p>This means the Developer gets the roles that Author has, but not the <strong>DENY</strong> permissions that have been recently set explicitly on the Author role.</p>
-<p>Alternatively, as stated above, these same <strong>DENY</strong> permissions for the Author role don’t seem to be present in Sitecore 8.2, so upgrading to that version will restore the correct functionality.</p>
+<p>These are just a collection of examples that I have used in various projects. It is by no means suggested that a site should need to use all of these options, or that all of these make for Perfect HTML™. Every situation is different, and these are just some of the provided options that can be used. It is also super-easy to add your own by extending a provided processor base class.</p>
+<p>This is definitely not a module for all sites, or even most sites, but I have certainly made use of it so I have added it to GitHub in case others can use it too.</p>
+<h2 id="Want-to-try-it"><a href="#Want-to-try-it" class="headerlink" title="Want to try it?"></a>Want to try it?</h2><p>The <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">module is hosted on GitHub</a>. It has also been submitted to the Sitecore Marketplace and will hopefully be published shortly.</p>
+<h2 id="Feedback"><a href="#Feedback" class="headerlink" title="Feedback"></a>Feedback</h2><p>I would be very keen to hear from anyone who has tried the module and wants to provide feedback. Or if you’ve read this blog post and have any questions / comments, please comment below or message me on Sitecore Slack for a chat about it.</p>
+<p>I’d especially like to hear from you if you think it’s either fundamentally flawed or can be achieved in a much better manner! </p>
 
         
             
@@ -211,7 +217,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/bugs/">bugs</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-8/">sitecore-8</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/projects/">projects</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -220,7 +226,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/11/21/sitecore-sweep/"  data-tooltip="Introducing Sitecore.Sweep">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -228,7 +234,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/09/14/moving-items-with-single-references/" data-tooltip="Moving Datasource items to their pages using Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/10/26/developer-role-error-in-sitecore-8-1/" data-tooltip="Developer role error in Sitecore 8.1">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -238,17 +244,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -281,7 +287,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/11/21/sitecore-sweep/"  data-tooltip="Introducing Sitecore.Sweep">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -289,7 +295,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/09/14/moving-items-with-single-references/" data-tooltip="Moving Datasource items to their pages using Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/10/26/developer-role-error-in-sitecore-8-1/" data-tooltip="Developer role error in Sitecore 8.1">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -299,17 +305,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
