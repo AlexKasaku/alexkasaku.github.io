@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Introducing Sitecore.Sweep - Kasaku</title>
+    <title>Storing data in the user profile in Sitecore PowerShell Extensions - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku">
     
@@ -171,42 +171,31 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Introducing Sitecore.Sweep</h1>
+        <h1 class="post-title" itemprop="headline">Storing data in the user profile in Sitecore PowerShell Extensions</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Mon Nov 21 2016 12:00:00 GMT+0000">
-        Nov 21, 2016
+    <time  itemprop="datePublished" content="Wed Jul 19 2017 12:00:00 GMT+0100">
+        Jul 19, 2017
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>I have <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">added to GitHub</a> a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.</p>
-<a id="more"></a>
-<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>One of the great benefits of Sitecore is that it allows you 100% control over the HTML output of your site - it doesn’t inject unwanted scripts or styles, and it doesn’t force you to conform to a certain HTML structure. However, with great power, comes great responsibility.</p>
-<p>I am sure you have worked on a site that has been lovingly crafted by your UX team, beautifully imagined by designers, and expertly rendered by front-end developers, only for the site to then be gifted to content editors. At this point, using Sitecore’s standard rich-text editor, they add their own unique touch by way of tables for layouts, overriding fonts, and center-aligning text to their heart’s delight. The result is not quite the dream your team first had, or indeed, sold to the client.</p>
-<p>Often, this is not the fault of the editors; content gets copy + pasted from Word (or other applications) and customized HTML comes along for the ride. And all those lovely styling buttons are right there in the editor, why not use them?</p>
-<h2 id="Workarounds"><a href="#Workarounds" class="headerlink" title="Workarounds"></a>Workarounds</h2><p>Yes, there are means of tackling this in Sitecore. You can limit the functionality of the rich-text editor by removing most of the options, but Sitecore’s editor can still result in some undesirable HTML even with very few options available to the user. And yes, there are buttons there to assist in the copying of text from Word, <em>if</em> your editors remember to use them.</p>
-<p>You can even go down the road of validating the HTML created and show the user an error if their HTML isn’t up to scratch. But if you’re going to that trouble, why not present a solution rather than a problem and silently tidy up the content for the user immediately? That’s what this small module, Sweep, sets out to do.</p>
-<h2 id="Introducing-Sitecore-Sweep"><a href="#Introducing-Sitecore-Sweep" class="headerlink" title="Introducing Sitecore.Sweep"></a>Introducing Sitecore.Sweep</h2><p>Despite the dramatic introduction, Sweep is actually a very straight-forward and simple module. Upon the saving of an item through the UI - i.e. in Experience Editor or Content Editor - Sweep will pass the fields being saved through a pipeline that will a) determine if they need to be cleaned and b) clean them if required.</p>
-<p>Determining if they need to be cleaned is down to the configuration of the module. You can configure Sweep to clean <strong>all</strong> Rich-Text fields if you desire, which is not something I have used myself, or you can take a more granular approach and only apply it to certain templates and fields.</p>
-<p>The cleaning is performed by an extensible pipeline which can do as little or as much as you like. Included in the module are options for:</p>
-<ul>
-<li>Removing inline styling (e.g. <code>&lt;p style=&quot;margin-top:430px&quot;&gt;A lovely paragraph&lt;/p&gt;</code> –&gt; <code>&lt;p&gt;A lovely paragraph&lt;/p&gt;</code>)</li>
-<li>Removing unwanted classes (supports both whitelisting + blacklisting class names)</li>
-<li>Removing empty elements (e.g. <code>&lt;p&gt;&lt;/p&gt;</code>)</li>
-<li>Fixing shoddy headers (e.g. <code>&lt;p&gt;&lt;strong&gt;My title!&lt;/strong&gt;&lt;/p&gt;</code> –&gt; <code>&lt;h2&gt;My title!&lt;/h2&gt;</code>)</li>
-<li>Ensuring text is wrapped in a paragraph tag if no root element is found</li>
-<li>Fixing nested paragraphs (e.g. <code>&lt;p&gt;&lt;p&gt;My text&lt;/p&gt;&lt;/p&gt;</code> –&gt; <code>&lt;p&gt;My text&lt;/p&gt;</code>), yes this can happen!</li>
-<li>Removing non-breaking spaces, because they shouldn’t be used for spacing text.</li>
-<li>Removing inner-elements from headers (e.g. <code>&lt;h1&gt;&lt;strong&gt;My strong header!&lt;/strong&gt;&lt;/h1&gt;</code> –&gt; <code>&lt;h1&gt;My strong header!&lt;/h1&gt;</code>)</li>
-</ul>
-<p>These are just a collection of examples that I have used in various projects. It is by no means suggested that a site should need to use all of these options, or that all of these make for Perfect HTML™. Every situation is different, and these are just some of the provided options that can be used. It is also super-easy to add your own by extending a provided processor base class.</p>
-<p>This is definitely not a module for all sites, or even most sites, but I have certainly made use of it so I have added it to GitHub in case others can use it too.</p>
-<h2 id="Want-to-try-it"><a href="#Want-to-try-it" class="headerlink" title="Want to try it?"></a>Want to try it?</h2><p>The <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">module is hosted on GitHub</a>. It has also been submitted to the Sitecore Marketplace and will hopefully be published shortly.</p>
-<h2 id="Feedback"><a href="#Feedback" class="headerlink" title="Feedback"></a>Feedback</h2><p>I would be very keen to hear from anyone who has tried the module and wants to provide feedback. Or if you’ve read this blog post and have any questions / comments, please comment below or message me on Sitecore Slack for a chat about it.</p>
-<p>I’d especially like to hear from you if you think it’s either fundamentally flawed or can be achieved in a much better manner! </p>
+        <p>Sitecore PowerShell Extensions has a very powerful dialog feature that allows scripts to be written that create dialogs for capturing information from the user.<br><a id="more"></a><br>This feature is used by a great deal of the scripts that come bundled with SPE, such as the broken links report:</p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_brokenlinks.png" alt="Broken links dialog" title="Broken links dialog"></p>
+
+<p>And the package generator:</p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_pkg.png" alt="Package generator dialog" title="Package generator dialog"></p>
+
+<p>If you have a script featuring a dialog that you regularly execute, you might want to have your most recently used values saved, so that next time you execute the script you can skip through the dialog. Fortunately, this is actually quite easy to accomplish.</p>
+<h1 id="Using-the-User-Profile"><a href="#Using-the-User-Profile" class="headerlink" title="Using the User Profile"></a>Using the User Profile</h1><p>There are a number of different locations you could use to persist this data. Assuming you wish to save the values on a per-user basis, one of the easiest methods is to use the <a href="https://msdn.microsoft.com/en-us/library/2y3fs9xs.aspx" target="_blank" rel="external">ASP.NET User Profile</a>. This is part of the <a href="https://msdn.microsoft.com/en-us/library/yh26yfzy.aspx" target="_blank" rel="external">ASP.NET Membership Provider</a> that Sitecore’s user management is built upon. Using the profile means that the data will be stored within SQL Server and therefore persisted across multiple browser sessions and machines. Furthermore, the Sitecore API and SPE makes accessing this profile very simple.</p>
+<p>Getting the current user and setting / getting a profile value from it couldn’t be simpler:</p>
+<figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Get the current user</span></div><div class="line"><span class="variable">$user</span> = Get-User -Current </div><div class="line"></div><div class="line"><span class="comment"># Store a value</span></div><div class="line"><span class="variable">$user</span>.Profile.SetCustomProperty(<span class="string">"mycustomproperty"</span>, <span class="string">"store this please!"</span>)</div><div class="line"></div><div class="line"><span class="comment"># Read a value</span></div><div class="line"><span class="variable">$user</span>.Profile.GetCustomProperty(<span class="string">"mycustomproperty"</span>)</div></pre></td></tr></table></figure>
+<p>Straightforward, right?</p>
+<h2 id="A-sample-script"><a href="#A-sample-script" class="headerlink" title="A sample script"></a>A sample script</h2><p>Let’s use the above example and apply it to a script that uses a dialog. In this example, we will show a simple dialog with a dropdown list. When the dialog is completed, the value that was selected will be stored in the current user’s profile, ready for next time:</p>
+<figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$profileKey</span> = <span class="string">"myScript_savedOption"</span></div><div class="line"><span class="variable">$me</span> = Get-User -Current</div><div class="line"></div><div class="line"><span class="comment"># Read the last saved value from the user profile, if any.</span></div><div class="line"><span class="comment"># This will get set in the dialog as the default value.</span></div><div class="line"><span class="variable">$savedValue</span> = <span class="variable">$me</span>.Profile.GetCustomProperty(<span class="variable">$profileKey</span>)</div><div class="line"></div><div class="line"><span class="variable">$options</span> = [ordered]@&#123;</div><div class="line">    <span class="string">"Option One"</span>=<span class="string">"1"</span></div><div class="line">    <span class="string">"Option Two"</span>=<span class="string">"2"</span></div><div class="line">    <span class="string">"Option Three"</span>=<span class="string">"3"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="variable">$props</span> = @&#123;</div><div class="line">    Parameters = @(</div><div class="line">        @&#123;Name=<span class="string">"chosenOption"</span>; Title=<span class="string">"Choose an option"</span>; Options=<span class="variable">$options</span>; Value=<span class="variable">$savedValue</span>&#125;</div><div class="line">    )</div><div class="line">    Title = <span class="string">"Persistant option selector"</span></div><div class="line">    Description = <span class="string">"Choose an option, your choice will be saved for next time."</span></div><div class="line">    Width = <span class="number">300</span></div><div class="line">    Height = <span class="number">300</span></div><div class="line">    ShowHints = <span class="literal">$true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="variable">$result</span> = Read-Variable @props </div><div class="line"></div><div class="line"><span class="comment"># Only proceed if the user selected OK in the dialog.</span></div><div class="line"><span class="keyword">if</span>(<span class="variable">$result</span> <span class="nomarkup">-ne</span> <span class="string">"ok"</span>)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># Save the value in the user profile for next time</span></div><div class="line"><span class="variable">$me</span>.Profile.SetCustomProperty(<span class="variable">$profileKey</span>, <span class="variable">$chosenOption</span>)</div><div class="line"></div><div class="line"><span class="comment"># Can now proceed to use $chosenOption in the script</span></div></pre></td></tr></table></figure>
+<p>If you execute the script, you will see that once you have completed the dialog once, the value you last selected is preselected for you the next time you run the script. Easy, right?</p>
 
         
             
@@ -217,7 +206,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/projects/">projects</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/powershell/">powershell</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-powershell-extensions/">sitecore-powershell-extensions</a>
 
             </div>
         
@@ -226,7 +215,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/19/sitecore-powershell-storing-in-user-profile/"  data-tooltip="Storing data in the user profile in Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -234,7 +223,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/10/26/developer-role-error-in-sitecore-8-1/" data-tooltip="Developer role error in Sitecore 8.1">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/11/21/sitecore-sweep/" data-tooltip="Introducing Sitecore.Sweep">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -244,17 +233,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -287,7 +276,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/19/sitecore-powershell-storing-in-user-profile/"  data-tooltip="Storing data in the user profile in Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -295,7 +284,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/10/26/developer-role-error-in-sitecore-8-1/" data-tooltip="Developer role error in Sitecore 8.1">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/11/21/sitecore-sweep/" data-tooltip="Introducing Sitecore.Sweep">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -305,17 +294,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
