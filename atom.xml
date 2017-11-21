@@ -4,9 +4,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://www.kasaku.co.uk/"/>
-  <updated>2017-11-05T15:43:28.107Z</updated>
-  <id>http://www.kasaku.co.uk/</id>
+  <link href="https://www.kasaku.co.uk/"/>
+  <updated>2017-11-21T13:14:25.461Z</updated>
+  <id>https://www.kasaku.co.uk/</id>
   
   <author>
     <name>Kasaku Ltd.</name>
@@ -16,52 +16,123 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Shard map manager has to be configured error in Sitecore XConnect</title>
-    <link href="http://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"/>
-    <id>http://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/</id>
-    <published>2017-11-05T12:00:00.000Z</published>
-    <updated>2017-11-05T15:43:28.107Z</updated>
+    <title>Sitecore 9 + xConnect: Blog round-up and known issues</title>
+    <link href="https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/"/>
+    <id>https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/</id>
+    <published>2017-11-21T12:00:00.000Z</published>
+    <updated>2017-11-21T13:14:25.461Z</updated>
     
-    <content type="html"><![CDATA[<p>After configuring Sitecore 9 and XConnect, you may come across the following error in the XConnect logs when you’re trying to use the API:<br><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2017-10-29 21:23:30.052 +00:00 [Error] [&quot;XdbContextLoggingPlugin&quot;] XdbContext Batch Execution Exception</div><div class="line">Sitecore.XConnect.Operations.DependencyFailedException: One or more dependencies failed ---&gt; </div><div class="line">Sitecore.Xdb.Collection.Failures.DataProviderException: Postcondition &apos;The shard map manager has to be configured.&apos; failed. ---&gt;</div><div class="line">Sitecore.Framework.Conditions.PostconditionException: Postcondition &apos;The shard map manager has to be configured.&apos; failed.</div><div class="line">   at Sitecore.Framework.Conditions.EnsuresValidator`1.ThrowExceptionCore(String condition, String additionalMessage, ConstraintViolationType type)</div><div class="line">   at Sitecore.Framework.Conditions.Throw.ValueShouldBeTrue[T](ConditionValidator`1 validator, String conditionDescription)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.InitializeShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.get_ShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.GetRangeShardMap(String rangeShardMapName)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.&lt;&gt;c__DisplayClass37_0.&lt;GetRangeMappings&gt;b__0()</div><div class="line">   at System.Lazy`1.CreateValue()</div><div class="line">   at System.Lazy`1.LazyInitValue()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.MemoryCacheManager.AddOrGetExistingFromCache[T](String key, Func`1 valueFactory)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.MapRecordsToShards[T](String rangeShardMapName, IReadOnlyCollection`1 records, Func`2 getShardKey)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Managers.SqlContactRecordsManager.&lt;GetContactIdentifiersFromIndexAsync&gt;d__5.MoveNext()</div></pre></td></tr></table></figure>
-<p>Despite the slightly cryptic error message, the cause of this is actually fairly straightforward. If you see this error, this is an indicator that XConnect cannot connect to the <code>Xdb.Collection.ShardMapManager</code> database, which is attempted in the <code>InitializeShardMapManager</code> method, where this exception is being thrown.</p>
-<p>Though the underlying SQL error doesn’t appear to be logged, to diagnose the problem, you should confirm that the <code>collection</code> connection string in the configuration is correct:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"collection"</span> <span class="attr">connectionString</span>=<span class="string">"user id=collectionuser;password=***PASSWORD***;data source=localhost;Initial Catalog=sc90_Xdb.Collection.ShardMapManager"</span> /&gt;</span></div></pre></td></tr></table></figure>
-<p>In my instance, the Sitecore 9 install hadn’t correctly created the <code>collectionuser</code> login in SQL Server, so I just had to create this login and add it to the <code>sc90_Xdb.Collection.ShardMapManager</code> database. I confirmed that the connection string worked and provided access to the ShardMapManager database, and after that point, the error disappeared and I was able to push data into XConnect.</p>
+    <content type="html"><![CDATA[<p>Now that Sitecore 9.0 has been out in the wild for a while, and after having spent time with both it and xConnect, I thought I’d create a post to round-up some things of note.<br><a id="more"></a></p>
+<h1 id="Sitecore-9-0"><a href="#Sitecore-9-0" class="headerlink" title="Sitecore 9.0"></a>Sitecore 9.0</h1><p>First, just to touch on Sitecore 9.0 in general. There are already some great resources available, created by Sitecore and the community to get you up to speed:</p>
+<ul>
+<li>The official <a href="https://doc.sitecore.net/developers/index.html" target="_blank" rel="noopener">Sitecore Developer documentation</a></li>
+<li><a href="https://jammykam.wordpress.com/" target="_blank" rel="noopener">Kamruz Jaman</a>, aka jammycam, provides a good overview of the new features in his blog post - <a href="https://jammykam.wordpress.com/2017/10/17/sitecore-9-is-here/" target="_blank" rel="noopener">Sitecore 9 is here!</a>. He’s also created blogged specifically about the new <a href="https://jammykam.wordpress.com/2017/11/01/sitecore-9-custom-config-roles/" target="_blank" rel="noopener">custom configuration roles</a> and <a href="https://jammykam.wordpress.com/2017/10/17/sitecore-9-dynamic-placeholders/" target="_blank" rel="noopener">dynamic placeholders</a></li>
+</ul>
+<p>Installations in Sitecore 9.0 have become a little more complicated, and there’s a bit more to get used to, especially when it comes to setting up your own development environment. The following blog posts provide some good pointers and scripts to get you going faster:</p>
+<ul>
+<li><a href="http://blog.baslijten.com/gotchas-while-installing-sitecore-9-using-the-sitecore-installation-framework/" target="_blank" rel="noopener">SIF Installation gotchas</a> by <a href="http://blog.baslijten.com" target="_blank" rel="noopener">Bas Lijten</a></li>
+<li><a href="https://jermdavis.wordpress.com/2017/10/30/low-effort-solr-installs/" target="_blank" rel="noopener">Low-effort SOLR installs</a> by <a href="https://jermdavis.wordpress.com" target="_blank" rel="noopener">Jeremy Davis</a></li>
+<li><a href="https://kamsar.net/index.php/2017/11/The-lazy-way-to-install-Sitecore-9/" target="_blank" rel="noopener">The lazy developer’s way to install Sitecore 9</a> by <a href="https://kamsar.net" target="_blank" rel="noopener">Kam Figy</a></li>
+</ul>
+<p>SOLR is essentially a prerequisite for Sitecore now. If you have only been using Lucene so far, I would strongly recommend you investigate SOLR and move towards it as the norm for your projects. Fortunately, with the introduction of SIF and the new configuration roles, switching over to SOLR is much simpler than in previous versions of Sitecore.</p>
+<h1 id="Introducing-xConnect"><a href="#Introducing-xConnect" class="headerlink" title="Introducing xConnect"></a>Introducing xConnect</h1><p>xConnect is a brand new concept for Sitecore 9.0, and as such you’ll want to make sure you’re up to speed on it. Rather than go into detail here on what it is and what you need to know, there are already some really good resources that have been written that I can point you to.</p>
+<p>First off, there is the <a href="https://doc.sitecore.net/developers/xp/xconnect/#" target="_blank" rel="noopener">official documentation for xConnect</a>, which is chock-full of examples and guidance, so shouldn’t be overlooked.</p>
+<p>Next, my man <a href="https://citizensitecore.com/author/longhorntaco/" target="_blank" rel="noopener">Jason Wilkerson</a>, aka longhorntaco, has created <a href="https://citizensitecore.com/2017/10/17/introducing-xconnect-for-sitecore-9/" target="_blank" rel="noopener">a fantastic series of blog posts introducing xConnect</a> and also provides sample code for getting your first xConnect client running and pushing interactions into xDb. All the example code is included on <a href="https://github.com/LonghornTaco/xconnect-intro" target="_blank" rel="noopener">GitHub</a> too, nice!</p>
+<h1 id="Known-xConnect-issues"><a href="#Known-xConnect-issues" class="headerlink" title="Known xConnect issues"></a>Known xConnect issues</h1><h2 id="Interactions-bug"><a href="#Interactions-bug" class="headerlink" title="Interactions bug"></a>Interactions bug</h2><p>There is currently an outstanding bug relating to tracking interactions from a non-Sitecore xConnect client. When these interactions are added to a  contact, they will then cause an error to be shown when the Experience Profile is used to view that contact:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/profile-visits-error.png" title="Experience profile visits error"></p>
+
+<p>Along with seeing this error, you’ll also have the following error logged:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">15516 18:30:09 ERROR Object reference not set to an instance of an object.</div><div class="line">Exception: System.NullReferenceException</div><div class="line">Message: Object reference not set to an instance of an object.</div><div class="line">Source: Sitecore.Cintel</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.FillTableWithRow(DataTable rawTable, Interaction curInteraction, Int32 index)</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.GetTableFromContactXconnect(DataTable rawTable, Guid contactID, Nullable`1 interactionID)</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.Process(ReportProcessorArgs args)</div><div class="line">   at (Object , Object[] )</div><div class="line">   at Sitecore.Pipelines.CorePipeline.Run(PipelineArgs args)</div><div class="line">   at Sitecore.Cintel.Reporting.PipelineViewProvider.GenerateContactView(ViewParameters viewParameters)</div><div class="line">   at Sitecore.Cintel.Endpoint.IntelController.Get(ViewParameters viewParams, Guid contactId, String viewId, String id)</div></pre></td></tr></table></figure>
+<p>The issue occurs due to the interactions from an xConnect client not supplying all of the facets that a typical web visit interaction does, such as User Agent + IP info. The code that executes within the Experience Profile to render visit data expects these facets to be populated.</p>
+<p>This issue is already known to Sitecore, and is listed on the <a href="https://kb.sitecore.net/articles/125044" target="_blank" rel="noopener">Sitecore 9.0 Known Issues page</a>:</p>
+<blockquote>
+<p>The Experience Profile currently only supports website visit interactions. As a result, if an interaction does not fully populate the facets required for a web visit, an error is displayed.</p>
+</blockquote>
+<p>There are however, a couple of workarounds you can put in place to fix this issue. These involve either:</p>
+<ul>
+<li>Providing data for these additional facets with your interactions from your xConnect client</li>
+<li>Patching the report code so that it allows for this data to be missing</li>
+</ul>
+<p>This would be worth a blog post on its own, but fortunately, there is already <a href="https://www.brimit.com/blog/sitecore-9-experience-profile-workaround" target="_blank" rel="noopener">a great post covering how to implement these workarounds</a>.</p>
+<h2 id="Experience-Profile-dashboard-filter-bug"><a href="#Experience-Profile-dashboard-filter-bug" class="headerlink" title="Experience Profile dashboard filter bug"></a>Experience Profile dashboard filter bug</h2><p>Additionally, you may notice that within the Experience Profile, the default search dashboard doesn’t seem to show any results, even if you know there are contacts present:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/xp-no-results.png" title="Experience Profile showing no results"></p>
+
+<p>This is due to another Known Issue in Sitecore:</p>
+<blockquote>
+<p>The To date field must be filled in to see search results. This field is hidden by default and you must select the Filter button to enable it. (187153)</p>
+</blockquote>
+<p>To workaround this for now, you need to open up the filter and make sure the <em>To Date</em> field is set to a value that covers an interaction for your contact:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/xp-filter.png" title="Applying a filter to the Experience Profile search"></p>
+
+<p>With this in place, you should see that the contacts start appearing.</p>
+<h1 id="Questions-Don’t-forget-StackExchange"><a href="#Questions-Don’t-forget-StackExchange" class="headerlink" title="Questions? Don’t forget StackExchange"></a>Questions? Don’t forget StackExchange</h1><p>Still facing an issue relating to Sitecore 9.0 or xConnect that no one has yet covered? The <a href="https://sitecore.stackexchange.com" target="_blank" rel="noopener">Sitecore StackExchange</a> is, as ever, the no. 1 resource for questions + answers relating to all things Sitecore. Questions can be tagged, so it’s worth browsing <a href="https://sitecore.stackexchange.com/questions/tagged/xconnect" target="_blank" rel="noopener">the xConnect questions</a> to see if someone is encountering the same problem as you.</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;After configuring Sitecore 9 and XConnect, you may come across the following error in the XConnect logs when you’re trying to use the API:&lt;br&gt;
+      &lt;p&gt;Now that Sitecore 9.0 has been out in the wild for a while, and after having spent time with both it and xConnect, I thought I’d create a post to round-up some things of note.&lt;br&gt;
     
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="bugs" scheme="http://www.kasaku.co.uk/tags/bugs/"/>
+      <category term="bugs" scheme="https://www.kasaku.co.uk/tags/bugs/"/>
     
-      <category term="sitecore-9" scheme="http://www.kasaku.co.uk/tags/sitecore-9/"/>
+      <category term="sitecore-9" scheme="https://www.kasaku.co.uk/tags/sitecore-9/"/>
     
-      <category term="xconnect" scheme="http://www.kasaku.co.uk/tags/xconnect/"/>
+      <category term="xconnect" scheme="https://www.kasaku.co.uk/tags/xconnect/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Shard map manager has to be configured error in Sitecore xConnect</title>
+    <link href="https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"/>
+    <id>https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/</id>
+    <published>2017-11-05T12:00:00.000Z</published>
+    <updated>2017-11-21T13:15:27.540Z</updated>
+    
+    <content type="html"><![CDATA[<p>After configuring Sitecore 9 and xConnect, you may come across the following error in the xConnect logs when you’re trying to use the API:<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2017-10-29 21:23:30.052 +00:00 [Error] [&quot;XdbContextLoggingPlugin&quot;] XdbContext Batch Execution Exception</div><div class="line">Sitecore.XConnect.Operations.DependencyFailedException: One or more dependencies failed ---&gt; </div><div class="line">Sitecore.Xdb.Collection.Failures.DataProviderException: Postcondition &apos;The shard map manager has to be configured.&apos; failed. ---&gt;</div><div class="line">Sitecore.Framework.Conditions.PostconditionException: Postcondition &apos;The shard map manager has to be configured.&apos; failed.</div><div class="line">   at Sitecore.Framework.Conditions.EnsuresValidator`1.ThrowExceptionCore(String condition, String additionalMessage, ConstraintViolationType type)</div><div class="line">   at Sitecore.Framework.Conditions.Throw.ValueShouldBeTrue[T](ConditionValidator`1 validator, String conditionDescription)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.InitializeShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.get_ShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.GetRangeShardMap(String rangeShardMapName)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.&lt;&gt;c__DisplayClass37_0.&lt;GetRangeMappings&gt;b__0()</div><div class="line">   at System.Lazy`1.CreateValue()</div><div class="line">   at System.Lazy`1.LazyInitValue()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.MemoryCacheManager.AddOrGetExistingFromCache[T](String key, Func`1 valueFactory)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.MapRecordsToShards[T](String rangeShardMapName, IReadOnlyCollection`1 records, Func`2 getShardKey)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Managers.SqlContactRecordsManager.&lt;GetContactIdentifiersFromIndexAsync&gt;d__5.MoveNext()</div></pre></td></tr></table></figure>
+<p>Despite the slightly cryptic error message, the cause of this is actually fairly straightforward. If you see this error, this is an indicator that xConnect cannot connect to the <code>Xdb.Collection.ShardMapManager</code> database, which is attempted in the <code>InitializeShardMapManager</code> method, where this exception is being thrown.</p>
+<p>Though the underlying SQL error doesn’t appear to be logged, to diagnose the problem, you should confirm that the <code>collection</code> connection string in the configuration is correct:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"collection"</span> <span class="attr">connectionString</span>=<span class="string">"user id=collectionuser;password=***PASSWORD***;data source=localhost;Initial Catalog=sc90_Xdb.Collection.ShardMapManager"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<p>In my instance, the Sitecore 9 install hadn’t correctly created the <code>collectionuser</code> login in SQL Server, so I just had to create this login and add it to the <code>sc90_Xdb.Collection.ShardMapManager</code> database. I confirmed that the connection string worked and provided access to the ShardMapManager database, and after that point, the error disappeared and I was able to push data into xConnect.</p>
+<p>This error occurs if the post-installation manual steps are not completed. For Sitecore 9.0, these are found in Chapter 6 of the installation guide.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;After configuring Sitecore 9 and xConnect, you may come across the following error in the xConnect logs when you’re trying to use the API:&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
+    
+      <category term="bugs" scheme="https://www.kasaku.co.uk/tags/bugs/"/>
+    
+      <category term="sitecore-9" scheme="https://www.kasaku.co.uk/tags/sitecore-9/"/>
+    
+      <category term="xconnect" scheme="https://www.kasaku.co.uk/tags/xconnect/"/>
     
   </entry>
   
   <entry>
     <title>Storing data in the user profile in Sitecore PowerShell Extensions</title>
-    <link href="http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/"/>
-    <id>http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/</id>
+    <link href="https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/"/>
+    <id>https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/</id>
     <published>2017-07-19T11:00:00.000Z</published>
     <updated>2017-11-05T16:04:49.289Z</updated>
     
     <content type="html"><![CDATA[<p>Sitecore PowerShell Extensions has a very powerful dialog feature that allows scripts to be written that create dialogs for capturing information from the user.<br><a id="more"></a><br>This feature is used by a great deal of the scripts that come bundled with SPE, such as the broken links report:</p>
-<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_brokenlinks.png" alt="Broken links dialog" title="Broken links dialog"></p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_brokenlinks.png" title="Broken links dialog"></p>
 
 <p>And the package generator:</p>
-<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_pkg.png" alt="Package generator dialog" title="Package generator dialog"></p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_pkg.png" title="Package generator dialog"></p>
 
 <p>If you have a script featuring a dialog that you regularly execute, you might want to have your most recently used values saved, so that next time you execute the script you can skip through the dialog. Fortunately, this is actually quite easy to accomplish.</p>
-<h1 id="Using-the-User-Profile"><a href="#Using-the-User-Profile" class="headerlink" title="Using the User Profile"></a>Using the User Profile</h1><p>There are a number of different locations you could use to persist this data. Assuming you wish to save the values on a per-user basis, one of the easiest methods is to use the <a href="https://msdn.microsoft.com/en-us/library/2y3fs9xs.aspx" target="_blank" rel="external">ASP.NET User Profile</a>. This is part of the <a href="https://msdn.microsoft.com/en-us/library/yh26yfzy.aspx" target="_blank" rel="external">ASP.NET Membership Provider</a> that Sitecore’s user management is built upon. Using the profile means that the data will be stored within SQL Server and therefore persisted across multiple browser sessions and machines. Furthermore, the Sitecore API and SPE makes accessing this profile very simple.</p>
+<h1 id="Using-the-User-Profile"><a href="#Using-the-User-Profile" class="headerlink" title="Using the User Profile"></a>Using the User Profile</h1><p>There are a number of different locations you could use to persist this data. Assuming you wish to save the values on a per-user basis, one of the easiest methods is to use the <a href="https://msdn.microsoft.com/en-us/library/2y3fs9xs.aspx" target="_blank" rel="noopener">ASP.NET User Profile</a>. This is part of the <a href="https://msdn.microsoft.com/en-us/library/yh26yfzy.aspx" target="_blank" rel="noopener">ASP.NET Membership Provider</a> that Sitecore’s user management is built upon. Using the profile means that the data will be stored within SQL Server and therefore persisted across multiple browser sessions and machines. Furthermore, the Sitecore API and SPE makes accessing this profile very simple.</p>
 <p>Getting the current user and setting / getting a profile value from it couldn’t be simpler:</p>
 <figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Get the current user</span></div><div class="line"><span class="variable">$user</span> = Get-User -Current </div><div class="line"></div><div class="line"><span class="comment"># Store a value</span></div><div class="line"><span class="variable">$user</span>.Profile.SetCustomProperty(<span class="string">"mycustomproperty"</span>, <span class="string">"store this please!"</span>)</div><div class="line"></div><div class="line"><span class="comment"># Read a value</span></div><div class="line"><span class="variable">$user</span>.Profile.GetCustomProperty(<span class="string">"mycustomproperty"</span>)</div></pre></td></tr></table></figure>
 <p>Straightforward, right?</p>
@@ -77,22 +148,22 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-powershell-extensions" scheme="http://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
+      <category term="sitecore-powershell-extensions" scheme="https://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
     
-      <category term="powershell" scheme="http://www.kasaku.co.uk/tags/powershell/"/>
+      <category term="powershell" scheme="https://www.kasaku.co.uk/tags/powershell/"/>
     
   </entry>
   
   <entry>
     <title>Introducing Sitecore.Sweep</title>
-    <link href="http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/"/>
-    <id>http://www.kasaku.co.uk/2016/11/21/sitecore-sweep/</id>
+    <link href="https://www.kasaku.co.uk/2016/11/21/sitecore-sweep/"/>
+    <id>https://www.kasaku.co.uk/2016/11/21/sitecore-sweep/</id>
     <published>2016-11-21T12:00:00.000Z</published>
     <updated>2017-07-19T13:03:14.695Z</updated>
     
-    <content type="html"><![CDATA[<p>I have <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">added to GitHub</a> a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.</p>
+    <content type="html"><![CDATA[<p>I have <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="noopener">added to GitHub</a> a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.</p>
 <a id="more"></a>
 <h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>One of the great benefits of Sitecore is that it allows you 100% control over the HTML output of your site - it doesn’t inject unwanted scripts or styles, and it doesn’t force you to conform to a certain HTML structure. However, with great power, comes great responsibility.</p>
 <p>I am sure you have worked on a site that has been lovingly crafted by your UX team, beautifully imagined by designers, and expertly rendered by front-end developers, only for the site to then be gifted to content editors. At this point, using Sitecore’s standard rich-text editor, they add their own unique touch by way of tables for layouts, overriding fonts, and center-aligning text to their heart’s delight. The result is not quite the dream your team first had, or indeed, sold to the client.</p>
@@ -114,28 +185,28 @@
 </ul>
 <p>These are just a collection of examples that I have used in various projects. It is by no means suggested that a site should need to use all of these options, or that all of these make for Perfect HTML™. Every situation is different, and these are just some of the provided options that can be used. It is also super-easy to add your own by extending a provided processor base class.</p>
 <p>This is definitely not a module for all sites, or even most sites, but I have certainly made use of it so I have added it to GitHub in case others can use it too.</p>
-<h2 id="Want-to-try-it"><a href="#Want-to-try-it" class="headerlink" title="Want to try it?"></a>Want to try it?</h2><p>The <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="external">module is hosted on GitHub</a>. It has also been submitted to the Sitecore Marketplace and will hopefully be published shortly.</p>
+<h2 id="Want-to-try-it"><a href="#Want-to-try-it" class="headerlink" title="Want to try it?"></a>Want to try it?</h2><p>The <a href="https://github.com/Kasaku/Sitecore.Sweep" target="_blank" rel="noopener">module is hosted on GitHub</a>. It has also been submitted to the Sitecore Marketplace and will hopefully be published shortly.</p>
 <h2 id="Feedback"><a href="#Feedback" class="headerlink" title="Feedback"></a>Feedback</h2><p>I would be very keen to hear from anyone who has tried the module and wants to provide feedback. Or if you’ve read this blog post and have any questions / comments, please comment below or message me on Sitecore Slack for a chat about it.</p>
 <p>I’d especially like to hear from you if you think it’s either fundamentally flawed or can be achieved in a much better manner! </p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;I have &lt;a href=&quot;https://github.com/Kasaku/Sitecore.Sweep&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;added to GitHub&lt;/a&gt; a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.&lt;/p&gt;
+      &lt;p&gt;I have &lt;a href=&quot;https://github.com/Kasaku/Sitecore.Sweep&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;added to GitHub&lt;/a&gt; a small Sitecore module that I have developed and used in a couple of projects where we wanted to maintain tight control over the HTML that is output from rich-text fields.&lt;/p&gt;
     
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="projects" scheme="http://www.kasaku.co.uk/tags/projects/"/>
+      <category term="projects" scheme="https://www.kasaku.co.uk/tags/projects/"/>
     
   </entry>
   
   <entry>
     <title>Developer role error in Sitecore 8.1</title>
-    <link href="http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/"/>
-    <id>http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/</id>
+    <link href="https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/"/>
+    <id>https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/</id>
     <published>2016-10-26T22:00:00.000Z</published>
     <updated>2017-07-19T13:03:14.694Z</updated>
     
@@ -146,7 +217,7 @@
 <p>Gives the user access to content manipulation facilities in the Content Editor, plus all the design and authoring roles normally used by client authors and client designers. It also provides access to more functionality on the ribbon of the Content Editor to allow full development features for users assigned to this role.</p>
 </blockquote>
 <p>This role also has access to the Development Tools menu in the Sitecore menu, which gives the user access to further development tools, such as  the Package Designer.</p>
-<p>For a full description of the security roles within Sitecore, <a href="https://doc.sitecore.net/sitecore_experience_platform/setting_up__maintaining/security_and_administration/users_roles_and_domains/the_security_roles" target="_blank" rel="external">see this documentation page</a>.</p>
+<p>For a full description of the security roles within Sitecore, <a href="https://doc.sitecore.net/sitecore_experience_platform/setting_up__maintaining/security_and_administration/users_roles_and_domains/the_security_roles" target="_blank" rel="noopener">see this documentation page</a>.</p>
 <p>However, if you assign this role to a user then there is an issue that the user may encounter when trying to use some Developer functionality. If they attempt to insert an item in the Content Editor using the <code>Insert From Template</code> option, they will see the following exception:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[AccessDeniedException: Application access denied.]</div><div class="line">   Sitecore.Diagnostics.Assert.HasAccess(Boolean accessAllowed, String message) +81</div><div class="line">   Sitecore.Shell.Applications.Templates.AddFromTemplate.AddFromTemplateForm.OnLoad(EventArgs e) +73</div><div class="line"></div><div class="line">[TargetInvocationException: Exception has been thrown by the target of an invocation.]</div><div class="line">   System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor) +0</div><div class="line">   System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments) +128</div><div class="line">   System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture) +146</div><div class="line">   Sitecore.Reflection.ReflectionUtil.InvokeMethod(MethodInfo method, Object[] parameters, Object obj) +89</div><div class="line">   Sitecore.Web.UI.Sheer.ClientPage.OnLoad(EventArgs e) +594</div><div class="line">   System.Web.UI.Control.LoadRecursive() +68</div><div class="line">   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +1436</div></pre></td></tr></table></figure>
 <p>This error stems from the fact that the Author role has been explicitly denied access to the <code>Template Lister</code> application, but not to the <code>Insert From Template</code> button itself. They can see and click the button, but when the application is launched, it throws the error.</p>
@@ -167,18 +238,18 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-8" scheme="http://www.kasaku.co.uk/tags/sitecore-8/"/>
+      <category term="sitecore-8" scheme="https://www.kasaku.co.uk/tags/sitecore-8/"/>
     
-      <category term="bugs" scheme="http://www.kasaku.co.uk/tags/bugs/"/>
+      <category term="bugs" scheme="https://www.kasaku.co.uk/tags/bugs/"/>
     
   </entry>
   
   <entry>
     <title>Moving Datasource items to their pages using Sitecore PowerShell Extensions</title>
-    <link href="http://www.kasaku.co.uk/2016/09/14/moving-items-with-single-references/"/>
-    <id>http://www.kasaku.co.uk/2016/09/14/moving-items-with-single-references/</id>
+    <link href="https://www.kasaku.co.uk/2016/09/14/moving-items-with-single-references/"/>
+    <id>https://www.kasaku.co.uk/2016/09/14/moving-items-with-single-references/</id>
     <published>2016-09-14T12:50:01.000Z</published>
     <updated>2017-07-19T13:03:14.693Z</updated>
     
@@ -202,18 +273,18 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-powershell-extensions" scheme="http://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
+      <category term="sitecore-powershell-extensions" scheme="https://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
     
-      <category term="powershell" scheme="http://www.kasaku.co.uk/tags/powershell/"/>
+      <category term="powershell" scheme="https://www.kasaku.co.uk/tags/powershell/"/>
     
   </entry>
   
   <entry>
     <title>Using Sitecore Powershell Extensions to import CSV data</title>
-    <link href="http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/"/>
-    <id>http://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/</id>
+    <link href="https://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/"/>
+    <id>https://www.kasaku.co.uk/2016/04/10/importing-csv-data-in-sitecore/</id>
     <published>2016-04-10T16:45:52.000Z</published>
     <updated>2016-09-06T12:32:46.000Z</updated>
     
@@ -236,18 +307,18 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-powershell-extensions" scheme="http://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
+      <category term="sitecore-powershell-extensions" scheme="https://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
     
-      <category term="powershell" scheme="http://www.kasaku.co.uk/tags/powershell/"/>
+      <category term="powershell" scheme="https://www.kasaku.co.uk/tags/powershell/"/>
     
   </entry>
   
   <entry>
     <title>Sitecore Powershell Extensions talk at London Sitecore User Group March 2016</title>
-    <link href="http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/"/>
-    <id>http://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/</id>
+    <link href="https://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/"/>
+    <id>https://www.kasaku.co.uk/2016/04/06/sitecore-powershell-london-march-2016/</id>
     <published>2016-04-06T12:00:00.000Z</published>
     <updated>2016-09-06T12:32:46.000Z</updated>
     
@@ -266,11 +337,11 @@
 <p>Bear in mind that if you use the packages, you’ll need to have SPE installed first. See just below for links!</p>
 <h3 id="Enough-talk-I-just-want-SPE"><a href="#Enough-talk-I-just-want-SPE" class="headerlink" title="Enough talk, I just want SPE!"></a>Enough talk, I just want SPE!</h3><p>Here are the links to the good stuff:</p>
 <ul>
-<li><a href="https://marketplace.sitecore.net/en/Modules/Sitecore_PowerShell_console.aspx" target="_blank" rel="external">Sitecore Powershell Extensions in the Sitecore Marketplace</a></li>
-<li><a href="https://www.gitbook.com/book/sitecorepowershell/sitecore-powershell-extensions/details" target="_blank" rel="external">The Sitecore Powershell Extensions GitBook manual</a></li>
+<li><a href="https://marketplace.sitecore.net/en/Modules/Sitecore_PowerShell_console.aspx" target="_blank" rel="noopener">Sitecore Powershell Extensions in the Sitecore Marketplace</a></li>
+<li><a href="https://www.gitbook.com/book/sitecorepowershell/sitecore-powershell-extensions/details" target="_blank" rel="noopener">The Sitecore Powershell Extensions GitBook manual</a></li>
 </ul>
 <h3 id="Debugging-support-in-SPE-4-0"><a href="#Debugging-support-in-SPE-4-0" class="headerlink" title="Debugging support in SPE 4.0"></a>Debugging support in SPE 4.0</h3><p>One of the questions I was asked a couple of times after the talk was whether you are able to debug scripts in Sitecore Powershell Extensions. I was using version 3.3 in the demo, which did not have this feature, but the <em>very newly released</em> version 4.0 comes with full debugging support!</p>
-<p>Here’s a video from <a href="http://blog.najmanowicz.com/" target="_blank" rel="external">Adam Najmanowicz</a> demonstrating the new debugging functionality:</p>
+<p>Here’s a video from <a href="http://blog.najmanowicz.com/" target="_blank" rel="noopener">Adam Najmanowicz</a> demonstrating the new debugging functionality:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6rhPWVKcreI" frameborder="0" allowfullscreen></iframe>
 
 <p>Pretty great, huh?</p>
@@ -284,20 +355,20 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-powershell-extensions" scheme="http://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
+      <category term="sitecore-powershell-extensions" scheme="https://www.kasaku.co.uk/tags/sitecore-powershell-extensions/"/>
     
-      <category term="powershell" scheme="http://www.kasaku.co.uk/tags/powershell/"/>
+      <category term="powershell" scheme="https://www.kasaku.co.uk/tags/powershell/"/>
     
-      <category term="talks" scheme="http://www.kasaku.co.uk/tags/talks/"/>
+      <category term="talks" scheme="https://www.kasaku.co.uk/tags/talks/"/>
     
   </entry>
   
   <entry>
     <title>Multi-Line field bugs in Sitecore 8.1</title>
-    <link href="http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/"/>
-    <id>http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/</id>
+    <link href="https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/"/>
+    <id>https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/</id>
     <published>2016-03-21T14:00:00.000Z</published>
     <updated>2016-03-22T09:08:28.000Z</updated>
     
@@ -309,7 +380,7 @@
 </li>
 </ol>
 <p>Here is a demo illustrating both issues:</p>
-<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" alt="Bug demo" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
+<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
 <h2 id="Additional-lines-bug"><a href="#Additional-lines-bug" class="headerlink" title="Additional-lines bug"></a>Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
 <p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
 <p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
@@ -323,7 +394,7 @@
 <p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
 <h2 id="Related-bugs"><a href="#Related-bugs" class="headerlink" title="Related bugs"></a>Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
 <p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
-<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="external">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
+<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="noopener">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
 ]]></content>
     
     <summary type="html">
@@ -337,18 +408,18 @@
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-8" scheme="http://www.kasaku.co.uk/tags/sitecore-8/"/>
+      <category term="sitecore-8" scheme="https://www.kasaku.co.uk/tags/sitecore-8/"/>
     
-      <category term="bugs" scheme="http://www.kasaku.co.uk/tags/bugs/"/>
+      <category term="bugs" scheme="https://www.kasaku.co.uk/tags/bugs/"/>
     
   </entry>
   
   <entry>
     <title>Implementing a Virtual Field in Sitecore</title>
-    <link href="http://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/"/>
-    <id>http://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/</id>
+    <link href="https://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/"/>
+    <id>https://www.kasaku.co.uk/2015/08/16/implementing-a-virtual-field-in-sitecore/</id>
     <published>2015-08-16T09:40:20.000Z</published>
     <updated>2016-03-21T13:03:00.000Z</updated>
     
@@ -395,20 +466,20 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-search" scheme="http://www.kasaku.co.uk/tags/sitecore-search/"/>
+      <category term="sitecore-search" scheme="https://www.kasaku.co.uk/tags/sitecore-search/"/>
     
   </entry>
   
   <entry>
     <title>From Wordpress to Hexo</title>
-    <link href="http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/"/>
-    <id>http://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/</id>
+    <link href="https://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/"/>
+    <id>https://www.kasaku.co.uk/2015/06/05/from-wordpress-to-hexo/</id>
     <published>2015-06-05T12:00:00.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
-    <content type="html"><![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around.<br><a id="more"></a><br>After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="external">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a>, so I had most of what was required already.</p>
+    <content type="html"><![CDATA[<p>The site is being relaunched today! Previously, <a href="http://www.kasaku.co.uk">kasaku.co.uk</a> was running under Wordpress with Azure hosting. I decided that Wordpress, and especially the Wordpress hosting, was a little overkill for the site. With that in mind, I decided to look at what static-site generators were around.<br><a id="more"></a><br>After looking at a couple, I’ve decided to run with <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a> which is built on top of <a href="https://nodejs.org/" target="_blank" rel="noopener">NodeJS</a>. Whilst I don’t use NodeJS for any server-side development, I’ve been making more and more use of it in my development environment for front-end build processing through <a href="http://gruntjs.com/" target="_blank" rel="noopener">Grunt</a>, so I had most of what was required already.</p>
 <p>The site is pretty basic at the moment, and just hosted through Github for now. But the redesign has brought about a couple of changes:</p>
 <ul>
 <li>Social media links, including one for the new Sitecore Community!</li>
@@ -416,7 +487,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <li>More readable sytax highlighting</li>
 <li>RSS feed, if you like that sort of thing.</li>
 </ul>
-<p>The syntax highlighting is based on <a href="https://highlightjs.org/" target="_blank" rel="external">HighlightJS</a>, which does appear to have a couple of bugs when it comes to rendering C# source. Hopefully I can get those ironed out.</p>
+<p>The syntax highlighting is based on <a href="https://highlightjs.org/" target="_blank" rel="noopener">HighlightJS</a>, which does appear to have a couple of bugs when it comes to rendering C# source. Hopefully I can get those ironed out.</p>
 <p>I also might look to expand the template and build on more areas in the site, but for now it’s just remaining a blog!</p>
 ]]></content>
     
@@ -431,19 +502,19 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
   
   <entry>
     <title>A Sitecore custom provider gotcha</title>
-    <link href="http://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/"/>
-    <id>http://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/</id>
+    <link href="https://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/"/>
+    <id>https://www.kasaku.co.uk/2015/02/16/sitecore-custom-provider-gotcha/</id>
     <published>2015-02-16T12:28:40.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>Sitecore uses the <a href="ASP.NET Membership Provider">https://msdn.microsoft.com/en-us/library/ms731049(v=vs.110).aspx</a> framework for managing its users, and also provides this as a means for you to manage your own users of your website in the <em>extranet</em> domain (or other domains that you have implemented).</p>
 <p>In certain cases, you may want to implement your own custom backing store for users, rather than the default SQL Server provider. Fortunately, Sitecore includes a mechanism so that it can support multiple providers under one website, this is through the <code>SwitchingProviders</code> within the <code>Sitecore.Security</code> namespace.<br><a id="more"></a><br>There are already a number of useful links covering implementing your own custom membership provider using the Switcher:</p>
 <ul>
-<li><a href="http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf" target="_blank" rel="external">http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf</a></li>
-<li><a href="http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/" target="_blank" rel="external">http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/</a></li>
-<li><a href="http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/" target="_blank" rel="external">http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/</a></li>
-<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
-<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="external">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+<li><a href="http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf" target="_blank" rel="noopener">http://sdn.sitecore.net/upload/sdn5/modules/ad/low-level_sitecore_cms_security_and_custom_providers-a4.pdf</a></li>
+<li><a href="http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/" target="_blank" rel="noopener">http://www.mintydog.com/2013/09/a-custom-membership-provider-in-sitecore-part-1/</a></li>
+<li><a href="http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/" target="_blank" rel="noopener">http://www.mintydog.com/2013/10/a-custom-membership-provider-in-sitecore-part-2/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="noopener">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
+<li><a href="https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/" target="_blank" rel="noopener">https://himadritechblog.wordpress.com/2014/11/24/sitecore-custom-membership-provider/</a></li>
 </ul>
 <p>This is just a short blog post to highlight a couple of a small gotcha that you may encounter, due to some inconsistencies in Sitecore’s implementation of the Switching providers.</p>
 <h3 id="The-issue"><a href="#The-issue" class="headerlink" title="The issue"></a>The issue</h3><p>The first link in the above list is the official Sitecore documentation for implementing new providers. In <em>3.1.1 Configuring Switching Providers</em>, the following attributes for defining providers via a SwitchingProvider are defined:</p>
@@ -472,29 +543,29 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title>Event tracking in Google Analytics</title>
-    <link href="http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/"/>
-    <id>http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/</id>
+    <link href="https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/"/>
+    <id>https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/</id>
     <published>2015-01-26T14:22:24.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
-    <content type="html"><![CDATA[<p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.<br><a id="more"></a><br>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">an overview on Event Tracking</a>.</p>
+    <content type="html"><![CDATA[<p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.<br><a id="more"></a><br>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="noopener">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="noopener">an overview on Event Tracking</a>.</p>
 <p>The rest of this post assumes that you are familiar enough with GA to know about the ga() function and how it can be used to send events.</p>
 <p><em>Note: Google Analytics doesn’t <strong>require</strong> jQuery, but the examples in this blog do use jQuery for setting up events. It is also assumed you are using the new version of Google Analytics, analytics.js.</em></p>
-<h2 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h2><p>You’ll need the Google Analytics script defined in your page. If you haven’t done this yet, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google have got you covered</a>.</p>
+<h2 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h2><p>You’ll need the Google Analytics script defined in your page. If you haven’t done this yet, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="noopener">Google have got you covered</a>.</p>
 <p>If using ASP.NET MVC, it’s a good idea to have this in its own view that you can cache the output of. You can also use a configuration setting to determine whether to output the script at all, to avoid enabling Google Analytics on development / test servers, or perhaps to use a different ID in those environments.</p>
 <p>Simply adding this script will get page views tracking in Google Analytics.</p>
 <h2 id="Creating-a-custom-tracking-script"><a href="#Creating-a-custom-tracking-script" class="headerlink" title="Creating a custom tracking script"></a>Creating a custom tracking script</h2><p>Once you have the default script, you can then add your own javascript to implement additional GA functionality throughout your site.</p>
 <p>The following is a skeleton script that you can then expand on:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mysite = mysite || &#123;&#125;;</div><div class="line"><span class="keyword">var</span> mysite.analytics = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">// _Private function</span></div><div class="line">  <span class="keyword">var</span> _setTrackingEvents = <span class="function"><span class="keyword">function</span>(<span class="params">ga</span>) </span>&#123;</div><div class="line">    <span class="comment">// Custom tracking code to go here...</span></div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// Public function  </span></div><div class="line">  <span class="keyword">var</span> init = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> ga === <span class="string">'undefined'</span>) &#123;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> ga_debug !== <span class="string">'undefined'</span> &amp;&amp; ga_debug) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Setting up analytics in debug mode.'</span>);</div><div class="line"></div><div class="line">        ga = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="built_in">arguments</span>); &#125;;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">else</span></div><div class="line">      &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Google Analytics disabled.'</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    _setTrackingEvents(ga);</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">init</span>: init</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
 <p>Typically, once this script has been loaded, then, at a suitable point in your site’s code (e.g. after page load), you can call <code>mysite.analytics.init();</code> to execute the code and setup your events.</p>
-<p>If the Google Analytics script hasn’t been added to the page, this script checks to see if there is a <code>ga_debug</code> variable defined. If there is and its value is <a href="http://www.sitepoint.com/javascript-truthy-falsy/" target="_blank" rel="external">truthy</a>, the script creates a dummy ga() function that simply logs to the console. This is useful for testing your analytics events without needing a real GA account in place. If the debug value isn’t in place, this script simply doesn’t go any further.</p>
-<h2 id="Event-Tracking"><a href="#Event-Tracking" class="headerlink" title="Event Tracking"></a>Event Tracking</h2><p>Right, on to <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">event tracking</a>! As events are simply tracked by calling a function in javascript, they can be associated with almost <em>any</em> user behaviour on a website - this includes clicking on anything on the page, timings between actions, the scrolling of a page, and much more. If you can imagine it, you can likely write it.</p>
+<p>If the Google Analytics script hasn’t been added to the page, this script checks to see if there is a <code>ga_debug</code> variable defined. If there is and its value is <a href="http://www.sitepoint.com/javascript-truthy-falsy/" target="_blank" rel="noopener">truthy</a>, the script creates a dummy ga() function that simply logs to the console. This is useful for testing your analytics events without needing a real GA account in place. If the debug value isn’t in place, this script simply doesn’t go any further.</p>
+<h2 id="Event-Tracking"><a href="#Event-Tracking" class="headerlink" title="Event Tracking"></a>Event Tracking</h2><p>Right, on to <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="noopener">event tracking</a>! As events are simply tracked by calling a function in javascript, they can be associated with almost <em>any</em> user behaviour on a website - this includes clicking on anything on the page, timings between actions, the scrolling of a page, and much more. If you can imagine it, you can likely write it.</p>
 <p>Let’s look at some of the events you could create.</p>
 <p>First of all, a good piece of advice is to <strong>keep your event definitions generic</strong> where you can.</p>
 <p>Rather than tracking every interaction individually on your site, try to logically group the different types of interaction together and then come up with a method of selecting these elements. This is especially important where you are building a CMS-driven site and the HTML will be generated on the server.</p>
@@ -613,7 +684,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 </tbody>
 </table>
 <h3 id="Scroll-Events"><a href="#Scroll-Events" class="headerlink" title="Scroll Events"></a>Scroll Events</h3><p>A simple page-load isn’t really enough to determine how much of your website a user is actually seeing when they visit. For example, are they just viewing the page and immediately leaving, or are they actually scrolling down to see more content? How many of your users do this?</p>
-<p>To help capture this sort of information, you can track when and how far a user scrolls on a page. Whilst you can write this code yourself, there is already a small JS library that wraps up the functionality for you - <a href="http://scrolldepth.parsnip.io/" target="_blank" rel="external">Scroll Depth</a>.</p>
+<p>To help capture this sort of information, you can track when and how far a user scrolls on a page. Whilst you can write this code yourself, there is already a small JS library that wraps up the functionality for you - <a href="http://scrolldepth.parsnip.io/" target="_blank" rel="noopener">Scroll Depth</a>.</p>
 <p>By default, Scroll Depth tracks events for the <strong>percentage</strong> a user scrolls down the page - firing events at 25%, 50%, 75% and 100%. However, as well as customizing these percentages, you can also specify the IDs of elements on your page and it will fire tracking events when a user scrolls far enough down for that element to become visible. That’s great, as it tells you how many users are actually seeing a specific part of the page you have designed.</p>
 <p>Once the script has been included, a typical way to invoke this library would be:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.scrollDepth(&#123;</div><div class="line">  <span class="attr">elements</span>: [<span class="string">'#products'</span>, <span class="string">'#buy-now'</span>, <span class="string">'#search-results'</span>]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
@@ -628,22 +699,22 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="javascript" scheme="http://www.kasaku.co.uk/tags/javascript/"/>
+      <category term="javascript" scheme="https://www.kasaku.co.uk/tags/javascript/"/>
     
-      <category term="analytics" scheme="http://www.kasaku.co.uk/tags/analytics/"/>
+      <category term="analytics" scheme="https://www.kasaku.co.uk/tags/analytics/"/>
     
   </entry>
   
   <entry>
     <title>Referencing folders with Placeholder Settings</title>
-    <link href="http://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/"/>
-    <id>http://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/</id>
+    <link href="https://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/"/>
+    <id>https://www.kasaku.co.uk/2014/12/23/referencing-folders-with-placeholder-settings/</id>
     <published>2014-12-23T14:01:42.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx" target="_blank" rel="external">Placeholder Settings</a> allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.</p>
+    <content type="html"><![CDATA[<p><a href="http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx" target="_blank" rel="noopener">Placeholder Settings</a> allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.</p>
 <p>Each time you create a new Rendering, you need to update the placeholder settings too so that the editors can use the rendering. If you keep your renderings nicely organised within a folder structure, then there’s a simple method for making this a bit more flexible and having Sitecore automatically pick up the renderings by referencing a <em>folder of renderings</em> rather than the rendering itself.<br><a id="more"></a><br>Within the Content Editor for the settings, Sitecore allows you to add a rendering folder, rather than a rendering itself:</p>
-<p><img src="/2014/12/23/referencing-folders-with-placeholder-settings/placeholder_settings.png" alt="Placeholder settings" title="Placeholder settings"></p>
+<p><img src="/2014/12/23/referencing-folders-with-placeholder-settings/placeholder_settings.png" title="Placeholder settings"></p>
 
 <p>Typically, selecting the folder would have no effect. However, with the following pipeline, we can alter the functionality of Sitecore so that if a folder has been added, it pulls in <strong>all</strong> of the child renderings that sit underneath it.</p>
 <p>This can be very useful if you keep your renderings organised by functionality, so for example you want a “Forms” placeholders setting that will contain all of the Form renderings you have created. If you keep them together in the same folder, you can have them added automatically, without having to update the settings.</p>
@@ -658,20 +729,20 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Placeholder Settings&lt;/a&gt; allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.sitecore.net/Learn/Blogs/Technical-Blogs/Maximizing-Usability/Posts/2012/08/The-Power-of-Placeholder-Settings.aspx&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Placeholder Settings&lt;/a&gt; allow you to choose what Renderings / Sublayouts you want to be selectable to add in to the placeholders of your layouts.&lt;/p&gt;
 &lt;p&gt;Each time you create a new Rendering, you need to update the placeholder settings too so that the editors can use the rendering. If you keep your renderings nicely organised within a folder structure, then there’s a simple method for making this a bit more flexible and having Sitecore automatically pick up the renderings by referencing a &lt;em&gt;folder of renderings&lt;/em&gt; rather than the rendering itself.&lt;br&gt;
     
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title>Creating a customized root for the Content Editor</title>
-    <link href="http://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/"/>
-    <id>http://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/</id>
+    <link href="https://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/"/>
+    <id>https://www.kasaku.co.uk/2014/12/12/creating-a-customized-root-for-the-content-editor/</id>
     <published>2014-12-12T11:08:34.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
@@ -689,7 +760,7 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <h3 id="Creating-the-shortcut"><a href="#Creating-the-shortcut" class="headerlink" title="Creating the shortcut"></a>Creating the shortcut</h3><p>Finally, you need to create the shortcut. Under <code>/sitecore/content/Documents and settings/All users/Start menu</code> are several items that represent the different areas of the Start Menu. Choose the one where you would like your icon to appear and create a new item of type <code>/sitecore/templates/Sitecore Client/Applications/Application shortcut</code> (you should find it as an Insert Option).</p>
 <p>In the shortcut item, set the <code>Application</code> link field to point to your Application item. If you want a particular shortcut to override the default settings for an Application, you can also set the <code>Icon</code>, <code>Display Name</code> and <code>Tool tip</code> fields.</p>
 <h3 id="Tada"><a href="#Tada" class="headerlink" title="Tada!"></a>Tada!</h3><p>That’s all there is to it, your new shortcut should be appearing in the Start Menu, and when you click it you’ll get your new customized Content Editor.</p>
-<p><img src="/2014/12/12/creating-a-customized-root-for-the-content-editor/blog-shortcut.png" alt="New blog shortcut" title="New blog shortcut"></p>]]></content>
+<p><img src="/2014/12/12/creating-a-customized-root-for-the-content-editor/blog-shortcut.png" title="New blog shortcut"></p>]]></content>
     
     <summary type="html">
     
@@ -699,20 +770,20 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title>Creating a custom gutter validator</title>
-    <link href="http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/"/>
-    <id>http://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/</id>
+    <link href="https://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/"/>
+    <id>https://www.kasaku.co.uk/2014/12/08/creating-a-custom-gutter-validator/</id>
     <published>2014-12-08T14:07:59.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
     <content type="html"><![CDATA[<p><em>Note: This is a port of an old post from a previous blog, originally written to target Sitecore 6.3, though it still applies as of Sitecore 7.5. Whilst it is now not such a new subject, it may still prove useful to some.</em></p>
 <p>Whilst a lot of content editors using Sitecore prefer to use the Page Editor, the Content Editor still sees a lot of use. One of the features of the content editor is the gutter validators, used to quickly provide a visual check of the validation state of items in the tree:<br><a id="more"></a></p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/gutter-validator.png" alt="Gutter Validator example" title="Gutter Validator example"></p>
+<p><img src="/2014/12/08/creating-a-custom-gutter-validator/gutter-validator.png" title="Gutter Validator example"></p>
 
 <p>It’s very easy to add your own custom validation here.</p>
 <h3 id="Creating-the-code"><a href="#Creating-the-code" class="headerlink" title="Creating the code"></a>Creating the code</h3><p>First of all, create the code for your gutter validator. Create a new class and have it inherit from <code>Sitecore.Shell.Applications.ContentEditor.Gutters.GutterRenderer</code>. In this class you should override the <code>GetIconDescriptor(Item item)</code> method, which returns a <code>GutterIconDescriptor</code>.</p>
@@ -724,10 +795,10 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <h3 id="Creating-the-Validation-Item"><a href="#Creating-the-Validation-Item" class="headerlink" title="Creating the Validation Item"></a>Creating the Validation Item</h3><p>Now you need to create an item for the gutter validator in Sitecore, so that it can be selected. This should be located in the Core database underneath the item <code>/sitecore/content/Applications/Content Editor/Gutters</code>.</p>
 <p>You should create your item using the <code>/sitecore/templates/Sitecore Client/Content editor/Gutter Renderer</code> template.</p>
 <p>The <code>Header</code> field represents how your validator will appear in the context-menu, and the <code>Type</code> field is the fully-qualified name of your new type:</p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-editor.png" alt="Gutter Validator fields" title="Gutter Validator fields"></p>
+<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-editor.png" title="Gutter Validator fields"></p>
 
 <h3 id="Trying-it-out"><a href="#Trying-it-out" class="headerlink" title="Trying it out"></a>Trying it out</h3><p>Once that’s saved you can jump back into the master database and enable it. Right-click in the gutter to enable your validator, and then you should see your validation icon wherever an item fails your validation:</p>
-<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-effect.png" alt="The effect of the new validator" title="The effect of the new validator"></p>]]></content>
+<p><img src="/2014/12/08/creating-a-custom-gutter-validator/validator-effect.png" title="The effect of the new validator"></p>]]></content>
     
     <summary type="html">
     
@@ -737,19 +808,19 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title>A RemoveLink command for PageEditor</title>
-    <link href="http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/"/>
-    <id>http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/</id>
+    <link href="https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/"/>
+    <id>https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/</id>
     <published>2014-12-04T14:22:43.000Z</published>
     <updated>2016-03-18T08:25:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>Something that has bugged me for quite some time in the Sitecore Page Editor, is the inability to <strong>remove</strong> a Link field once one has been set (<em>at least you cannot at the time of writing in Sitecore 7.5, perhaps 8 will alter this</em>).<br><a id="more"></a><br>As of 7.5 and before, you can only edit the link via the Page Editor, and in that dialog there is no way to remove the existing link:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/edit-link.png" alt="Sitecore Edit Link dialog" title="Sitecore Edit Link dialog"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/edit-link.png" title="Sitecore Edit Link dialog"></p>
 
 <p>The only real way to remove the link is to shift over to the Content Editor and do it there. Whilst this works, if your editors are used to using the Page Editor it’s better if they can accomplish the task without navigating away.</p>
 <p>Fortunately, it’s quite straight-forward to add a new command - one that clears any existing link in the field. Here’s the code for the command itself:</p>
@@ -761,10 +832,10 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">xmlns:patch</span>=<span class="string">"http://www.sitecore.net/xmlconfig/"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">sitecore</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">commands</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">command</span> <span class="attr">name</span>=<span class="string">"webedit:removelink"</span> <span class="attr">type</span>=<span class="string">"YourWebsite.Sc.Client.WebEdit.Commands.RemoveLink, YourWebsite.Sc.Client"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">commands</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">sitecore</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>The last step is to create an Item in the Core database so that this command appears in the Page Editor for all Link Fields. In the folder at <code>/sitecore/system/Field types/Link Types/General Link/WebEdit Buttons</code>, add a new <code>WebEdit Button</code> item called <code>Remove Link</code>.</p>
 <p>Within this item, set the appropriate fields to reference the command and choose a nice icon:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-item.png" alt="Remove Link fields" title="Remove Link fields"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-item.png" title="Remove Link fields"></p>
 
 <p>With that in place, you will immediately see a new icon in the Page Editor:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-demo.png" alt="Remove Link in Page Editor" title="Remove Link in Page Editor"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-demo.png" title="Remove Link in Page Editor"></p>
 
 <p>And that’s it!</p>
 <p>I hope that proves useful, it’s a pretty straight-forward solution. I do suspect though that this could be entirely accomplished through javascript, as there is little need for any server-side processing. Please leave a comment if you found this useful, or have any suggestions.</p>
@@ -777,19 +848,19 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
   </entry>
   
   <entry>
     <title>A RequiresDataSource filter for Sitecore Controller Renderings</title>
-    <link href="http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/"/>
-    <id>http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/</id>
+    <link href="https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/"/>
+    <id>https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/</id>
     <published>2014-11-13T22:59:55.000Z</published>
     <updated>2017-07-19T13:03:14.689Z</updated>
     
     <content type="html"><![CDATA[<p>A common requirement when creating components in Sitecore is for the component to rely on data being supplied via the DataSource. Whilst you can try your best to ensure that a DataSource is associated with a component, there will inevitably be occasions when that DataSource gets deleted or moved and ultimately isn’t provided to the component at the time of rendering.<br><a id="more"></a><br>What can work well in these occasions is to provide the content editor with some feedback that the component won’t function correctly, so that they know they shouldn’t publish the page in its current state.</p>
-<p>In Sitecore Controller Renderings, this could be done through some code at the top of each rendering action, checking for a DataSource and acting accordingly if one wasn’t found. However, rather than write repetitve code in each rendering, a better method is to make use of a reusable <a href="http://msdn.microsoft.com/en-us/library/dd410209%28v=vs.100%29.aspx" target="_blank" rel="external">ActionFilter</a>.</p>
+<p>In Sitecore Controller Renderings, this could be done through some code at the top of each rendering action, checking for a DataSource and acting accordingly if one wasn’t found. However, rather than write repetitve code in each rendering, a better method is to make use of a reusable <a href="http://msdn.microsoft.com/en-us/library/dd410209%28v=vs.100%29.aspx" target="_blank" rel="noopener">ActionFilter</a>.</p>
 <p>When the ActionFilter is executed, it attempts to locate a DataSource within the current RenderingContext. If no DataSource is found, then a PartialView is returned and the action will not continue to execute.</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">public class RequiresDataSource : FilterAttribute, IActionFilter</div><div class="line">&#123;</div><div class="line">  private const string DefaultNoDataSourceView = "_NoDataSource";</div><div class="line"></div><div class="line">  protected Item DataSourceItem &#123; get; set; &#125;</div><div class="line"></div><div class="line">  public virtual void OnActionExecuting(ActionExecutingContext filterContext)</div><div class="line">  &#123;</div><div class="line">    DataSourceItem = GetDataSourceItem();</div><div class="line"></div><div class="line">    if (DataSourceItem == null)</div><div class="line">    &#123;</div><div class="line">      filterContext.Result = new PartialViewResult</div><div class="line">      &#123;</div><div class="line">        ViewName = NoDataSourceView ?? DefaultNoDataSourceView</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private Item GetDataSourceItem()</div><div class="line">  &#123;</div><div class="line">    if (RenderingContext.Current == null || RenderingContext.Current.Rendering == null ||</div><div class="line">        string.IsNullOrEmpty(RenderingContext.Current.Rendering.DataSource))</div><div class="line">    &#123;</div><div class="line">       return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // A DataSource has at least been set. Now to find out if it is an actual item.</div><div class="line">    return Sitecore.Context.Database.GetItem(RenderingContext.Current.Rendering.DataSource);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public void OnActionExecuted(ActionExecutedContext filterContext)</div><div class="line">  &#123;</div><div class="line">    // Not required.</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public string NoDataSourceView &#123; get; set; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>With this attribute created, you can assign it to an action:</p>
@@ -800,14 +871,14 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
 <p>What do you put in the view? That is completly up to what is necessary in your solution - however a good strategy is to provide a simple error message to a user using the PageEditor, but actually render nothing if the component still makes it to the published page without a DataSource:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@if (PageMode.IsPageEditor)</div><div class="line">&#123;</div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"error"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Heads up!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This component requires a DataSource but one has not been specified.</div><div class="line">    If this page is published in its current state, this component will be empty.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Now, if the component is viewed within the Page Editor, and no DataSource has been set, the user will see an informative message:</p>
-<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Required.png" alt="No DataSource example" title="No DataSource example"></p>
+<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Required.png" title="No DataSource example"></p>
 
 <p>As well as provided the user with some feedback, it has removed the need for the null-checking that would have otherwise been required in the action to prevent exceptions, we’re now guaranteed that the code will only be executed if a DataSource has been set.</p>
 <h3 id="Extending-the-attribute"><a href="#Extending-the-attribute" class="headerlink" title="Extending the attribute"></a>Extending the attribute</h3><p>To provide the user with some more specific feedback, and also to ensure that our code only executes if the <strong>correct</strong> type of DataSource has been applied, we can extend the attribute to create another.</p>
 <p>The <code>RequiresDataSourceOfTemplate</code> attribute shown below adds an additional check that occurs <em>if</em> the DataSource has been set, whereupon it additionally confirms that the DataSource is of the right template:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiresDataSourceOfTemplate</span> : <span class="title">RequiresDataSource</span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> DefaultInvalidDataSourceView = <span class="string">"_InvalidDataSource"</span>;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">readonly</span> Guid _templateId;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">RequiresDataSourceOfTemplate</span>(<span class="params">Guid templateId</span>)</span></div><div class="line">  &#123;</div><div class="line">    _templateId = templateId;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnActionExecuting</span>(<span class="params">ActionExecutingContext filterContext</span>)</span></div><div class="line">  &#123;</div><div class="line">    <span class="keyword">base</span>.OnActionExecuting(filterContext);</div><div class="line"></div><div class="line">    <span class="comment">// Only continue if we have a datasource, i.e. the base action didn't result in anything.</span></div><div class="line">    <span class="keyword">if</span> (DataSourceItem != <span class="literal">null</span> &amp;&amp; !DataSourceItem.DerivesFromTemplate(_templateId))</div><div class="line">    &#123;</div><div class="line">      <span class="keyword">var</span> correctTemplateItem = Sitecore.Context.Database.GetItem(_templateId.ToID());</div><div class="line"></div><div class="line">      filterContext.Result = <span class="keyword">new</span> PartialViewResult</div><div class="line">      &#123;</div><div class="line">        ViewData = &#123;</div><div class="line">          &#123;<span class="string">"RequiredTemplateName"</span>, correctTemplateItem.Name &#125;,</div><div class="line">          &#123;<span class="string">"FoundTemplateName"</span>, DataSourceItem.TemplateName&#125;</div><div class="line">        &#125;,</div><div class="line">        ViewName = InvalidDataSourceView ?? DefaultInvalidDataSourceView</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">string</span> InvalidDataSourceView &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>This time, as well as returning an alternate view, some additional metadata is pushed into the ViewData. That allows us to provde create a view that provides the user with a bit of information about what went wrong:</p>
-<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Invalid.png" alt="Invalid DataSource example" title="Invalid DataSource example"></p>
+<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Invalid.png" title="Invalid DataSource example"></p>
 
 <p>Once you have these attributes, you can decorate all of your actions that rely on DataSources with them. This will eliminate a lot of common code needing to be rewritten across these actions, so instead your actions can focus on just delivering the right content with the correct DataSources in place.</p>
 ]]></content>
@@ -819,9 +890,9 @@ The facets used in Search Results are tied to items underneath <code>/System/Set
     </summary>
     
     
-      <category term="sitecore" scheme="http://www.kasaku.co.uk/tags/sitecore/"/>
+      <category term="sitecore" scheme="https://www.kasaku.co.uk/tags/sitecore/"/>
     
-      <category term="sitecore-mvc" scheme="http://www.kasaku.co.uk/tags/sitecore-mvc/"/>
+      <category term="sitecore-mvc" scheme="https://www.kasaku.co.uk/tags/sitecore-mvc/"/>
     
   </entry>
   

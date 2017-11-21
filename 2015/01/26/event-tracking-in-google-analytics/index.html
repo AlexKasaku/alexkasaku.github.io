@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="Event tracking in Google Analytics - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="Event tracking in Google Analytics - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -193,18 +193,18 @@ ga('send', 'pageview');
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.<br><a id="more"></a><br>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">an overview on Event Tracking</a>.</p>
+        <p>This is a short guide on putting together a simple-yet-powerful script for tracking custom events in Google Analytics. Whilst there <strong>is</strong> already a ton of information on the web about Google Analytics and what you can achieve with it, this blog entry is aimed at devs who want to get going quickly with event tracking.<br><a id="more"></a><br>If you’re completely new to Google Analytics, your best bet is to at least read the <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="noopener">Google introduction</a>. They also provide documentation to give <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="noopener">an overview on Event Tracking</a>.</p>
 <p>The rest of this post assumes that you are familiar enough with GA to know about the ga() function and how it can be used to send events.</p>
 <p><em>Note: Google Analytics doesn’t <strong>require</strong> jQuery, but the examples in this blog do use jQuery for setting up events. It is also assumed you are using the new version of Google Analytics, analytics.js.</em></p>
-<h2 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h2><p>You’ll need the Google Analytics script defined in your page. If you haven’t done this yet, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="external">Google have got you covered</a>.</p>
+<h2 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h2><p>You’ll need the Google Analytics script defined in your page. If you haven’t done this yet, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank" rel="noopener">Google have got you covered</a>.</p>
 <p>If using ASP.NET MVC, it’s a good idea to have this in its own view that you can cache the output of. You can also use a configuration setting to determine whether to output the script at all, to avoid enabling Google Analytics on development / test servers, or perhaps to use a different ID in those environments.</p>
 <p>Simply adding this script will get page views tracking in Google Analytics.</p>
 <h2 id="Creating-a-custom-tracking-script"><a href="#Creating-a-custom-tracking-script" class="headerlink" title="Creating a custom tracking script"></a>Creating a custom tracking script</h2><p>Once you have the default script, you can then add your own javascript to implement additional GA functionality throughout your site.</p>
 <p>The following is a skeleton script that you can then expand on:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mysite = mysite || &#123;&#125;;</div><div class="line"><span class="keyword">var</span> mysite.analytics = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">// _Private function</span></div><div class="line">  <span class="keyword">var</span> _setTrackingEvents = <span class="function"><span class="keyword">function</span>(<span class="params">ga</span>) </span>&#123;</div><div class="line">    <span class="comment">// Custom tracking code to go here...</span></div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// Public function  </span></div><div class="line">  <span class="keyword">var</span> init = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> ga === <span class="string">'undefined'</span>) &#123;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> ga_debug !== <span class="string">'undefined'</span> &amp;&amp; ga_debug) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Setting up analytics in debug mode.'</span>);</div><div class="line"></div><div class="line">        ga = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="built_in">arguments</span>); &#125;;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">else</span></div><div class="line">      &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Google Analytics disabled.'</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    _setTrackingEvents(ga);</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">init</span>: init</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
 <p>Typically, once this script has been loaded, then, at a suitable point in your site’s code (e.g. after page load), you can call <code>mysite.analytics.init();</code> to execute the code and setup your events.</p>
-<p>If the Google Analytics script hasn’t been added to the page, this script checks to see if there is a <code>ga_debug</code> variable defined. If there is and its value is <a href="http://www.sitepoint.com/javascript-truthy-falsy/" target="_blank" rel="external">truthy</a>, the script creates a dummy ga() function that simply logs to the console. This is useful for testing your analytics events without needing a real GA account in place. If the debug value isn’t in place, this script simply doesn’t go any further.</p>
-<h2 id="Event-Tracking"><a href="#Event-Tracking" class="headerlink" title="Event Tracking"></a>Event Tracking</h2><p>Right, on to <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="external">event tracking</a>! As events are simply tracked by calling a function in javascript, they can be associated with almost <em>any</em> user behaviour on a website - this includes clicking on anything on the page, timings between actions, the scrolling of a page, and much more. If you can imagine it, you can likely write it.</p>
+<p>If the Google Analytics script hasn’t been added to the page, this script checks to see if there is a <code>ga_debug</code> variable defined. If there is and its value is <a href="http://www.sitepoint.com/javascript-truthy-falsy/" target="_blank" rel="noopener">truthy</a>, the script creates a dummy ga() function that simply logs to the console. This is useful for testing your analytics events without needing a real GA account in place. If the debug value isn’t in place, this script simply doesn’t go any further.</p>
+<h2 id="Event-Tracking"><a href="#Event-Tracking" class="headerlink" title="Event Tracking"></a>Event Tracking</h2><p>Right, on to <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events" target="_blank" rel="noopener">event tracking</a>! As events are simply tracked by calling a function in javascript, they can be associated with almost <em>any</em> user behaviour on a website - this includes clicking on anything on the page, timings between actions, the scrolling of a page, and much more. If you can imagine it, you can likely write it.</p>
 <p>Let’s look at some of the events you could create.</p>
 <p>First of all, a good piece of advice is to <strong>keep your event definitions generic</strong> where you can.</p>
 <p>Rather than tracking every interaction individually on your site, try to logically group the different types of interaction together and then come up with a method of selecting these elements. This is especially important where you are building a CMS-driven site and the HTML will be generated on the server.</p>
@@ -323,7 +323,7 @@ ga('send', 'pageview');
 </tbody>
 </table>
 <h3 id="Scroll-Events"><a href="#Scroll-Events" class="headerlink" title="Scroll Events"></a>Scroll Events</h3><p>A simple page-load isn’t really enough to determine how much of your website a user is actually seeing when they visit. For example, are they just viewing the page and immediately leaving, or are they actually scrolling down to see more content? How many of your users do this?</p>
-<p>To help capture this sort of information, you can track when and how far a user scrolls on a page. Whilst you can write this code yourself, there is already a small JS library that wraps up the functionality for you - <a href="http://scrolldepth.parsnip.io/" target="_blank" rel="external">Scroll Depth</a>.</p>
+<p>To help capture this sort of information, you can track when and how far a user scrolls on a page. Whilst you can write this code yourself, there is already a small JS library that wraps up the functionality for you - <a href="http://scrolldepth.parsnip.io/" target="_blank" rel="noopener">Scroll Depth</a>.</p>
 <p>By default, Scroll Depth tracks events for the <strong>percentage</strong> a user scrolls down the page - firing events at 25%, 50%, 75% and 100%. However, as well as customizing these percentages, you can also specify the IDs of elements on your page and it will fire tracking events when a user scrolls far enough down for that element to become visible. That’s great, as it tells you how many users are actually seeing a specific part of the page you have designed.</p>
 <p>Once the script has been included, a typical way to invoke this library would be:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.scrollDepth(&#123;</div><div class="line">  <span class="attr">elements</span>: [<span class="string">'#products'</span>, <span class="string">'#buy-now'</span>, <span class="string">'#search-results'</span>]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
@@ -366,17 +366,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -427,17 +427,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2015/01/26/event-tracking-in-google-analytics/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

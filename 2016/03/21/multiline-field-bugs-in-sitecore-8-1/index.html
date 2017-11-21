@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="Multi-Line field bugs in Sitecore 8.1 - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="Multi-Line field bugs in Sitecore 8.1 - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -201,7 +201,7 @@ ga('send', 'pageview');
 </li>
 </ol>
 <p>Here is a demo illustrating both issues:</p>
-<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" alt="Bug demo" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
+<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
 <h2 id="Additional-lines-bug"><a href="#Additional-lines-bug" class="headerlink" title="Additional-lines bug"></a>Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
 <p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
 <p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
@@ -215,7 +215,7 @@ ga('send', 'pageview');
 <p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
 <h2 id="Related-bugs"><a href="#Related-bugs" class="headerlink" title="Related bugs"></a>Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
 <p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
-<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="external">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
+<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="noopener">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
 
         
             
@@ -253,17 +253,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -314,17 +314,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

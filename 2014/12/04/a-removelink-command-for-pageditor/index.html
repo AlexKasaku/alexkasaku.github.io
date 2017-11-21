@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="A RemoveLink command for PageEditor - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="A RemoveLink command for PageEditor - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -194,7 +194,7 @@ ga('send', 'pageview');
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
         <p>Something that has bugged me for quite some time in the Sitecore Page Editor, is the inability to <strong>remove</strong> a Link field once one has been set (<em>at least you cannot at the time of writing in Sitecore 7.5, perhaps 8 will alter this</em>).<br><a id="more"></a><br>As of 7.5 and before, you can only edit the link via the Page Editor, and in that dialog there is no way to remove the existing link:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/edit-link.png" alt="Sitecore Edit Link dialog" title="Sitecore Edit Link dialog"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/edit-link.png" title="Sitecore Edit Link dialog"></p>
 
 <p>The only real way to remove the link is to shift over to the Content Editor and do it there. Whilst this works, if your editors are used to using the Page Editor it’s better if they can accomplish the task without navigating away.</p>
 <p>Fortunately, it’s quite straight-forward to add a new command - one that clears any existing link in the field. Here’s the code for the command itself:</p>
@@ -206,10 +206,10 @@ ga('send', 'pageview');
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">xmlns:patch</span>=<span class="string">"http://www.sitecore.net/xmlconfig/"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">sitecore</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">commands</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">command</span> <span class="attr">name</span>=<span class="string">"webedit:removelink"</span> <span class="attr">type</span>=<span class="string">"YourWebsite.Sc.Client.WebEdit.Commands.RemoveLink, YourWebsite.Sc.Client"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">commands</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">sitecore</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>The last step is to create an Item in the Core database so that this command appears in the Page Editor for all Link Fields. In the folder at <code>/sitecore/system/Field types/Link Types/General Link/WebEdit Buttons</code>, add a new <code>WebEdit Button</code> item called <code>Remove Link</code>.</p>
 <p>Within this item, set the appropriate fields to reference the command and choose a nice icon:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-item.png" alt="Remove Link fields" title="Remove Link fields"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-item.png" title="Remove Link fields"></p>
 
 <p>With that in place, you will immediately see a new icon in the Page Editor:</p>
-<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-demo.png" alt="Remove Link in Page Editor" title="Remove Link in Page Editor"></p>
+<p><img src="/2014/12/04/a-removelink-command-for-pageditor/remove-link-demo.png" title="Remove Link in Page Editor"></p>
 
 <p>And that’s it!</p>
 <p>I hope that proves useful, it’s a pretty straight-forward solution. I do suspect though that this could be entirely accomplished through javascript, as there is little need for any server-side processing. Please leave a comment if you found this useful, or have any suggestions.</p>
@@ -250,17 +250,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -311,17 +311,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2014/12/04/a-removelink-command-for-pageditor/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

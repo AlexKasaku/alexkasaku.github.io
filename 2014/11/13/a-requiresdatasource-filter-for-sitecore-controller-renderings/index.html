@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="A RequiresDataSource filter for Sitecore Controller Renderings - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="A RequiresDataSource filter for Sitecore Controller Renderings - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -194,7 +194,7 @@ ga('send', 'pageview');
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
         <p>A common requirement when creating components in Sitecore is for the component to rely on data being supplied via the DataSource. Whilst you can try your best to ensure that a DataSource is associated with a component, there will inevitably be occasions when that DataSource gets deleted or moved and ultimately isn’t provided to the component at the time of rendering.<br><a id="more"></a><br>What can work well in these occasions is to provide the content editor with some feedback that the component won’t function correctly, so that they know they shouldn’t publish the page in its current state.</p>
-<p>In Sitecore Controller Renderings, this could be done through some code at the top of each rendering action, checking for a DataSource and acting accordingly if one wasn’t found. However, rather than write repetitve code in each rendering, a better method is to make use of a reusable <a href="http://msdn.microsoft.com/en-us/library/dd410209%28v=vs.100%29.aspx" target="_blank" rel="external">ActionFilter</a>.</p>
+<p>In Sitecore Controller Renderings, this could be done through some code at the top of each rendering action, checking for a DataSource and acting accordingly if one wasn’t found. However, rather than write repetitve code in each rendering, a better method is to make use of a reusable <a href="http://msdn.microsoft.com/en-us/library/dd410209%28v=vs.100%29.aspx" target="_blank" rel="noopener">ActionFilter</a>.</p>
 <p>When the ActionFilter is executed, it attempts to locate a DataSource within the current RenderingContext. If no DataSource is found, then a PartialView is returned and the action will not continue to execute.</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">public class RequiresDataSource : FilterAttribute, IActionFilter</div><div class="line">&#123;</div><div class="line">  private const string DefaultNoDataSourceView = "_NoDataSource";</div><div class="line"></div><div class="line">  protected Item DataSourceItem &#123; get; set; &#125;</div><div class="line"></div><div class="line">  public virtual void OnActionExecuting(ActionExecutingContext filterContext)</div><div class="line">  &#123;</div><div class="line">    DataSourceItem = GetDataSourceItem();</div><div class="line"></div><div class="line">    if (DataSourceItem == null)</div><div class="line">    &#123;</div><div class="line">      filterContext.Result = new PartialViewResult</div><div class="line">      &#123;</div><div class="line">        ViewName = NoDataSourceView ?? DefaultNoDataSourceView</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private Item GetDataSourceItem()</div><div class="line">  &#123;</div><div class="line">    if (RenderingContext.Current == null || RenderingContext.Current.Rendering == null ||</div><div class="line">        string.IsNullOrEmpty(RenderingContext.Current.Rendering.DataSource))</div><div class="line">    &#123;</div><div class="line">       return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // A DataSource has at least been set. Now to find out if it is an actual item.</div><div class="line">    return Sitecore.Context.Database.GetItem(RenderingContext.Current.Rendering.DataSource);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public void OnActionExecuted(ActionExecutedContext filterContext)</div><div class="line">  &#123;</div><div class="line">    // Not required.</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public string NoDataSourceView &#123; get; set; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>With this attribute created, you can assign it to an action:</p>
@@ -205,14 +205,14 @@ ga('send', 'pageview');
 <p>What do you put in the view? That is completly up to what is necessary in your solution - however a good strategy is to provide a simple error message to a user using the PageEditor, but actually render nothing if the component still makes it to the published page without a DataSource:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@if (PageMode.IsPageEditor)</div><div class="line">&#123;</div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"error"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Heads up!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This component requires a DataSource but one has not been specified.</div><div class="line">    If this page is published in its current state, this component will be empty.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Now, if the component is viewed within the Page Editor, and no DataSource has been set, the user will see an informative message:</p>
-<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Required.png" alt="No DataSource example" title="No DataSource example"></p>
+<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Required.png" title="No DataSource example"></p>
 
 <p>As well as provided the user with some feedback, it has removed the need for the null-checking that would have otherwise been required in the action to prevent exceptions, we’re now guaranteed that the code will only be executed if a DataSource has been set.</p>
 <h3 id="Extending-the-attribute"><a href="#Extending-the-attribute" class="headerlink" title="Extending the attribute"></a>Extending the attribute</h3><p>To provide the user with some more specific feedback, and also to ensure that our code only executes if the <strong>correct</strong> type of DataSource has been applied, we can extend the attribute to create another.</p>
 <p>The <code>RequiresDataSourceOfTemplate</code> attribute shown below adds an additional check that occurs <em>if</em> the DataSource has been set, whereupon it additionally confirms that the DataSource is of the right template:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiresDataSourceOfTemplate</span> : <span class="title">RequiresDataSource</span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> DefaultInvalidDataSourceView = <span class="string">"_InvalidDataSource"</span>;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">readonly</span> Guid _templateId;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">RequiresDataSourceOfTemplate</span>(<span class="params">Guid templateId</span>)</span></div><div class="line">  &#123;</div><div class="line">    _templateId = templateId;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnActionExecuting</span>(<span class="params">ActionExecutingContext filterContext</span>)</span></div><div class="line">  &#123;</div><div class="line">    <span class="keyword">base</span>.OnActionExecuting(filterContext);</div><div class="line"></div><div class="line">    <span class="comment">// Only continue if we have a datasource, i.e. the base action didn't result in anything.</span></div><div class="line">    <span class="keyword">if</span> (DataSourceItem != <span class="literal">null</span> &amp;&amp; !DataSourceItem.DerivesFromTemplate(_templateId))</div><div class="line">    &#123;</div><div class="line">      <span class="keyword">var</span> correctTemplateItem = Sitecore.Context.Database.GetItem(_templateId.ToID());</div><div class="line"></div><div class="line">      filterContext.Result = <span class="keyword">new</span> PartialViewResult</div><div class="line">      &#123;</div><div class="line">        ViewData = &#123;</div><div class="line">          &#123;<span class="string">"RequiredTemplateName"</span>, correctTemplateItem.Name &#125;,</div><div class="line">          &#123;<span class="string">"FoundTemplateName"</span>, DataSourceItem.TemplateName&#125;</div><div class="line">        &#125;,</div><div class="line">        ViewName = InvalidDataSourceView ?? DefaultInvalidDataSourceView</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">string</span> InvalidDataSourceView &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>This time, as well as returning an alternate view, some additional metadata is pushed into the ViewData. That allows us to provde create a view that provides the user with a bit of information about what went wrong:</p>
-<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Invalid.png" alt="Invalid DataSource example" title="Invalid DataSource example"></p>
+<p><img src="/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/DS_Invalid.png" title="Invalid DataSource example"></p>
 
 <p>Once you have these attributes, you can decorate all of your actions that rely on DataSources with them. This will eliminate a lot of common code needing to be rewritten across these actions, so instead your actions can focus on just delivering the right content with the correct DataSources in place.</p>
 
@@ -252,17 +252,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -313,17 +313,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2014/11/13/a-requiresdatasource-filter-for-sitecore-controller-renderings/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="Developer role error in Sitecore 8.1 - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="Developer role error in Sitecore 8.1 - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -200,7 +200,7 @@ ga('send', 'pageview');
 <p>Gives the user access to content manipulation facilities in the Content Editor, plus all the design and authoring roles normally used by client authors and client designers. It also provides access to more functionality on the ribbon of the Content Editor to allow full development features for users assigned to this role.</p>
 </blockquote>
 <p>This role also has access to the Development Tools menu in the Sitecore menu, which gives the user access to further development tools, such as  the Package Designer.</p>
-<p>For a full description of the security roles within Sitecore, <a href="https://doc.sitecore.net/sitecore_experience_platform/setting_up__maintaining/security_and_administration/users_roles_and_domains/the_security_roles" target="_blank" rel="external">see this documentation page</a>.</p>
+<p>For a full description of the security roles within Sitecore, <a href="https://doc.sitecore.net/sitecore_experience_platform/setting_up__maintaining/security_and_administration/users_roles_and_domains/the_security_roles" target="_blank" rel="noopener">see this documentation page</a>.</p>
 <p>However, if you assign this role to a user then there is an issue that the user may encounter when trying to use some Developer functionality. If they attempt to insert an item in the Content Editor using the <code>Insert From Template</code> option, they will see the following exception:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[AccessDeniedException: Application access denied.]</div><div class="line">   Sitecore.Diagnostics.Assert.HasAccess(Boolean accessAllowed, String message) +81</div><div class="line">   Sitecore.Shell.Applications.Templates.AddFromTemplate.AddFromTemplateForm.OnLoad(EventArgs e) +73</div><div class="line"></div><div class="line">[TargetInvocationException: Exception has been thrown by the target of an invocation.]</div><div class="line">   System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor) +0</div><div class="line">   System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments) +128</div><div class="line">   System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture) +146</div><div class="line">   Sitecore.Reflection.ReflectionUtil.InvokeMethod(MethodInfo method, Object[] parameters, Object obj) +89</div><div class="line">   Sitecore.Web.UI.Sheer.ClientPage.OnLoad(EventArgs e) +594</div><div class="line">   System.Web.UI.Control.LoadRecursive() +68</div><div class="line">   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +1436</div></pre></td></tr></table></figure>
 <p>This error stems from the fact that the Author role has been explicitly denied access to the <code>Template Lister</code> application, but not to the <code>Insert From Template</code> button itself. They can see and click the button, but when the application is launched, it throws the error.</p>
@@ -249,17 +249,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -310,17 +310,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/10/26/developer-role-error-in-sitecore-8-1/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

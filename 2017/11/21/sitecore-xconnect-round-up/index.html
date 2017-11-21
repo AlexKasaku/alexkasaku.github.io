@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Shard map manager has to be configured error in Sitecore xConnect - Kasaku</title>
+    <title>Sitecore 9 + xConnect: Blog round-up and known issues - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku, a Sitecore consultancy outfit based in London, UK.">
     
@@ -31,13 +31,13 @@
     <meta name="theme-color" content="#333a42">    
     
     <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="Shard map manager has to be configured error in Sitecore xConnect - Kasaku" />
+    <meta property="og:title"              content="Sitecore 9 + xConnect: Blog round-up and known issues - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
-    <meta name="twitter:title" content="Shard map manager has to be configured error in Sitecore xConnect - Kasaku" />
+    <meta name="twitter:title" content="Sitecore 9 + xConnect: Blog round-up and known issues - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
@@ -182,24 +182,61 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Shard map manager has to be configured error in Sitecore xConnect</h1>
+        <h1 class="post-title" itemprop="headline">Sitecore 9 + xConnect: Blog round-up and known issues</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Sun Nov 05 2017 12:00:00 GMT+0000">
-        Nov 05, 2017
+    <time  itemprop="datePublished" content="Tue Nov 21 2017 12:00:00 GMT+0000">
+        Nov 21, 2017
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>After configuring Sitecore 9 and xConnect, you may come across the following error in the xConnect logs when you’re trying to use the API:<br><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2017-10-29 21:23:30.052 +00:00 [Error] [&quot;XdbContextLoggingPlugin&quot;] XdbContext Batch Execution Exception</div><div class="line">Sitecore.XConnect.Operations.DependencyFailedException: One or more dependencies failed ---&gt; </div><div class="line">Sitecore.Xdb.Collection.Failures.DataProviderException: Postcondition &apos;The shard map manager has to be configured.&apos; failed. ---&gt;</div><div class="line">Sitecore.Framework.Conditions.PostconditionException: Postcondition &apos;The shard map manager has to be configured.&apos; failed.</div><div class="line">   at Sitecore.Framework.Conditions.EnsuresValidator`1.ThrowExceptionCore(String condition, String additionalMessage, ConstraintViolationType type)</div><div class="line">   at Sitecore.Framework.Conditions.Throw.ValueShouldBeTrue[T](ConditionValidator`1 validator, String conditionDescription)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.InitializeShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.get_ShardMapManager()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.GetRangeShardMap(String rangeShardMapName)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.&lt;&gt;c__DisplayClass37_0.&lt;GetRangeMappings&gt;b__0()</div><div class="line">   at System.Lazy`1.CreateValue()</div><div class="line">   at System.Lazy`1.LazyInitValue()</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.MemoryCacheManager.AddOrGetExistingFromCache[T](String key, Func`1 valueFactory)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Configuration.ElasticScaleConnectionManager.MapRecordsToShards[T](String rangeShardMapName, IReadOnlyCollection`1 records, Func`2 getShardKey)</div><div class="line">   at Sitecore.Xdb.Collection.Data.SqlServer.Managers.SqlContactRecordsManager.&lt;GetContactIdentifiersFromIndexAsync&gt;d__5.MoveNext()</div></pre></td></tr></table></figure>
-<p>Despite the slightly cryptic error message, the cause of this is actually fairly straightforward. If you see this error, this is an indicator that xConnect cannot connect to the <code>Xdb.Collection.ShardMapManager</code> database, which is attempted in the <code>InitializeShardMapManager</code> method, where this exception is being thrown.</p>
-<p>Though the underlying SQL error doesn’t appear to be logged, to diagnose the problem, you should confirm that the <code>collection</code> connection string in the configuration is correct:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"collection"</span> <span class="attr">connectionString</span>=<span class="string">"user id=collectionuser;password=***PASSWORD***;data source=localhost;Initial Catalog=sc90_Xdb.Collection.ShardMapManager"</span> /&gt;</span></div></pre></td></tr></table></figure>
-<p>In my instance, the Sitecore 9 install hadn’t correctly created the <code>collectionuser</code> login in SQL Server, so I just had to create this login and add it to the <code>sc90_Xdb.Collection.ShardMapManager</code> database. I confirmed that the connection string worked and provided access to the ShardMapManager database, and after that point, the error disappeared and I was able to push data into xConnect.</p>
-<p>This error occurs if the post-installation manual steps are not completed. For Sitecore 9.0, these are found in Chapter 6 of the installation guide.</p>
+        <p>Now that Sitecore 9.0 has been out in the wild for a while, and after having spent time with both it and xConnect, I thought I’d create a post to round-up some things of note.<br><a id="more"></a></p>
+<h1 id="Sitecore-9-0"><a href="#Sitecore-9-0" class="headerlink" title="Sitecore 9.0"></a>Sitecore 9.0</h1><p>First, just to touch on Sitecore 9.0 in general. There are already some great resources available, created by Sitecore and the community to get you up to speed:</p>
+<ul>
+<li>The official <a href="https://doc.sitecore.net/developers/index.html" target="_blank" rel="noopener">Sitecore Developer documentation</a></li>
+<li><a href="https://jammykam.wordpress.com/" target="_blank" rel="noopener">Kamruz Jaman</a>, aka jammycam, provides a good overview of the new features in his blog post - <a href="https://jammykam.wordpress.com/2017/10/17/sitecore-9-is-here/" target="_blank" rel="noopener">Sitecore 9 is here!</a>. He’s also created blogged specifically about the new <a href="https://jammykam.wordpress.com/2017/11/01/sitecore-9-custom-config-roles/" target="_blank" rel="noopener">custom configuration roles</a> and <a href="https://jammykam.wordpress.com/2017/10/17/sitecore-9-dynamic-placeholders/" target="_blank" rel="noopener">dynamic placeholders</a></li>
+</ul>
+<p>Installations in Sitecore 9.0 have become a little more complicated, and there’s a bit more to get used to, especially when it comes to setting up your own development environment. The following blog posts provide some good pointers and scripts to get you going faster:</p>
+<ul>
+<li><a href="http://blog.baslijten.com/gotchas-while-installing-sitecore-9-using-the-sitecore-installation-framework/" target="_blank" rel="noopener">SIF Installation gotchas</a> by <a href="http://blog.baslijten.com" target="_blank" rel="noopener">Bas Lijten</a></li>
+<li><a href="https://jermdavis.wordpress.com/2017/10/30/low-effort-solr-installs/" target="_blank" rel="noopener">Low-effort SOLR installs</a> by <a href="https://jermdavis.wordpress.com" target="_blank" rel="noopener">Jeremy Davis</a></li>
+<li><a href="https://kamsar.net/index.php/2017/11/The-lazy-way-to-install-Sitecore-9/" target="_blank" rel="noopener">The lazy developer’s way to install Sitecore 9</a> by <a href="https://kamsar.net" target="_blank" rel="noopener">Kam Figy</a></li>
+</ul>
+<p>SOLR is essentially a prerequisite for Sitecore now. If you have only been using Lucene so far, I would strongly recommend you investigate SOLR and move towards it as the norm for your projects. Fortunately, with the introduction of SIF and the new configuration roles, switching over to SOLR is much simpler than in previous versions of Sitecore.</p>
+<h1 id="Introducing-xConnect"><a href="#Introducing-xConnect" class="headerlink" title="Introducing xConnect"></a>Introducing xConnect</h1><p>xConnect is a brand new concept for Sitecore 9.0, and as such you’ll want to make sure you’re up to speed on it. Rather than go into detail here on what it is and what you need to know, there are already some really good resources that have been written that I can point you to.</p>
+<p>First off, there is the <a href="https://doc.sitecore.net/developers/xp/xconnect/#" target="_blank" rel="noopener">official documentation for xConnect</a>, which is chock-full of examples and guidance, so shouldn’t be overlooked.</p>
+<p>Next, my man <a href="https://citizensitecore.com/author/longhorntaco/" target="_blank" rel="noopener">Jason Wilkerson</a>, aka longhorntaco, has created <a href="https://citizensitecore.com/2017/10/17/introducing-xconnect-for-sitecore-9/" target="_blank" rel="noopener">a fantastic series of blog posts introducing xConnect</a> and also provides sample code for getting your first xConnect client running and pushing interactions into xDb. All the example code is included on <a href="https://github.com/LonghornTaco/xconnect-intro" target="_blank" rel="noopener">GitHub</a> too, nice!</p>
+<h1 id="Known-xConnect-issues"><a href="#Known-xConnect-issues" class="headerlink" title="Known xConnect issues"></a>Known xConnect issues</h1><h2 id="Interactions-bug"><a href="#Interactions-bug" class="headerlink" title="Interactions bug"></a>Interactions bug</h2><p>There is currently an outstanding bug relating to tracking interactions from a non-Sitecore xConnect client. When these interactions are added to a  contact, they will then cause an error to be shown when the Experience Profile is used to view that contact:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/profile-visits-error.png" title="Experience profile visits error"></p>
+
+<p>Along with seeing this error, you’ll also have the following error logged:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">15516 18:30:09 ERROR Object reference not set to an instance of an object.</div><div class="line">Exception: System.NullReferenceException</div><div class="line">Message: Object reference not set to an instance of an object.</div><div class="line">Source: Sitecore.Cintel</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.FillTableWithRow(DataTable rawTable, Interaction curInteraction, Int32 index)</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.GetTableFromContactXconnect(DataTable rawTable, Guid contactID, Nullable`1 interactionID)</div><div class="line">   at Sitecore.Cintel.Reporting.ReportingServerDatasource.Visits.GetVisitsWithLocations.Process(ReportProcessorArgs args)</div><div class="line">   at (Object , Object[] )</div><div class="line">   at Sitecore.Pipelines.CorePipeline.Run(PipelineArgs args)</div><div class="line">   at Sitecore.Cintel.Reporting.PipelineViewProvider.GenerateContactView(ViewParameters viewParameters)</div><div class="line">   at Sitecore.Cintel.Endpoint.IntelController.Get(ViewParameters viewParams, Guid contactId, String viewId, String id)</div></pre></td></tr></table></figure>
+<p>The issue occurs due to the interactions from an xConnect client not supplying all of the facets that a typical web visit interaction does, such as User Agent + IP info. The code that executes within the Experience Profile to render visit data expects these facets to be populated.</p>
+<p>This issue is already known to Sitecore, and is listed on the <a href="https://kb.sitecore.net/articles/125044" target="_blank" rel="noopener">Sitecore 9.0 Known Issues page</a>:</p>
+<blockquote>
+<p>The Experience Profile currently only supports website visit interactions. As a result, if an interaction does not fully populate the facets required for a web visit, an error is displayed.</p>
+</blockquote>
+<p>There are however, a couple of workarounds you can put in place to fix this issue. These involve either:</p>
+<ul>
+<li>Providing data for these additional facets with your interactions from your xConnect client</li>
+<li>Patching the report code so that it allows for this data to be missing</li>
+</ul>
+<p>This would be worth a blog post on its own, but fortunately, there is already <a href="https://www.brimit.com/blog/sitecore-9-experience-profile-workaround" target="_blank" rel="noopener">a great post covering how to implement these workarounds</a>.</p>
+<h2 id="Experience-Profile-dashboard-filter-bug"><a href="#Experience-Profile-dashboard-filter-bug" class="headerlink" title="Experience Profile dashboard filter bug"></a>Experience Profile dashboard filter bug</h2><p>Additionally, you may notice that within the Experience Profile, the default search dashboard doesn’t seem to show any results, even if you know there are contacts present:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/xp-no-results.png" title="Experience Profile showing no results"></p>
+
+<p>This is due to another Known Issue in Sitecore:</p>
+<blockquote>
+<p>The To date field must be filled in to see search results. This field is hidden by default and you must select the Filter button to enable it. (187153)</p>
+</blockquote>
+<p>To workaround this for now, you need to open up the filter and make sure the <em>To Date</em> field is set to a value that covers an interaction for your contact:</p>
+<p><img src="/2017/11/21/sitecore-xconnect-round-up/xp-filter.png" title="Applying a filter to the Experience Profile search"></p>
+
+<p>With this in place, you should see that the contacts start appearing.</p>
+<h1 id="Questions-Don’t-forget-StackExchange"><a href="#Questions-Don’t-forget-StackExchange" class="headerlink" title="Questions? Don’t forget StackExchange"></a>Questions? Don’t forget StackExchange</h1><p>Still facing an issue relating to Sitecore 9.0 or xConnect that no one has yet covered? The <a href="https://sitecore.stackexchange.com" target="_blank" rel="noopener">Sitecore StackExchange</a> is, as ever, the no. 1 resource for questions + answers relating to all things Sitecore. Questions can be tagged, so it’s worth browsing <a href="https://sitecore.stackexchange.com/questions/tagged/xconnect" target="_blank" rel="noopener">the xConnect questions</a> to see if someone is encountering the same problem as you.</p>
 
         
             
@@ -219,7 +256,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/21/sitecore-xconnect-round-up/"  data-tooltip="Sitecore 9 + xConnect: Blog round-up and known issues">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -227,7 +264,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/19/sitecore-powershell-storing-in-user-profile/" data-tooltip="Storing data in the user profile in Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/" data-tooltip="Shard map manager has to be configured error in Sitecore xConnect">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -237,17 +274,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -280,7 +317,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/21/sitecore-xconnect-round-up/"  data-tooltip="Sitecore 9 + xConnect: Blog round-up and known issues">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -288,7 +325,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/19/sitecore-powershell-storing-in-user-profile/" data-tooltip="Storing data in the user profile in Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/" data-tooltip="Shard map manager has to be configured error in Sitecore xConnect">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -298,17 +335,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/21/sitecore-xconnect-round-up/">
                 <i class="icon-twitter"></i>
             </a>
         </li>

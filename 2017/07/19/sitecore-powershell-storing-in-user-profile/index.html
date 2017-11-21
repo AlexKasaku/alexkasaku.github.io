@@ -33,13 +33,13 @@
     <meta property="og:type"               content="article" />
     <meta property="og:title"              content="Storing data in the user profile in Sitecore PowerShell Extensions - Kasaku" />
     <meta property="og:description"        content="Learn how to use Sitecore PowerShell Extensions to improve the usability of your scripts by storing data in the user profile." />
-    <meta property="og:image"              content="http://www.kasaku.co.uk/assets/images/cover.png" />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
     <meta name="twitter:title" content="Storing data in the user profile in Sitecore PowerShell Extensions - Kasaku" />
     <meta name="twitter:description" content="Learn how to use Sitecore PowerShell Extensions to improve the usability of your scripts by storing data in the user profile." />
-    <meta name="twitter:image" content="http://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
     
         <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
@@ -69,7 +69,7 @@ ga('send', 'pageview');
             <header id="header">
     <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
     <h1 class="header-title">
-        <a class="header-title-link" href="http://www.kasaku.co.uk">Kasaku</a>
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
     </h1>
     
 </header>
@@ -86,7 +86,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
                     
                     <i class="sidebar-button-icon icon-lg icon-home"></i>
                     <span class="sidebar-button-desc hide-md">Home</span>
@@ -95,7 +95,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-tags">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
                     
                     <i class="sidebar-button-icon icon-lg icon-tags"></i>
                     <span class="sidebar-button-desc hide-md">Tags</span>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/all-archives">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
                     
                     <i class="sidebar-button-icon icon-lg icon-archive"></i>
                     <span class="sidebar-button-desc hide-md">Archives</span>
@@ -166,7 +166,7 @@ ga('send', 'pageview');
         
         <li class="sidebar-button">
             
-                <a  class="sidebar-button-link" href="http://www.kasaku.co.uk/atom.xml">
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
                     
                     <i class="sidebar-button-icon icon-lg icon-rss"></i>
                     <span class="sidebar-button-desc hide-md">RSS</span>
@@ -194,13 +194,13 @@ ga('send', 'pageview');
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
         <p>Sitecore PowerShell Extensions has a very powerful dialog feature that allows scripts to be written that create dialogs for capturing information from the user.<br><a id="more"></a><br>This feature is used by a great deal of the scripts that come bundled with SPE, such as the broken links report:</p>
-<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_brokenlinks.png" alt="Broken links dialog" title="Broken links dialog"></p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_brokenlinks.png" title="Broken links dialog"></p>
 
 <p>And the package generator:</p>
-<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_pkg.png" alt="Package generator dialog" title="Package generator dialog"></p>
+<p><img src="/2017/07/19/sitecore-powershell-storing-in-user-profile/spe_pkg.png" title="Package generator dialog"></p>
 
 <p>If you have a script featuring a dialog that you regularly execute, you might want to have your most recently used values saved, so that next time you execute the script you can skip through the dialog. Fortunately, this is actually quite easy to accomplish.</p>
-<h1 id="Using-the-User-Profile"><a href="#Using-the-User-Profile" class="headerlink" title="Using the User Profile"></a>Using the User Profile</h1><p>There are a number of different locations you could use to persist this data. Assuming you wish to save the values on a per-user basis, one of the easiest methods is to use the <a href="https://msdn.microsoft.com/en-us/library/2y3fs9xs.aspx" target="_blank" rel="external">ASP.NET User Profile</a>. This is part of the <a href="https://msdn.microsoft.com/en-us/library/yh26yfzy.aspx" target="_blank" rel="external">ASP.NET Membership Provider</a> that Sitecore’s user management is built upon. Using the profile means that the data will be stored within SQL Server and therefore persisted across multiple browser sessions and machines. Furthermore, the Sitecore API and SPE makes accessing this profile very simple.</p>
+<h1 id="Using-the-User-Profile"><a href="#Using-the-User-Profile" class="headerlink" title="Using the User Profile"></a>Using the User Profile</h1><p>There are a number of different locations you could use to persist this data. Assuming you wish to save the values on a per-user basis, one of the easiest methods is to use the <a href="https://msdn.microsoft.com/en-us/library/2y3fs9xs.aspx" target="_blank" rel="noopener">ASP.NET User Profile</a>. This is part of the <a href="https://msdn.microsoft.com/en-us/library/yh26yfzy.aspx" target="_blank" rel="noopener">ASP.NET Membership Provider</a> that Sitecore’s user management is built upon. Using the profile means that the data will be stored within SQL Server and therefore persisted across multiple browser sessions and machines. Furthermore, the Sitecore API and SPE makes accessing this profile very simple.</p>
 <p>Getting the current user and setting / getting a profile value from it couldn’t be simpler:</p>
 <figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Get the current user</span></div><div class="line"><span class="variable">$user</span> = Get-User -Current </div><div class="line"></div><div class="line"><span class="comment"># Store a value</span></div><div class="line"><span class="variable">$user</span>.Profile.SetCustomProperty(<span class="string">"mycustomproperty"</span>, <span class="string">"store this please!"</span>)</div><div class="line"></div><div class="line"><span class="comment"># Read a value</span></div><div class="line"><span class="variable">$user</span>.Profile.GetCustomProperty(<span class="string">"mycustomproperty"</span>)</div></pre></td></tr></table></figure>
 <p>Straightforward, right?</p>
@@ -226,7 +226,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"  data-tooltip="Shard map manager has to be configured error in Sitecore XConnect">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"  data-tooltip="Shard map manager has to be configured error in Sitecore xConnect">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -244,17 +244,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -287,7 +287,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"  data-tooltip="Shard map manager has to be configured error in Sitecore XConnect">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/05/sitecore-xconnect-shard-map-must-be-configured/"  data-tooltip="Shard map manager has to be configured error in Sitecore xConnect">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -305,17 +305,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/07/19/sitecore-powershell-storing-in-user-profile/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
