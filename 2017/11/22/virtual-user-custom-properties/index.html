@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Kasaku">
+    <title>Virtual Users, custom properties and persisting data - Kasaku</title>
+    <meta name="author" content="Kasaku Ltd.">
+    <meta name="description" content="Kasaku, a Sitecore consultancy outfit based in London, UK.">
+    
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/assets/images/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/assets/images/manifest.json">
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
+	<meta name="msapplication-TileColor" content="#333a42">
+	<meta name="msapplication-TileImage" content="/assets/images/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/images/browserconfig.xml">
+    <meta name="theme-color" content="#333a42">    
+    
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="Virtual Users, custom properties and persisting data - Kasaku" />
+    <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
+    <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kasaku_dev" />
+    <meta name="twitter:title" content="Virtual Users, custom properties and persisting data - Kasaku" />
+    <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
+    <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
+    
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="atom.xml">
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css">
+    <!--STYLES END-->
+    
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63800320-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header">
+    <i id="btn-open-sidebar" class="icon-lg icon-bars "></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="https://www.kasaku.co.uk">Kasaku</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar">
+    
+    
+    <div class="sidebar-logo">
+        <h1><span class="rotate">Kasaku</span></h1>
+        <h2>Web Development</h2>
+    </div>
+    
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-home"></i>
+                    <span class="sidebar-button-desc hide-md">Home</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-tags">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-tags"></i>
+                    <span class="sidebar-button-desc hide-md">Tags</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/all-archives">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-archive"></i>
+                    <span class="sidebar-button-desc hide-md">Archives</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://community.sitecore.net/members/alexwashtell_5f00_911378316" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-sitecore"></i>
+                    <span class="sidebar-button-desc hide-md">Sitecore</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://github.com/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-github"></i>
+                    <span class="sidebar-button-desc hide-md">GitHub</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://twitter.com/kasaku_dev" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-twitter"></i>
+                    <span class="sidebar-button-desc hide-md">Twitter</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="https://stackoverflow.com/users/173983/kasaku" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-stack-overflow"></i>
+                    <span class="sidebar-button-desc hide-md">Stack Overflow</span>
+                </a>
+        </li>
+        
+        <li class="sidebar-button">
+            
+            <a  class="sidebar-button-link" href="mailto://alex@kasaku.co.uk" target="_blank">
+                
+                    <i class="sidebar-button-icon icon-lg icon-envelope-o"></i>
+                    <span class="sidebar-button-desc hide-md">Mail</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+    <ul class="sidebar-buttons">
+        
+        <li class="sidebar-button">
+            
+                <a  class="sidebar-button-link" href="https://www.kasaku.co.uk/atom.xml">
+                    
+                    <i class="sidebar-button-icon icon-lg icon-rss"></i>
+                    <span class="sidebar-button-desc hide-md">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+            <div id="main">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+        <div class="post-header main-content-wrap">
+    
+        <h1 class="post-title" itemprop="headline">Virtual Users, custom properties and persisting data</h1>
+    
+    <div class="post-meta">
+    <time  itemprop="datePublished" content="Wed Nov 22 2017 12:00:00 GMT+0000">
+        Nov 22, 2017
+    </time>
+    
+</div>
+</div>
+    
+    <div class="post-content markdown main-content-wrap" itemprop="articleBody">
+        <p>I’ve seen a few questions recently regarding Virtual Users within Sitecore and asking how their data is persisted (if it is at all), so I thought I’d try to clear up any confusion around this.<br><a id="more"></a></p>
+<h1 id="What-are-virtual-users"><a href="#What-are-virtual-users" class="headerlink" title="What are virtual users?"></a>What are virtual users?</h1><p>A Virtual User within Sitecore is a transient entity used to represent an authenticated user on your site, unlike a regular user that is persisted within the Sitecore Core database (by default!). A common use-case for this scenario would be if you are using an external system for authentication. A Virtual User allows you to create an authenticated session for that user, without needing to create them in Sitecore. They don’t get fully persisted, and you won’t see them in the User Mananger. However, Sitecore treats them like any other user when it comes to roles + access rules. You’re even able to specify custom properties for virtual users.</p>
+<p>Logging in a Virtual User is very straightforward. Here is a typical example for creating a new Virtual User and setting some roles + properties:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">User virtualUser = Sitecore.Security.Authentication.AuthenticationManager.BuildVirtualUser(<span class="string">"extranet\\bertie@bassett.co.uk"</span>, <span class="literal">true</span>);</div><div class="line"></div><div class="line"><span class="comment">// Optional: Add the user to an existing extranet role</span></div><div class="line">virtualUser.Roles.Add(Sitecore.Security.Accounts.Role.FromName(<span class="string">"extranet\\CustomRole"</span>));</div><div class="line"></div><div class="line"><span class="comment">// Optional: Set some custom properties</span></div><div class="line">virtualUser.Profile.FullName = <span class="string">"Bertie Bassett"</span>;</div><div class="line">virtualUser.Profile.Email = <span class="string">"bertie@bassett.co.uk"</span>;</div><div class="line">virtualUser.Profile.SetCustomProperty(<span class="string">"DateOfBirth"</span>, <span class="string">"1980-01-01"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Login the virtual user</span></div><div class="line">Sitecore.Security.Authentication.AuthenticationManager.LoginVirtualUser(virtualUser);</div></pre></td></tr></table></figure>
+<p>After the <code>LoginVirtualUser</code> is called, an authenticated session is established and on future page requests, the <code>Sitecore.Context.User</code> will be <code>extranet\bertie@bassett.co.uk</code>.</p>
+<h1 id="How-is-the-user-authenticated"><a href="#How-is-the-user-authenticated" class="headerlink" title="How is the user authenticated?"></a>How is the user authenticated?</h1><p>A Virtual User is often referred to as an “in-memory” user, suggesting that the user data is held within memory and won’t survive a server restart. This isn’t really true, as we’ll see.</p>
+<p>If you are using Forms Authentication, when the <code>LoginVirtualUser</code> method is called, a standard Forms Authentication cookie is created. By default, this has the name <code>.ASPXAUTH</code>, and will have an encrypted value such as this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2B84953608A213A6D644F37F4723DCA1DC7CF534DCA0214342B00C8751AD667FC2FCA31E043074EC74C8AFC69EA7012DA9A70B622D011FA029632A09E8ED20B1906DE1FE4E597F96E547126ADF93867888EF34A64383E6870517559A5779A861B9F77ADC5EE3FE52B9FE15554B70C7F36C2A88A2B96484A3C5171DF174CC3CDD3EDC63D88C798886045E20B2B95FA40734D533C3AC9FAC76BF07C3397B4889E06F9FB4B3279506F2D2F26083024B5514310B4EEE</div></pre></td></tr></table></figure>
+<p>During an HTTP request, this data is decrypted into a <code>FormsAuthenticationTicket</code>. In this demo instance, it contains the following data:  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"Version"</span>: <span class="number">2</span>,</div><div class="line">  <span class="attr">"Name"</span>: <span class="string">"extranet\\bertie@bassett.co.uk"</span>,</div><div class="line">  <span class="attr">"Expiration"</span>: <span class="string">"2017-11-22T12:16:29.5653712+00:00"</span>,</div><div class="line">  <span class="attr">"IssueDate"</span>: <span class="string">"2017-11-22T11:46:29.5653712+00:00"</span>,</div><div class="line">  <span class="attr">"IsPersistent"</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">"Expired"</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">"UserData"</span>: <span class="string">"cj5qfethsr0z4ej1xjxkh4ox"</span>,</div><div class="line">  <span class="attr">"CookiePath"</span>: <span class="string">"/"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>This ticket alone is enough for Sitecore to consider the user authenticated as the specified user and allow access to any pages you may have set as restricted to anonymous users.</p>
+<h1 id="What-about-roles-and-properties"><a href="#What-about-roles-and-properties" class="headerlink" title="What about roles and properties?"></a>What about roles and properties?</h1><p>In the above code example, we added the virtual user into the <code>extranet\CustomRole</code> role and also added some profile properties. As you can see, this information isn’t found within the ticket. So where is it? Well, note that there is a <code>UserData</code> property which contains a string, <code>cj5qfethsr0z4ej1xjxkh4ox</code>. That’s important.</p>
+<p>If I take a look at the <code>Core</code> database for this instance, I find the following row in the <code>ClientData</code> table:</p>
+<p><img src="/2017/11/22/virtual-user-custom-properties/sql.png" title="ClientData Result"></p>
+
+<p>The value of <code>SessionKey</code> field refers to both the current ASP.NET Session ID and also the <code>UserData</code> value from the authentication ticket. The <code>Data</code> field is a Base64 encoding of a serialized <code>Hashtable</code> object. Within <em>that</em>, is a serialized instance of a <code>Sitecore.SecurityModel.UserRuntimeSetings</code> object that contains all of the Virtual User data, such as the roles they belong to, and their custom properties.</p>
+<p>So as you can see, data <em>is</em> persisted for the Virtual User. Additionally, as the cookie is persisted on the user’s machine, the authenticated user and their data will survive a restart of the web process / server. If you have multiple load-balanced servers referencing the same <code>Core</code> database, then the Virtual User data will be available to each server, avoiding any load-balancing issues in this particular scenario.</p>
+<p>It’s worth noting that this data survives if the ASP.NET Session ID is abandoned. In this instance, the session cookie is removed, but the authentication cookie remains. As this authentication cookie still retains the key within the <code>UserData</code> property, the data can still be pulled out of the <code>Core</code> database.</p>
+<h1 id="ClientData-compacting"><a href="#ClientData-compacting" class="headerlink" title="ClientData compacting"></a>ClientData compacting</h1><p>You should note that the <code>ClientData</code> table <em>does</em> get cleaned up on a regular basis. There is an agent responsible for this, and that executes every 4 hours by default:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">scheduling</span>&gt;</span></div><div class="line">    ...</div><div class="line">    <span class="tag">&lt;<span class="name">agent</span> <span class="attr">type</span>=<span class="string">"Sitecore.Tasks.CompactClientDataAgent"</span> <span class="attr">method</span>=<span class="string">"Run"</span> <span class="attr">interval</span>=<span class="string">"04:00:00"</span>/&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">scheduling</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>This uses a parameter of the ClientData configuration to determine the <code>object lifetime</code>, which defaults to 20 minutes. Any rows which have not been accessed within that time in the table will be removed when the agent executes:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">    <span class="tag">&lt;<span class="name">clientDataStore</span> <span class="attr">type</span>=<span class="string">"Sitecore.Data.SqlServer.SqlServerClientDataStore, Sitecore.Kernel"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">desc</span>=<span class="string">"connection string name"</span> <span class="attr">connectionStringName</span>=<span class="string">"core"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">desc</span>=<span class="string">"object lifetime"</span>&gt;</span>00:20:00<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">ref</span>=<span class="string">"eventing/eventQueueProvider/eventQueue[@name='core']"</span> <span class="attr">desc</span>=<span class="string">"event queue"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">type</span>=<span class="string">"Sitecore.Abstractions.BaseEventManager, Sitecore.Kernel"</span> <span class="attr">desc</span>=<span class="string">"eventManager"</span> <span class="attr">resolve</span>=<span class="string">"true"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">clientDataStore</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>So, without changes to this, you shouldn’t treat this storage of Virtual User data as a permenant. But then, it’s not intended to be - generally this would be storage of data you’re only interested in keeping for the duration of the user’s session. If you need something more than this you should look into an alternate method.</p>
+<h1 id="So…-ClientData-Is-that-new"><a href="#So…-ClientData-Is-that-new" class="headerlink" title="So… ClientData? Is that new?"></a>So… ClientData? Is that new?</h1><p>The ClientData table has actually been within the Sitecore database for quite some time now, but the use of it to persist Virtual User information is relatively recent. In fact, it was introduced in <code>Sitecore 8.1 rev. 160302 (8.1 Update-2)</code>.</p>
+<p>So what happened before then? Well, in earlier versions of Sitecore, the user profile data was actually stored entirely within the authentication cookie:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"Version"</span>: <span class="number">2</span>,</div><div class="line">  <span class="attr">"Name"</span>: <span class="string">"extranet\\bertie@bassett.co.uk"</span>,</div><div class="line">  <span class="attr">"Expiration"</span>: <span class="string">"2017-11-22T15:39:04.9367692+00:00"</span>,</div><div class="line">  <span class="attr">"IssueDate"</span>: <span class="string">"2017-11-22T15:09:04.9367692+00:00"</span>,</div><div class="line">  <span class="attr">"IsPersistent"</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">"Expired"</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">"UserData"</span>: <span class="string">"[&#123;\"Key\":\"SC_USR_extranet\\\\bertie@bassett.co.ukRuntimeSettings\",\"Value\":\"&#123;\\\"AddedRoles\\\":[\\\"extranet\\\\\\\\CustomRole\\\"],\\\"IsAdministrator\\\":false,\\\"IsVirtual\\\":true,\\\"Properties\\\":[&#123;\\\"Key\\\":\\\"SerializedData\\\",\\\"Value\\\":\\\"[&#123;\\\\\\\"Key\\\\\\\":\\\\\\\"DateOfBirth\\\\\\\",\\\\\\\"Value\\\\\\\":\\\\\\\"1980-01-01\\\\\\\"&#125;]\\\"&#125;,&#123;\\\"Key\\\":\\\"Email\\\",\\\"Value\\\":\\\"bertie@bassett.co.uk\\\"&#125;,&#123;\\\"Key\\\":\\\"FullName\\\",\\\"Value\\\":\\\"Bertie Bassett\\\"&#125;],\\\"RemovedRoles\\\":[]&#125;\"&#125;]"</span>,</div><div class="line">  <span class="attr">"CookiePath"</span>: <span class="string">"/"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>So, prior to Sitecore 8.1 Update 2, there was no dependency on the <code>Core</code> database for storing Virtual User profile data. As long as the cookie is in place, the Virtual User would be correctly restored.</p>
+<h1 id="Further-information"><a href="#Further-information" class="headerlink" title="Further information"></a>Further information</h1><p>That’s what I’ve found from my short dive into Virtual User operations. If you think I’ve stated anything inaccurate, please let me know! I’m going to be looking at this further and into any other common questions around Virtual Users that I see, so if needed I’ll provide a follow-up post with more detail.</p>
+
+        
+            
+        
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/21/sitecore-xconnect-round-up/" data-tooltip="Sitecore 9 + xConnect: Blog round-up and known issues">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        <img style="vertical-align:middle" src="/assets/images/favicon-32x32.png"/>
+        Copyright &copy; 2017 Kasaku Ltd. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div class="post-bottom-bar">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="icon-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/21/sitecore-xconnect-round-up/" data-tooltip="Sitecore 9 + xConnect: Blog round-up and known issues">
+                
+                    <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2017/11/22/virtual-user-custom-properties/">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="icon-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Kasaku Ltd.</h4>
+        
+        
+        
+    </div>
+</div>
+        	
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'kasaku';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+</html>
