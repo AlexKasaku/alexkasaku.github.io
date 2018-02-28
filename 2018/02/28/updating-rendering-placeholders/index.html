@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Multi-Line field bugs in Sitecore 8.1 - Kasaku</title>
+    <title>Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku, a Sitecore consultancy outfit based in London, UK.">
     
@@ -31,13 +31,13 @@
     <meta name="theme-color" content="#333a42">    
     
     <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="Multi-Line field bugs in Sitecore 8.1 - Kasaku" />
+    <meta property="og:title"              content="Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
-    <meta name="twitter:title" content="Multi-Line field bugs in Sitecore 8.1 - Kasaku" />
+    <meta name="twitter:title" content="Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
@@ -182,40 +182,34 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Multi-Line field bugs in Sitecore 8.1</h1>
+        <h1 class="post-title" itemprop="headline">Updating rendering placeholders using Sitecore PowerShell Extensions</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Mon Mar 21 2016 14:00:00 GMT+0000">
-        Mar 21, 2016
+    <time  itemprop="datePublished" content="Wed Feb 28 2018 10:00:00 GMT+0000">
+        Feb 28, 2018
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>If you’re using Multi-Line fields in Sitecore, as of Sitecore 8.1 Update 1 you will encounter problems with using them when editing content in the Experience Editor.</p>
-<p>These two bugs are:</p>
-<ol>
-<li>When you create a new line in the field, the Experience Editor will actually add two new line breaks instead of one.</li>
-<li>When you save, all lines except for the first are not saved.<a id="more"></a>
+        <p>Just a short blog post today to share a Sitecore PowerShell script that I’ve recently found useful.<br><a id="more"></a><br>On a recent project, we took the decision to rework how we had been using placeholders across the site. This involved retiring a large number of placeholders that were currently in use, and replacing these with a much smaller set. Whilst everyone recognised the need to do this, the appetite for the work involved in updating the existing content was slim.</p>
+<p>Fortunately, this sort of grunt work is just what SPE is perfect for. It didn’t take long to put a script together, and within minutes all of the content was updated. I’m sharing it in this post in case someone else finds it useful.</p>
+<p>In our situation, we needed something that would process content items, find renderings that were on placeholder <em>X</em> and then update these to set the placeholder as <em>Y</em>. We also wanted to make sure that renderings on placeholders <em>within</em> those renderings were also catered for (e.g. a rendering on placeholder <em>X/A</em> would translate to <em>Y/A</em>). Further to this, we actually had a number of placeholder “mappings” such as this that we wanted updating all in one go.</p>
+<p>This is the script that fixed the content:</p>
+<figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$placeholderMappings</span> = @(</div><div class="line"> @(<span class="string">"/old-placeholder"</span>,<span class="string">"/new-placeholder"</span>),</div><div class="line"> @(<span class="string">"/another-old-placeholder"</span>,<span class="string">"/new-placeholder"</span>)</div><div class="line">)</div><div class="line"></div><div class="line"><span class="variable">$rootItem</span> = <span class="built_in">Get-Item</span> -Path master:/sitecore/content/Home</div><div class="line"><span class="variable">$defaultLayout</span> = Get-LayoutDevice <span class="string">"Default"</span></div><div class="line"></div><div class="line"><span class="comment"># Toggle for whether to update Shared or Final Layout</span></div><div class="line"><span class="variable">$useFinalLayout</span> = <span class="literal">$True</span></div><div class="line"></div><div class="line"><span class="comment"># If set to true, the script will only list the renderings that need fixing, rather than fixing them.</span></div><div class="line"><span class="variable">$reportOnly</span> = <span class="literal">$False</span></div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ( <span class="variable">$item</span> <span class="keyword">in</span> <span class="built_in">Get-ChildItem</span> -Item <span class="variable">$rootItem</span> -Recurse )</div><div class="line">&#123;</div><div class="line">    <span class="comment"># Only interested in items that have a layout</span></div><div class="line">    <span class="keyword">if</span> (Get-Layout <span class="variable">$item</span>)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">foreach</span>( <span class="variable">$mapping</span> <span class="keyword">in</span> <span class="variable">$placeholderMappings</span> )</div><div class="line">        &#123;</div><div class="line">            <span class="comment"># Get renderings in this item that have renderings in the placeholder we want to update </span></div><div class="line">            <span class="variable">$renderings</span> =  Get-Rendering -Item <span class="variable">$item</span> -Placeholder (<span class="variable">$mapping</span>[<span class="number">0</span>] + <span class="string">'/*'</span>) -Device <span class="variable">$defaultLayout</span> -FinalLayout:<span class="variable">$useFinalLayout</span></div><div class="line">            </div><div class="line">            <span class="keyword">foreach</span> ( <span class="variable">$rendering</span> <span class="keyword">in</span> <span class="variable">$renderings</span> )</div><div class="line">            &#123;</div><div class="line">                <span class="comment"># Only update the rendering if we're not in "Report Only" mode</span></div><div class="line">                <span class="keyword">if</span> (!<span class="variable">$reportOnly</span>)</div><div class="line">                &#123;</div><div class="line">                   <span class="comment"># Update the placeholder in the rendering and set it back in the item</span></div><div class="line">                   <span class="variable">$rendering</span>.Placeholder = <span class="variable">$rendering</span>.Placeholder <span class="nomarkup">-replace</span> <span class="variable">$mapping</span>[<span class="number">0</span>], <span class="variable">$mapping</span>[<span class="number">1</span>]</div><div class="line">                   Set-Rendering -Item <span class="variable">$item</span> -Instance <span class="variable">$rendering</span> -FinalLayout:<span class="variable">$useFinalLayout</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="built_in">Write-Host</span> <span class="string">"$(<span class="variable">$item</span>.FullPath) - Rendering $(<span class="variable">$rendering</span>.UniqueID) - Placeholder: $(<span class="variable">$mapping</span>[0]) --&gt; $(<span class="variable">$mapping</span>[1])"</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>That’s all there is to it. The general flow of the script is:</p>
+<ul>
+<li>Recurse through all items with layouts in the content folder specified</li>
+<li>For each placeholder mapping specified:<ul>
+<li>Get any renderings that match the old placeholder (an exact match or ones that begin with it)</li>
+<li>Replace the old placeholder with the new one</li>
+<li>Set the rendering back into the item</li>
+</ul>
 </li>
-</ol>
-<p>Here is a demo illustrating both issues:</p>
-<p></p><p><img src="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/multi-line-bug.gif" title="Bug demo"></p><br>Both of these issues have been reported to Sitecore Support. Here’s a bit more information on each:<p></p>
-<h2 id="Additional-lines-bug"><a href="#Additional-lines-bug" class="headerlink" title="Additional-lines bug"></a>Additional-lines bug</h2><p>This bug is down to the <code>FieldChromeType.js</code> file used in the front-end to provide the editing functionality for the fields. It is incorrectly adding in two <code>&lt;br&gt;</code> tags into the HTML when a new-line is created.</p>
-<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you have need to reference this bug in a support ticket with Sitecore, the public reference number is <strong>103584</strong>.</p>
-<p>Sitecore Support have supplied an updated version of the JS file that fixes the issue. You can get this file from Support if you reference the above number, also if you log this issue it will help inform Sitecore of how wide-affecting the issue is.</p>
-<p>I have also <a href="/2016/03/21/multiline-field-bugs-in-sitecore-8-1/FieldChromeType.js" title="hosted the file here">hosted the file here</a> on this site for your convenience. By using this file you accept responsibility for doing so, and I <strong>strongly recommend</strong> you compare this file to the one you are replacing in your solution to confirm what you are changing, as well as still reporting to Sitecore Support that you encountered the bug.</p>
-<p>To apply the fix, just place the updated file in <code>\sitecore\shell\Applications\Page Modes\ChromeTypes</code>, replacing the existing file.</p>
-<p>Note that this fix is for 8.1 Update 1 and Update 2 <strong>only</strong>.</p>
-<h2 id="Save-bug"><a href="#Save-bug" class="headerlink" title="Save bug"></a>Save bug</h2><p>In Sitecore 8.1 Update 1, the <code>Sitecore.ExperienceEditor.WebUtilty</code> class was updated to amend the regex that is used to process fields before they are saved. Unfortunately, the new regex in place is too hungry and matches across all <code>&lt;br&gt;</code> tags, removing them along with all the content inbetween. The result is that only the first line remains.</p>
-<p>This issue has been reported to Sitecore Support and has been confirmed as a bug. If you are looking for information on this bug, the public reference number is <strong>101295</strong>. This problem also affects the recently released Update 2.</p>
-<p>Unfortuntely, the <code>WebUtility</code> class is static and as such it’s not trivial to implement a replacement for this class. There are no references to it in configuration allowing it to be swapped out with an alternative.</p>
-<p>The workaround suggestion by Support at the moment is to use a Rich-Text field.</p>
-<p>Alternatively, and the route we have gone, is to remove the ability to edit this field in the Experience Editor and to have our users make the update to this field in the Content Editor. As this was just a single field that is only used on a handful of items, that worked well enough for us. However, if you make extensive use of the Multi-Line field and Experience Editor, you may need to investigate a more robust workaround. If you have done this, please comment below!</p>
-<h2 id="Related-bugs"><a href="#Related-bugs" class="headerlink" title="Related bugs"></a>Related bugs</h2><p>Kayee has written a blog post on a very similar bug that also effects the Multi-Line field in the Experience Editor, though in that scenario it’s if you are using it combined with a Custom Experience Button.</p>
-<p>Fortunately, that bug has fix available for it. You can see a demo of the bug and get the fix from the link below.</p>
-<p><a href="http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/" target="_blank" rel="noopener">http://www.kayee.nl/2016/01/10/sitecore-8-1-multi-line-text-field-with-experience-button-problem/</a></p>
+</ul>
+<p>There are two variables you can tweak in the script: one for determining whether to update the Shared or Final Layout, and the other to run the script in “Report Mode” where it will just find items that require changes, without actually going ahead and making the update.</p>
+<p>I hope that proves useful to someone!</p>
 
         
             
@@ -226,7 +220,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/bugs/">bugs</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-8/">sitecore-8</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/powershell/">powershell</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-powershell-extensions/">sitecore-powershell-extensions</a>
 
             </div>
         
@@ -235,7 +229,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/04/06/sitecore-powershell-london-march-2016/"  data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -243,7 +237,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/" data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/22/virtual-user-custom-properties/" data-tooltip="Virtual Users, custom properties and persisting data">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -253,17 +247,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -296,7 +290,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2016/04/06/sitecore-powershell-london-march-2016/"  data-tooltip="Sitecore Powershell Extensions talk at London Sitecore User Group March 2016">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -304,7 +298,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/08/16/implementing-a-virtual-field-in-sitecore/" data-tooltip="Implementing a Virtual Field in Sitecore">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/22/virtual-user-custom-properties/" data-tooltip="Virtual Users, custom properties and persisting data">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -314,17 +308,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2016/03/21/multiline-field-bugs-in-sitecore-8-1/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
