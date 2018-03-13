@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku</title>
+    <title>Useful Sitecore configuration methods - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku, a Sitecore consultancy outfit based in London, UK.">
     
@@ -31,13 +31,13 @@
     <meta name="theme-color" content="#333a42">    
     
     <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku" />
+    <meta property="og:title"              content="Useful Sitecore configuration methods - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
-    <meta name="twitter:title" content="Updating rendering placeholders using Sitecore PowerShell Extensions - Kasaku" />
+    <meta name="twitter:title" content="Useful Sitecore configuration methods - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
@@ -182,34 +182,32 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Updating rendering placeholders using Sitecore PowerShell Extensions</h1>
+        <h1 class="post-title" itemprop="headline">Useful Sitecore configuration methods</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Wed Feb 28 2018 10:00:00 GMT+0000">
-        Feb 28, 2018
+    <time  itemprop="datePublished" content="Tue Mar 13 2018 22:15:00 GMT+0000">
+        Mar 13, 2018
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>Just a short blog post today to share a Sitecore PowerShell script that I’ve recently found useful.<br><a id="more"></a><br>On a recent project, we took the decision to rework how we had been using placeholders across the site. This involved retiring a large number of placeholders that were currently in use, and replacing these with a much smaller set. Whilst everyone recognised the need to do this, the appetite for the work involved in updating the existing content was slim.</p>
-<p>Fortunately, this sort of grunt work is just what SPE is perfect for. It didn’t take long to put a script together, and within minutes all of the content was updated. I’m sharing it in this post in case someone else finds it useful.</p>
-<p>In our situation, we needed something that would process content items, find renderings that were on placeholder <em>X</em> and then update these to set the placeholder as <em>Y</em>. We also wanted to make sure that renderings on placeholders <em>within</em> those renderings were also catered for (e.g. a rendering on placeholder <em>X/A</em> would translate to <em>Y/A</em>). Further to this, we actually had a number of placeholder “mappings” such as this that we wanted updating all in one go.</p>
-<p>This is the script that fixed the content:</p>
-<figure class="highlight ps"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$placeholderMappings</span> = @(</div><div class="line"> @(<span class="string">"/old-placeholder"</span>,<span class="string">"/new-placeholder"</span>),</div><div class="line"> @(<span class="string">"/another-old-placeholder"</span>,<span class="string">"/new-placeholder"</span>)</div><div class="line">)</div><div class="line"></div><div class="line"><span class="variable">$rootItem</span> = <span class="built_in">Get-Item</span> -Path master:/sitecore/content/Home</div><div class="line"><span class="variable">$defaultLayout</span> = Get-LayoutDevice <span class="string">"Default"</span></div><div class="line"></div><div class="line"><span class="comment"># Toggle for whether to update Shared or Final Layout</span></div><div class="line"><span class="variable">$useFinalLayout</span> = <span class="literal">$True</span></div><div class="line"></div><div class="line"><span class="comment"># If set to true, the script will only list the renderings that need fixing, rather than fixing them.</span></div><div class="line"><span class="variable">$reportOnly</span> = <span class="literal">$False</span></div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ( <span class="variable">$item</span> <span class="keyword">in</span> <span class="built_in">Get-ChildItem</span> -Item <span class="variable">$rootItem</span> -Recurse )</div><div class="line">&#123;</div><div class="line">    <span class="comment"># Only interested in items that have a layout</span></div><div class="line">    <span class="keyword">if</span> (Get-Layout <span class="variable">$item</span>)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">foreach</span>( <span class="variable">$mapping</span> <span class="keyword">in</span> <span class="variable">$placeholderMappings</span> )</div><div class="line">        &#123;</div><div class="line">            <span class="comment"># Get renderings in this item that have renderings in the placeholder we want to update </span></div><div class="line">            <span class="variable">$renderings</span> =  Get-Rendering -Item <span class="variable">$item</span> -Placeholder (<span class="variable">$mapping</span>[<span class="number">0</span>] + <span class="string">'/*'</span>) -Device <span class="variable">$defaultLayout</span> -FinalLayout:<span class="variable">$useFinalLayout</span></div><div class="line">            </div><div class="line">            <span class="keyword">foreach</span> ( <span class="variable">$rendering</span> <span class="keyword">in</span> <span class="variable">$renderings</span> )</div><div class="line">            &#123;</div><div class="line">                <span class="comment"># Only update the rendering if we're not in "Report Only" mode</span></div><div class="line">                <span class="keyword">if</span> (!<span class="variable">$reportOnly</span>)</div><div class="line">                &#123;</div><div class="line">                   <span class="comment"># Update the placeholder in the rendering and set it back in the item</span></div><div class="line">                   <span class="variable">$rendering</span>.Placeholder = <span class="variable">$rendering</span>.Placeholder <span class="nomarkup">-replace</span> <span class="variable">$mapping</span>[<span class="number">0</span>], <span class="variable">$mapping</span>[<span class="number">1</span>]</div><div class="line">                   Set-Rendering -Item <span class="variable">$item</span> -Instance <span class="variable">$rendering</span> -FinalLayout:<span class="variable">$useFinalLayout</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="built_in">Write-Host</span> <span class="string">"$(<span class="variable">$item</span>.FullPath) - Rendering $(<span class="variable">$rendering</span>.UniqueID) - Placeholder: $(<span class="variable">$mapping</span>[0]) --&gt; $(<span class="variable">$mapping</span>[1])"</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>That’s all there is to it. The general flow of the script is:</p>
-<ul>
-<li>Recurse through all items with layouts in the content folder specified</li>
-<li>For each placeholder mapping specified:<ul>
-<li>Get any renderings that match the old placeholder (an exact match or ones that begin with it)</li>
-<li>Replace the old placeholder with the new one</li>
-<li>Set the rendering back into the item</li>
-</ul>
-</li>
-</ul>
-<p>There are two variables you can tweak in the script: one for determining whether to update the Shared or Final Layout, and the other to run the script in “Report Mode” where it will just find items that require changes, without actually going ahead and making the update.</p>
-<p>I hope that proves useful to someone!</p>
+        <p>Just a short blog post today to touch on a couple of useful helper methods that Sitecore provides that are easily overlooked.<br><a id="more"></a></p>
+<p>You have likely used the following method for reading out a setting from a Sitecore configuration file:</p>
+<p><code>Sitecore.Configuration.Settings.GetSetting(&quot;StringSetting&quot;, &quot;defaultValue&quot;);</code></p>
+<p>It’s worth knowing that you usually don’t need to manually parse values from configuration settings, as there’s a few other methods here that will do that for you:</p>
+<p><code>Sitecore.Configuration.Settings.GetBoolSetting(&quot;BoolSetting&quot;, true);</code><br><code>Sitecore.Configuration.Settings.GetIntSetting(&quot;IntSetting&quot;, 5);</code><br><code>Sitecore.Configuration.Settings.GetDoubleSetting(&quot;DoubleSetting&quot;, 5.00m);</code><br><code>Sitecore.Configuration.Settings.GetLongSetting(&quot;LongSetting&quot;, 5);</code></p>
+<p>These are just small wrappers around some simple parsing logic, but they’re handy nonetheless. Each variant allows you to specify a correctly-typed default value that will be returned if the setting doesn’t exist, or if it fails to parse.</p>
+<p>As well as these, there’s a more interesting option! Have you ever needed to store a time-based setting in configuration? Did you end up storing it as a numeric value and calling your setting <code>TimeoutSeconds</code> or <code>DelayInMinutes</code>? Well thanks to the following method, you can have a little more flexibility in values that represent spans of time:</p>
+<p><code>Sitecore.Configuration.Settings.GetTimeSpanSetting(&quot;TimeSpanSetting&quot;, TimeSpan.FromMinutes(5))</code></p>
+<p>This method makes use of <code>DateUtils.ParseTimeSpan</code> to parse the string value as a <code>TimeSpan</code>, allowing for you to have a more varied and readable string. Here are some example values you can use:</p>
+<p><code>d.hh:mm:ss</code><br><code>0.00:00:30 - 30 seconds</code><br><code>0.00:01:30 - 1 minute, 30 seconds</code><br><code>0.10:01:30 - 10 hours, 1 minute, 30 seconds</code><br><code>3.10:01:30 - 3 days, 10 hours, 1 minute, 30 seconds</code></p>
+<p>Very helpful!</p>
+<p>There’s also <code>GetFileSetting</code>, which simply reads the value as a string and feeds the result into <code>FileUtil.MapPath</code> to map the relative path to an absolute path on the server.</p>
+<p>Finally, though there isn’t a <code>GetSetting</code> wrapper for it, there’s a useful string parsing helper that you can combine with the regular <code>GetSetting</code> method, and that’s <code>StringUtil.ParseSizeString</code>. This takes a string representing a file size, and returns the value as a long representing the same size as a number of bytes. Here are some examples:</p>
+<p><code>StringUtil.ParseSizeString(&quot;100KB&quot;) // = 102400 bytes</code><br><code>StringUtil.ParseSizeString(&quot;100MB&quot;) // = 104857600 bytes</code><br><code>StringUtil.ParseSizeString(&quot;100GB&quot;) // = 107374182400 bytes</code></p>
+<p>Like with <code>GetTimeSpanSetting</code>, this lets you store your configuration values as more flexible and readable strings. After all, it’s much quicker to read <code>100MB</code> than <code>104857600</code> and know what the resulting file size will be.</p>
 
         
             
@@ -220,7 +218,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/powershell/">powershell</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore-powershell-extensions/">sitecore-powershell-extensions</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -229,7 +227,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/03/13/sitecore-settings/"  data-tooltip="Useful Sitecore configuration methods">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -237,7 +235,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/22/virtual-user-custom-properties/" data-tooltip="Virtual Users, custom properties and persisting data">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/28/updating-rendering-placeholders/" data-tooltip="Updating rendering placeholders using Sitecore PowerShell Extensions">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -247,17 +245,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -290,7 +288,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/03/13/sitecore-settings/"  data-tooltip="Useful Sitecore configuration methods">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -298,7 +296,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/11/22/virtual-user-custom-properties/" data-tooltip="Virtual Users, custom properties and persisting data">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/28/updating-rendering-placeholders/" data-tooltip="Updating rendering placeholders using Sitecore PowerShell Extensions">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -308,17 +306,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/02/28/updating-rendering-placeholders/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
