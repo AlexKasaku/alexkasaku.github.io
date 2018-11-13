@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Kasaku">
-    <title>Useful Sitecore configuration methods - Kasaku</title>
+    <title>A diagnosis of a hanging ASP.NET website - Kasaku</title>
     <meta name="author" content="Kasaku Ltd.">
     <meta name="description" content="Kasaku, a Sitecore consultancy outfit based in London, UK.">
     
@@ -31,13 +31,13 @@
     <meta name="theme-color" content="#333a42">    
     
     <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="Useful Sitecore configuration methods - Kasaku" />
+    <meta property="og:title"              content="A diagnosis of a hanging ASP.NET website - Kasaku" />
     <meta property="og:description"        content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta property="og:image"              content="https://www.kasaku.co.uk/assets/images/cover.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@kasaku_dev" />
-    <meta name="twitter:title" content="Useful Sitecore configuration methods - Kasaku" />
+    <meta name="twitter:title" content="A diagnosis of a hanging ASP.NET website - Kasaku" />
     <meta name="twitter:description" content="Kasaku, a Sitecore consultancy outfit based in London, UK." />
     <meta name="twitter:image" content="https://www.kasaku.co.uk/assets/images/favicon-194x194.png" />    
     
@@ -182,32 +182,40 @@ ga('send', 'pageview');
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Useful Sitecore configuration methods</h1>
+        <h1 class="post-title" itemprop="headline">A diagnosis of a hanging ASP.NET website</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Tue Mar 13 2018 22:15:00 GMT+0000">
-        Mar 13, 2018
+    <time  itemprop="datePublished" content="Tue Nov 13 2018 23:30:00 GMT+0000">
+        Nov 13, 2018
     </time>
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>Just a short blog post today to touch on a couple of useful helper methods that Sitecore provides that are easily overlooked.<br><a id="more"></a></p>
-<p>You have likely used the following method for reading out a setting from a Sitecore configuration file:</p>
-<p><code>Sitecore.Configuration.Settings.GetSetting(&quot;StringSetting&quot;, &quot;defaultValue&quot;);</code></p>
-<p>It’s worth knowing that you usually don’t need to manually parse values from configuration settings, as there’s a few other methods here that will do that for you:</p>
-<p><code>Sitecore.Configuration.Settings.GetBoolSetting(&quot;BoolSetting&quot;, true);</code><br><code>Sitecore.Configuration.Settings.GetIntSetting(&quot;IntSetting&quot;, 5);</code><br><code>Sitecore.Configuration.Settings.GetDoubleSetting(&quot;DoubleSetting&quot;, 5.00m);</code><br><code>Sitecore.Configuration.Settings.GetLongSetting(&quot;LongSetting&quot;, 5);</code></p>
-<p>These are just small wrappers around some simple parsing logic, but they’re handy nonetheless. Each variant allows you to specify a correctly-typed default value that will be returned if the setting doesn’t exist, or if it fails to parse.</p>
-<p>As well as these, there’s a more interesting option! Have you ever needed to store a time-based setting in configuration? Did you end up storing it as a numeric value and calling your setting <code>TimeoutSeconds</code> or <code>DelayInMinutes</code>? Well thanks to the following method, you can have a little more flexibility in values that represent spans of time:</p>
-<p><code>Sitecore.Configuration.Settings.GetTimeSpanSetting(&quot;TimeSpanSetting&quot;, TimeSpan.FromMinutes(5))</code></p>
-<p>This method makes use of <code>DateUtils.ParseTimeSpan</code> to parse the string value as a <code>TimeSpan</code>, allowing for you to have a more varied and readable string. Here are some example values you can use:</p>
-<p><code>d.hh:mm:ss</code><br><code>0.00:00:30 - 30 seconds</code><br><code>0.00:01:30 - 1 minute, 30 seconds</code><br><code>0.10:01:30 - 10 hours, 1 minute, 30 seconds</code><br><code>3.10:01:30 - 3 days, 10 hours, 1 minute, 30 seconds</code></p>
-<p>Very helpful!</p>
-<p>There’s also <code>GetFileSetting</code>, which simply reads the value as a string and feeds the result into <code>FileUtil.MapPath</code> to map the relative path to an absolute path on the server.</p>
-<p>Finally, though there isn’t a <code>GetSetting</code> wrapper for it, there’s a useful string parsing helper that you can combine with the regular <code>GetSetting</code> method, and that’s <code>StringUtil.ParseSizeString</code>. This takes a string representing a file size, and returns the value as a long representing the same size as a number of bytes. Here are some examples:</p>
-<p><code>StringUtil.ParseSizeString(&quot;100KB&quot;) // = 102400 bytes</code><br><code>StringUtil.ParseSizeString(&quot;100MB&quot;) // = 104857600 bytes</code><br><code>StringUtil.ParseSizeString(&quot;100GB&quot;) // = 107374182400 bytes</code></p>
-<p>Like with <code>GetTimeSpanSetting</code>, this lets you store your configuration values as more flexible and readable strings. After all, it’s much quicker to read <code>100MB</code> than <code>104857600</code> and know what the resulting file size will be.</p>
+        <p>Recently I was experiencing an issue where an ASP.NET site was not appearing to shut down correctly, preventing the application from recycling.</p>
+<p>In this specific context, this was a Sitecore site and was reproducable by triggering a change to a configuration file, which causes the application to restart. To confirm the shutdown was happening, I could see the regular shutdown messages appearing in the logs:</p>
+<blockquote>
+<p>19060 13:13:41 INFO  ************************************************<br>19060 13:13:41 WARN  Sitecore shutting down<br>19060 13:13:41 WARN  Shutdown message: IIS configuration change<br>HostingEnvironment initiated shutdown</p>
+</blockquote>
+<p>In a typical Sitecore site, this would be followed by the next log file being generated and filled with logs of the initialization process as the site started up again. However, in this particular instance this wasn’t happening. Additionally to this, requests to the site were simply timing out without a response being served.</p>
+<p>Before I get into the diagnosis and solution of this problem, it’s worth noting that though this example is based upon a Sitecore ASP.NET site, the diagnosis, issue and required solution <em>are all applicable to a generic ASP.NET site</em>. So if you are not developing a Sitecore site, this blog post could still prove useful to you.</p>
+<h2 id="Diagnosis"><a href="#Diagnosis" class="headerlink" title="Diagnosis"></a>Diagnosis</h2><p>To diagnose this issue, I had to do two things. First of all I needed to take a dump of the process in its “hanging” state, so that I could perform some analysis on it to try and find the issue. This can be done in Task Manager. I triggered the shutdown process of the application, and then I created the dump file:</p>
+<p><img src="/2018/11/13/diagnosing-hanging-sites/creating-dump-file.png" title="Creating a dump file for the IIS process"></p>
+
+<p>Then, I opened up <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49924" target="_blank" rel="noopener">Microsoft DebugDiag Analysis</a>. This is a useful tool that can help with analysing crashing / hanging issues in Windows processes. Once downloaded, using this is as simple as pointing it at the dump file you’ve just created, selecting <code>CrashHangAnalysis</code> as the analyzer you want to use, and starting the analysis:</p>
+<p><img src="/2018/11/13/diagnosing-hanging-sites/debugdiag-guide.png" title="Using DebugDiag to create a report"></p>
+
+<p>The analysis will run and generate you a report. This report is an MHT file, an older HTML web archive file format that you’re best opening with Internet Explorer.</p>
+<h1 id="Analysis-and-resolution"><a href="#Analysis-and-resolution" class="headerlink" title="Analysis and resolution"></a>Analysis and resolution</h1><p>Opening the report and looking at the summary immediately showed something promising as a lead to the issue: “The finalizer thread 16 in this w3wp.DMP is blocked”:</p>
+<p><img src="/2018/11/13/diagnosing-hanging-sites/report-error.png" title="The DebugDiag report showing the error"></p>
+
+<p> Clicking on the thread number (16) showed more details:</p>
+<p><img src="/2018/11/13/diagnosing-hanging-sites/report-thread.png" title="The DebugDiag report giving detail of the thread error"></p>
+
+<p>From this part of the report, I could determine that the thread was stuck waiting in the dispose method of <code>MsieJavaScriptEngine.JsRt.Edge.ChakraEdgeJsRtJsEngine</code>. A quick bit of googling turned up <a href="https://github.com/Taritsyn/MsieJavaScriptEngine/issues/18" target="_blank" rel="noopener">this issue</a> on GitHub for the MsieJavaScriptEngine project. It appeared that there was an issue with the version of the package that we had referenced - the site in question was using React.NET which in turn had taken this package as a dependency.</p>
+<p>Fortunately in this instance, the resolution was straightforward. The issue had been fixed in a more recent release of the MsieJavaScriptEngine project, so it was just a case of upgrading the package in the solution. This fixed the issue and the site was able to shutdown / recycle as expected.</p>
+<p>Nice and simple! Of course, there could be any multitude of reasons why a site may hang or become unresponsive, and it won’t always be so easy to diagnose. Hopefully what worked here may prove useful to you, and the DebugDiag tool could well assist you in the same way it did in this scenario.</p>
 
         
             
@@ -218,7 +226,7 @@ ga('send', 'pageview');
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/bugs/">bugs</a> <a class="tag tag--primary tag--small t-link" href="/tags/react-net/">react.net</a> <a class="tag tag--primary tag--small t-link" href="/tags/sitecore/">sitecore</a>
 
             </div>
         
@@ -227,7 +235,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/11/13/diagnosing-hanging-sites/"  data-tooltip="A diagnosis of a hanging ASP.NET website">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -235,7 +243,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/28/updating-rendering-placeholders/" data-tooltip="Updating rendering placeholders using Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/03/13/sitecore-settings/" data-tooltip="Useful Sitecore configuration methods">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -245,17 +253,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
@@ -288,7 +296,7 @@ ga('send', 'pageview');
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/11/13/diagnosing-hanging-sites/"  data-tooltip="A diagnosis of a hanging ASP.NET website">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="icon-angle-left"></i>
                     <span class="hide-xs hide-sm text-small mg-icon-l">PREVIOUS</span>
@@ -296,7 +304,7 @@ ga('send', 'pageview');
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/28/updating-rendering-placeholders/" data-tooltip="Updating rendering placeholders using Sitecore PowerShell Extensions">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/03/13/sitecore-settings/" data-tooltip="Useful Sitecore configuration methods">
                 
                     <span class="hide-xs hide-sm text-small mg-icon-r">NEXT</span>
                     <i class="icon-angle-right"></i>
@@ -306,17 +314,17 @@ ga('send', 'pageview');
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/03/13/sitecore-settings/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.kasaku.co.uk/2018/11/13/diagnosing-hanging-sites/">
                 <i class="icon-twitter"></i>
             </a>
         </li>
